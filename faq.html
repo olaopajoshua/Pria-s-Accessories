@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Care &amp; Delivery FAQ — Pria's Accessories</title>
+  <meta name="description" content="Detailed jewelry care guidelines, Lagos delivery rates, interstate waybill information, and frequently asked questions for Pria's Accessories." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <!-- Google Fonts (Clean, visible, modern sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="faq.css" />
+</head>
+<body>
+
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <div class="mobile-header-left">
+          <button class="btn-hamburger" id="btn-open-mobile-nav" onclick="openMobileNav()" aria-label="Open Navigation Menu">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <a href="index.html" class="brand-logo" title="Pria's Accessories Home">
+            <img src="assets/logo.png" alt="Pria's Accessories" class="brand-logo-img" />
+            <div class="brand-logo-text">
+              <span class="brand-name">PRIA'S ACCESSORIES</span>
+              <span class="brand-sub">JEWELRY &amp; FASHION</span>
+            </div>
+          </a>
+        </div>
+
+        <nav class="desktop-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="collections.html" class="nav-link">Collections</a></li>
+            <li><a href="about.html" class="nav-link">The Studio</a></li>
+            <li><a href="faq.html" class="nav-link active">Care &amp; Delivery</a></li>
+            <li><a href="contact.html" class="nav-link">Contact &amp; Reviews</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn-inquiry-nav" onclick="openCartDrawer()" title="View Inquiry Bag" id="btn-open-bag" aria-label="View Bag">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="desktop-only">Inquiry Bag</span>
+            <span class="badge-count cart-count-badge" style="display: none;">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Slide-over Drawer -->
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop">
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <a href="index.html" class="brand-logo" onclick="closeMobileNav()">
+          <img src="assets/logo.png" alt="Pria's Accessories" class="brand-logo-img" />
+          <div class="brand-logo-text">
+            <span class="brand-name">PRIA'S ACCESSORIES</span>
+            <span class="brand-sub">JEWELRY &amp; FASHION</span>
+          </div>
+        </a>
+        <button class="mobile-nav-close-btn" onclick="closeMobileNav()" aria-label="Close Navigation Menu">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-nav-body">
+        <nav class="mobile-nav-menu">
+          <a href="index.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>Home</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <a href="collections.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>All Collections</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <div class="mobile-sub-links">
+            <a href="collections.html?category=necklaces" class="mobile-sub-link" onclick="closeMobileNav()">Necklaces &amp; Chains</a>
+            <a href="collections.html?category=earrings" class="mobile-sub-link" onclick="closeMobileNav()">Sculpted Earrings</a>
+            <a href="collections.html?category=rings" class="mobile-sub-link" onclick="closeMobileNav()">Solitaire &amp; Dome Rings</a>
+            <a href="collections.html?category=watches" class="mobile-sub-link" onclick="closeMobileNav()">Luxury Mesh Watches</a>
+            <a href="collections.html?category=bags" class="mobile-sub-link" onclick="closeMobileNav()">Quilted Mini Bags</a>
+          </div>
+          <a href="about.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>The Studio &amp; Science</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <a href="faq.html" class="mobile-nav-link active" onclick="closeMobileNav()">
+            <span>Care &amp; Delivery FAQ</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+          <a href="contact.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>Contact &amp; Reviews</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </nav>
+
+        <div class="mobile-nav-actions">
+          <button class="mobile-nav-bag-btn" onclick="closeMobileNav(); openCartDrawer();">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span>View Inquiry Bag</span>
+            </div>
+            <span class="badge-count cart-count-badge" style="display: none;">0</span>
+          </button>
+
+          <a href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20ordering." target="_blank" class="btn-primary-wa" style="width: 100%; justify-content: center; padding: 0.85rem 0;">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span>WhatsApp Concierge</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile-nav-footer">
+        <p>18k PVD Vacuum Gold Plated &bull; Lagos, Nigeria</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Header Banner -->
+  <section class="page-header-banner">
+    <div class="container">
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a> &bull; <span>Care &amp; Delivery</span>
+      </div>
+      <h1 class="page-header-title">Care Guide &amp; Delivery FAQ</h1>
+      <p class="page-header-sub">
+        Everything you need to know about caring for 18k PVD pieces, Lagos dispatch, and nationwide waybill timelines.
+      </p>
+    </div>
+  </section>
+
+  <!-- Care Instructions Section -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">MAINTENANCE</span>
+        <h2 class="section-title">Jewelry Care Guide</h2>
+        <p class="section-subtitle">Our pieces are built for everyday living. Here is how to keep them sparkling for years.</p>
+      </div>
+
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div class="trust-info">
+            <h4>Water &amp; Shower Safe</h4>
+            <p>You can wear our 18k PVD pieces in the shower, beach, and pool. Simply pat dry with a soft cloth afterward.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </div>
+          <div class="trust-info">
+            <h4>Perfumes &amp; Lotions</h4>
+            <p>While resistant to chemicals, apply your lotions and perfumes before putting on jewelry to preserve optical shine.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+          </div>
+          <div class="trust-info">
+            <h4>Storage in Velvet Pouch</h4>
+            <p>Keep your pieces in the complimentary velvet pouch when travelling to prevent chains from tangling.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+          </div>
+          <div class="trust-info">
+            <h4>Cleaning &amp; Polishing</h4>
+            <p>Clean occasionally with warm water, mild soap, and a microfibre cloth to remove daily skin oils.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery Rates & Timelines -->
+  <section class="section-padding" style="background: var(--bg-surface-elevated); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">LOGISTICS</span>
+        <h2 class="section-title">Delivery Rates &amp; Timelines</h2>
+        <p class="section-subtitle">We dispatch from our Lagos studio daily from Monday to Saturday.</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <table class="delivery-rates-table">
+          <thead>
+            <tr>
+              <th>Destination</th>
+              <th>Rate (₦)</th>
+              <th>Estimated Delivery Timeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Lagos Mainland</strong> (Ikeja, Yaba, Surulere, Festac, Gbagada)</td>
+              <td><strong>₦1,500</strong></td>
+              <td>Same-Day (Orders before 2 PM) or Next Morning</td>
+            </tr>
+            <tr>
+              <td><strong>Lagos Island &amp; Environs</strong> (VI, Lekki Phase 1, Ikoyi, Ajah)</td>
+              <td><strong>₦2,500</strong></td>
+              <td>Same-Day (Orders before 2 PM) or Next Day</td>
+            </tr>
+            <tr>
+              <td><strong>Abuja (FCT) Express Dispatch</strong></td>
+              <td><strong>₦3,500</strong></td>
+              <td>24 to 48 Hours via GIG / Dedicated Courier</td>
+            </tr>
+            <tr>
+              <td><strong>Port Harcourt &amp; South-South</strong></td>
+              <td><strong>₦3,500</strong></td>
+              <td>24 to 48 Hours</td>
+            </tr>
+            <tr>
+              <td><strong>Other Nigerian States</strong> (Nationwide Interstate)</td>
+              <td><strong>₦4,000</strong></td>
+              <td>2 to 3 Business Days via GIG Logistics</td>
+            </tr>
+            <tr>
+              <td><strong>Lagos Studio Pickup</strong></td>
+              <td><strong>FREE</strong></td>
+              <td>Ready in 2 hours after confirmation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="delivery-calc-container" id="delivery-calculator">
+        <div class="delivery-calc-header">
+          <span class="section-badge" style="margin-bottom: 0.5rem; display: inline-block;">INSTANT NIGERIA ESTIMATOR</span>
+          <h3 class="delivery-calc-title">Calculate Your Delivery Fee</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Select your State and Local Government Area (LGA) across Nigeria to view exact dispatch rates.</p>
+        </div>
+
+        <div class="delivery-calc-grid">
+          <div class="delivery-calc-select-wrap">
+            <div style="margin-bottom: 1rem;">
+              <label for="faq-calc-state" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 0.4rem;">
+                1. Select State:
+              </label>
+              <select id="faq-calc-state" class="luxury-select" onchange="handleFAQStateChange(this.value)" style="width: 100%;">
+                <!-- Populated dynamically via faq.js -->
+              </select>
+            </div>
+
+            <div>
+              <label for="faq-calc-lga" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 0.4rem;">
+                2. Select Area / Local Government (LGA):
+              </label>
+              <select id="faq-calc-lga" class="luxury-select" onchange="handleFAQLGAChange(this.value)" style="width: 100%;">
+                <!-- Populated dynamically based on chosen State -->
+              </select>
+            </div>
+
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--accent-gold-dark);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Tracked dispatch from our Lagos studio hub with doorstep or waybill delivery.</span>
+            </div>
+          </div>
+
+          <div class="delivery-calc-result-box">
+            <div class="calc-rate-row">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Delivery Fee:</span>
+              <span class="calc-rate-badge" id="faq-calc-fee">₦1,500</span>
+            </div>
+            <div class="calc-rate-row">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Estimated Arrival:</span>
+              <span class="calc-timeline-badge" id="faq-calc-timeline">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--accent-gold-dark);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <strong id="faq-calc-timeline-text">Same-Day / Next Morning</strong>
+              </span>
+            </div>
+            <div class="calc-rate-row">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Courier Service:</span>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);" id="faq-calc-courier">Dedicated Lagos Dispatch Rider</span>
+            </div>
+
+            <a id="faq-calc-whatsapp-btn" href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20delivery%20to%20Lagos%20(Ikeja)." target="_blank" class="calc-action-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>Confirm Location on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">FREQUENTLY ASKED QUESTIONS</span>
+        <h2 class="section-title">Common Questions</h2>
+        <p class="section-subtitle">Click any question to view the answer.</p>
+      </div>
+
+      <div class="faq-wrap">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Will this jewelry turn my neck or fingers green?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <strong>Never.</strong> Green skin is caused by cheap copper and nickel reacting with perspiration. All Pria's Accessories pieces are crafted with 316L medical-grade stainless steel vacuum-bonded with real 18k gold. They are 100% hypoallergenic, nickel-free, and lead-free.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How do I complete my order on WhatsApp?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Simply add your desired items to your Inquiry Bag and click <strong>"Send Order to WhatsApp"</strong>. This automatically generates a formatted invoice with your selected items and calculated delivery fee, directly opening a chat with our concierge for payment confirmation.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I add a custom handwritten birthday note?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            <strong>Yes!</strong> All orders include our signature velvet pouch, and we offer complimentary handwritten luxury card notes for birthdays, anniversaries, and bridal gifts. Simply mention your message when chatting with our WhatsApp concierge.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What payment methods do you accept?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            We accept instant Nigerian bank transfers (GTBank, Zenith, Access, Kuda, OPay) upon order confirmation on WhatsApp. For Lagos deliveries, transfer on dispatch confirmation is supported.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is your return &amp; exchange policy?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            If an item arrives damaged or the ring size is not an ideal fit, notify us within 48 hours of delivery for a swift replacement or size exchange.
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3.5rem;">
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Have a question that is not listed here?</p>
+        <a href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20have%20a%20question%20about%20your%20pieces." target="_blank" class="btn-primary-wa" style="display: inline-flex;">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>Chat with Styling Concierge</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">
+            <img src="assets/logo.png" alt="Pria's Accessories" class="footer-logo-img" />
+            <div class="brand-logo-text">
+              <span class="brand-name">PRIA'S ACCESSORIES</span>
+              <span class="brand-sub" style="color:var(--accent-gold);">JEWELRY &amp; FASHION</span>
+            </div>
+          </a>
+          <p class="footer-desc">
+            Tarnish-free 18k PVD gold plated jewelry and everyday luxury accessories designed for lasting wear in Nigeria.
+           <div class="footer-socials">
+            <a href="https://wa.me/2348123456789" target="_blank" class="social-btn" title="WhatsApp Concierge" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://tiktok.com/@priasaccessories" target="_blank" class="social-btn" title="TikTok" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298 0 .59.043.87.127V9.4a6.33 6.33 0 0 0-.87-.06A6.34 6.34 0 0 0 3 15.68a6.34 6.34 0 0 0 10.79 4.49 6.27 6.27 0 0 0 1.99-4.5V8.69a8.18 8.18 0 0 0 4.79 1.54V6.78a4.85 4.85 0 0 1-.98-.09z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Collections</h4>
+          <ul class="footer-links">
+            <li><a href="collections.html?category=necklaces">18k Gold Necklaces</a></li>
+            <li><a href="collections.html?category=earrings">Sculpted Hoops</a></li>
+            <li><a href="collections.html?category=rings">Solitaires &amp; Stacks</a></li>
+            <li><a href="collections.html?category=watches">Timepieces</a></li>
+            <li><a href="collections.html?category=bags">Mini Bags</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="faq.html">Jewelry Care Guide</a></li>
+            <li><a href="faq.html#delivery">Lagos &amp; Interstate Delivery</a></li>
+            <li><a href="about.html">PVD Science &amp; Quality</a></li>
+            <li><a href="contact.html">Contact &amp; Drop a Review</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Studio Desk</h4>
+          <div class="footer-contact-info">
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>+234 812 345 6789</span>
+            </div>
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>concierge@priasaccessories.ng</span>
+            </div>
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Lekki Phase 1 &bull; Lagos, Nigeria</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Pria's Accessories. All rights reserved. 18k PVD Vacuum Plated Jewelry.</p>
+        <a href="admin.html" class="footer-admin-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>Store Manager Portal</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Multi-Item Inquiry Cart Drawer -->
+  <div class="cart-drawer-backdrop" id="cart-drawer-backdrop">
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <h3>Inquiry Bag (<span id="drawer-items-count">0</span>)</h3>
+        </div>
+        <button class="drawer-close-btn" onclick="closeCartDrawer()" aria-label="Close Bag Drawer">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="drawer-body" id="drawer-cart-items-container">
+        <!-- Dynamically rendered items -->
+      </div>
+
+      <div class="drawer-footer" id="drawer-footer-actions">
+        <div class="delivery-section">
+          <label class="delivery-label" for="drawer-delivery-select">Choose Delivery Destination:</label>
+          <select class="delivery-select" id="drawer-delivery-select" onchange="updateDeliveryDestination(this.value)">
+            <option value="lagos-mainland">Lagos Mainland (₦1,500 • Same/Next Day)</option>
+            <option value="lagos-island">Lagos Island / Lekki / VI (₦2,000 • Same Day)</option>
+            <option value="abuja">Abuja Express Waybill (₦3,500 • 24-48 hrs)</option>
+            <option value="ph">Port Harcourt Express (₦3,500 • 48 hrs)</option>
+            <option value="nationwide">Nationwide Interstate (₦4,000 • 2-3 Days)</option>
+            <option value="pickup">Lagos Studio Pickup (Free • Ready in 2 hrs)</option>
+          </select>
+        </div>
+
+        <div class="drawer-summary-row"><span>Items Subtotal:</span><strong id="cart-subtotal-val">₦0</strong></div>
+        <div class="drawer-summary-row"><span>Delivery Fee:</span><strong id="cart-delivery-val">₦1,500</strong></div>
+        <div class="drawer-summary-row total"><span>Estimated Total:</span><span class="total-amount" id="cart-total-val">₦0</span></div>
+        <button class="btn-send-whatsapp-order" onclick="checkoutWhatsApp()">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>Send Order to WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky WhatsApp Floating Action Button -->
+  <a href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20ordering."
+    target="_blank" class="sticky-wa-float" title="Direct WhatsApp Concierge" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript State Engine & Page Logic -->
+  <script src="app.js"></script>
+  <script src="faq.js"></script>
+</body>
+</html>

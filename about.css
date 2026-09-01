@@ -1,0 +1,172 @@
+/* ==========================================================================
+   PRIA'S ACCESSORIES — ABOUT / THE STUDIO STYLES (about.html)
+   Studio Story Layout, Science Comparison Cards, Guarantees & Values
+   ========================================================================== */
+
+.about-hero-banner {
+  padding: 4.5rem 0 3.5rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF8F5 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.story-block {
+  padding: 4rem 0;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 4.5rem;
+  align-items: center;
+}
+
+.story-media img {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  object-fit: cover;
+}
+
+.science-box {
+  background: var(--bg-dark);
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  padding: 4rem;
+  margin: 3rem auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.science-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.science-card {
+  padding: 2rem;
+  background: #181413;
+  border: 1px solid rgba(197, 155, 39, 0.25);
+  border-radius: var(--radius-md);
+}
+
+.science-card h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--accent-gold-light);
+  margin-bottom: 0.6rem;
+}
+
+.science-card p {
+  font-size: 0.92rem;
+  color: #D8D0C7;
+  line-height: 1.7;
+}
+
+/* Studio Guarantees Luxury Cards */
+.guarantees-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+}
+
+.guarantee-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.guarantee-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.guarantee-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-gold);
+}
+
+.guarantee-card:hover::before {
+  opacity: 1;
+}
+
+.guarantee-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--accent-gold-bg);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-gold-dark);
+  margin: 0 auto 1.5rem;
+  transition: transform var(--transition-fast);
+}
+
+.guarantee-card:hover .guarantee-icon {
+  transform: scale(1.08);
+}
+
+.guarantee-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.guarantee-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+  line-height: 1.35;
+}
+
+.guarantee-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* About Page Responsive */
+@media (max-width: 1024px) {
+  .story-grid, .science-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .guarantees-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .science-box {
+    padding: 2.5rem 1.5rem;
+  }
+  .guarantees-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .guarantee-card {
+    padding: 1.75rem 1.5rem;
+  }
+}

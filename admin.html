@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store Manager Portal — Pria's Accessories</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <!-- Google Fonts (Clean, modern sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ADMIN AUTHENTICATION SCREEN -->
+  <div id="admin-login-screen" class="admin-login-container">
+    <div class="admin-login-card">
+      <img src="assets/logo.png" alt="Pria's Accessories" class="admin-login-logo" />
+      <h1 class="admin-login-title">Store Owner Portal</h1>
+      <p class="admin-login-sub">Enter your security passcode to access inventory &amp; settings.</p>
+
+      <form onsubmit="handleAdminLogin(event)" style="margin-top: 1.5rem;">
+        <input 
+          type="password" 
+          id="admin-page-pin-input" 
+          class="pin-input" 
+          placeholder="••••" 
+          maxlength="8" 
+          autofocus 
+          required 
+        />
+        <div class="pin-hint">Default Passcode is: <strong>1234</strong></div>
+
+        <button type="submit" class="btn-secondary-luxury" style="width: 100%; justify-content: center; padding: 0.9rem 0;">
+          <span>Unlock Dashboard</span>
+        </button>
+      </form>
+
+      <div style="margin-top: 1.75rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+        <a href="index.html" class="admin-back-store-link">
+          &larr; Return to Customer Storefront
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STANDALONE ADMIN DASHBOARD -->
+  <div id="admin-dashboard-screen" style="display: none;">
+    <!-- Top Admin Header Bar -->
+    <header class="admin-navbar">
+      <div class="admin-nav-container">
+        <div class="admin-brand-wrap">
+          <img src="assets/logo.png" alt="Pria's Accessories" class="admin-brand-logo" />
+          <div class="admin-brand-info">
+            <h1>PRIA'S ACCESSORIES</h1>
+            <span>Store Manager Portal</span>
+          </div>
+        </div>
+
+        <div class="admin-nav-actions">
+          <button type="button" class="btn-admin-nav" onclick="promptExitLock()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span>View Live Store</span>
+          </button>
+
+          <button type="button" class="btn-admin-nav" onclick="exportCatalogJSON()" title="Download JSON catalog backup">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Export Backup</span>
+          </button>
+
+          <label class="btn-admin-nav" style="cursor: pointer;" title="Restore catalog from JSON file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Import</span>
+            <input type="file" accept=".json" onchange="importCatalogJSON(event)" style="display: none;" />
+          </label>
+
+          <button type="button" class="btn-admin-nav btn-admin-lock" onclick="handleAdminLogout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Lock Session</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Body -->
+    <main class="admin-layout">
+      <!-- Top Metrics Overview -->
+      <section class="admin-metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+          <div class="metric-data">
+            <div class="metric-num" id="stat-total-products">0</div>
+            <div class="metric-label">Total Pieces in Catalog</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap" style="color:var(--admin-accent-gold-dark);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <div class="metric-data">
+            <div class="metric-num" id="stat-bestsellers" style="color:var(--admin-accent-gold-dark);">0</div>
+            <div class="metric-label">Bestseller Pieces</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap" style="color:#2D68C4; background: rgba(45, 104, 196, 0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <div class="metric-data">
+            <div class="metric-num" id="stat-active-deals" style="color:#2D68C4;">0</div>
+            <div class="metric-label">Featured Deals</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap" style="color:#D34B30; background: rgba(211, 75, 48, 0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+          </div>
+          <div class="metric-data">
+            <div class="metric-num" id="stat-out-of-stock" style="color:#D34B30;">0</div>
+            <div class="metric-label">Out of Stock</div>
+          </div>
+        </div>
+
+        <div class="metric-card" onclick="switchAdminTab('reviews')" style="cursor: pointer;">
+          <div class="metric-icon-wrap" style="color:#B8915A; background: rgba(184, 145, 90, 0.15);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </div>
+          <div class="metric-data">
+            <div class="metric-num" id="stat-pending-reviews" style="color:#B8915A;">0</div>
+            <div class="metric-label">Pending Reviews</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Tab Switcher -->
+      <nav class="admin-tabs">
+        <button class="admin-tab-item active" id="tab-btn-catalog" onclick="switchAdminTab('catalog')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Catalog &amp; Inventory</span>
+        </button>
+
+        <button class="admin-tab-item" id="tab-btn-categories" onclick="switchAdminTab('categories')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"></path></svg>
+          <span>Product Categories</span>
+          <span class="admin-tab-badge" id="admin-cat-badge">0</span>
+        </button>
+
+        <button class="admin-tab-item" id="tab-btn-reviews" onclick="switchAdminTab('reviews')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          <span>Customer Reviews</span>
+          <span class="admin-tab-badge" id="admin-pending-badge">0</span>
+        </button>
+      </nav>
+
+      <!-- TAB 1: CATALOG & INVENTORY VIEW -->
+      <div id="admin-section-catalog">
+        <div class="admin-editor-grid">
+          <!-- Add / Edit Form Column -->
+          <section class="admin-card" id="admin-form-box">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title" id="form-mode-title">Add New Piece</h2>
+              <button id="btn-cancel-edit" onclick="cancelEditProduct()" style="display: none; font-size: 0.82rem; color: #D34B30; background: none; border: none; font-weight: 700; cursor: pointer; text-decoration: underline;">Cancel Edit</button>
+            </div>
+
+            <form id="admin-product-form" onsubmit="handleProductFormSubmit(event)">
+              <input type="hidden" id="form-prod-image-data" />
+
+              <div class="form-row-2">
+                <div>
+                  <label class="form-label" for="form-prod-name">Product Title *</label>
+                  <input type="text" id="form-prod-name" class="admin-input" placeholder="e.g. 18k Herringbone Snake Chain" required />
+                </div>
+
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+                    <label class="form-label" for="form-prod-category" style="margin-bottom: 0;">Category *</label>
+                    <button type="button" onclick="switchAdminTab('categories')" style="font-size: 0.75rem; color: var(--admin-accent-gold-dark); background: none; border: none; font-weight: 700; cursor: pointer; text-decoration: underline;">
+                      + New Category
+                    </button>
+                  </div>
+                  <select id="form-prod-category" class="luxury-select" style="width: 100%;" required>
+                    <!-- Populated dynamically via admin.js -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row-3">
+                <div>
+                  <label class="form-label" for="form-prod-price">Selling Price (₦) *</label>
+                  <input type="number" id="form-prod-price" class="admin-input" placeholder="8500" required />
+                </div>
+
+                <div>
+                  <label class="form-label" for="form-prod-orig-price">Original Price (₦)</label>
+                  <input type="number" id="form-prod-orig-price" class="admin-input" placeholder="11000" />
+                </div>
+
+                <div>
+                  <label class="form-label">Stock Status</label>
+                  <div style="margin-top: 0.5rem;">
+                    <label class="badge-chip">
+                      <input type="checkbox" id="form-prod-instock" checked />
+                      <span>In Stock</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modern Drag & Drop Image Uploader -->
+              <div style="margin-bottom: 1.5rem;">
+                <label class="form-label">Product Photography *</label>
+                
+                <div class="dropzone-container" id="admin-dropzone" onclick="triggerFileSelect()">
+                  <input type="file" id="admin-file-input" accept="image/*" onchange="handleAdminFileSelect(event)" style="display: none;" />
+                  
+                  <div id="dropzone-empty-state">
+                    <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <div class="dropzone-text">
+                      <strong>Drag &amp; drop product photo here</strong>
+                      <span>or click to browse from device &bull; Auto-optimized for web</span>
+                    </div>
+                  </div>
+
+                  <div id="dropzone-filled-state" class="dropzone-preview" style="display: none;">
+                    <img id="dropzone-thumb" src="" alt="Thumbnail" class="dropzone-preview-img" />
+                    <div class="dropzone-preview-details">
+                      <div class="dropzone-preview-name" id="dropzone-filename">Product Photography Ready</div>
+                      <div class="dropzone-preview-size" id="dropzone-filesize">Optimized High-Res Image</div>
+                      <button type="button" class="btn-remove-photo" onclick="event.stopPropagation(); removeUploadedPhoto();">
+                        ✕ Remove / Choose Different
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="form-prod-desc">Short Description / Craft Notes</label>
+                <textarea id="form-prod-desc" class="admin-textarea" rows="2" placeholder="e.g. 18k PVD gold plated flat snake chain. 100% waterproof and tarnish-free."></textarea>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <label class="form-label">Highlights &amp; Badges</label>
+                <div class="badges-chip-group">
+                  <label class="badge-chip">
+                    <input type="checkbox" id="badge-bestseller" />
+                    <span>Bestseller</span>
+                  </label>
+                  <label class="badge-chip">
+                    <input type="checkbox" id="badge-tarnish-free" checked />
+                    <span>100% Tarnish-Free</span>
+                  </label>
+                  <label class="badge-chip">
+                    <input type="checkbox" id="badge-flash-deal" />
+                    <span>Featured Deal</span>
+                  </label>
+                  <label class="badge-chip">
+                    <input type="checkbox" id="badge-new-in" />
+                    <span>New Arrival</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" id="btn-save-prod" class="btn-secondary-luxury" style="width: 100%; justify-content: center; padding: 1rem 0;">
+                <span>Publish Piece to Storefront</span>
+              </button>
+            </form>
+          </section>
+
+          <!-- Store Configuration Column -->
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title">Store Configuration</h2>
+            </div>
+
+            <form onsubmit="saveStoreSettings(event)">
+              <div style="margin-bottom: 1.25rem;">
+                <label class="form-label" for="admin-setting-store-name">Store Name</label>
+                <input type="text" id="admin-setting-store-name" class="admin-input" value="Pria's Accessories" required />
+              </div>
+
+              <div style="margin-bottom: 1.25rem;">
+                <label class="form-label" for="admin-setting-wa-number">Store WhatsApp Number</label>
+                <input type="text" id="admin-setting-wa-number" class="admin-input" placeholder="2348123456789" required />
+                <div style="color: var(--admin-text-muted); font-size: 0.75rem; margin-top: 0.35rem;">With country code, without + (e.g. 2348123456789)</div>
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="admin-setting-new-pin">Admin Security Passcode (PIN)</label>
+                <input type="password" id="admin-setting-new-pin" class="admin-input" value="1234" required />
+              </div>
+
+              <button type="submit" class="btn-secondary-luxury" style="width: 100%; justify-content: center; padding: 0.85rem 0;">
+                <span>Save Store Settings</span>
+              </button>
+            </form>
+
+            <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--admin-border);">
+              <div style="font-size: 0.85rem; font-weight: 700; color: #D34B30; margin-bottom: 0.4rem;">Catalog Reset</div>
+              <p style="font-size: 0.78rem; color: var(--admin-text-muted); margin-bottom: 1rem;">Restore the original catalog items if you ever want a fresh reset.</p>
+              <button type="button" onclick="resetCatalogToDefault()" class="btn-admin-nav" style="color: #D34B30; border-color: rgba(211, 75, 48, 0.3);">
+                <span>Reset to Defaults</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- Live Inventory Management Table -->
+        <section class="admin-table-container">
+          <div class="table-toolbar">
+            <div class="table-toolbar-title">
+              <h3>Live Store Inventory</h3>
+              <span>Real-time catalog synchronized with WhatsApp links</span>
+            </div>
+
+            <div>
+              <input 
+                type="text" 
+                id="admin-table-search" 
+                class="admin-input" 
+                placeholder="Filter pieces..." 
+                oninput="filterAdminTable(this.value)" 
+                style="width: 240px; padding: 0.6rem 1rem; font-size: 0.85rem;" 
+              />
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Photo</th>
+                  <th>Product &amp; Category</th>
+                  <th>Selling Price</th>
+                  <th>Original Price</th>
+                  <th>Stock</th>
+                  <th>Badges</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-inventory-table-body">
+                <!-- Rendered via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 2: REVIEWS MODERATION VIEW -->
+      <div id="admin-section-reviews" style="display: none;">
+        <section class="admin-table-container">
+          <div class="table-toolbar">
+            <div class="table-toolbar-title">
+              <h3>Customer Reviews Moderation</h3>
+              <span>Approve or reject reviews before they appear publicly on the storefront</span>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <select id="admin-review-status-filter" class="luxury-select" onchange="renderAdminReviews()" style="font-size: 0.85rem; padding: 0.55rem 2.2rem 0.55rem 1rem;">
+                <option value="all">All Reviews</option>
+                <option value="pending">Pending Approval</option>
+                <option value="approved">Approved &amp; Live</option>
+              </select>
+
+              <input 
+                type="text" 
+                id="admin-review-search" 
+                class="admin-input" 
+                placeholder="Search reviews..." 
+                oninput="filterAdminReviewsTable(this.value)" 
+                style="width: 200px; padding: 0.55rem 1rem; font-size: 0.85rem;" 
+              />
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Client &amp; Location</th>
+                  <th>Rating</th>
+                  <th>Purchased Piece</th>
+                  <th>Review Feedback</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-reviews-table-body">
+                <!-- Rendered via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 3: CATEGORIES MANAGER VIEW -->
+      <div id="admin-section-categories" style="display: none;">
+        <div class="admin-editor-grid">
+          <!-- Add Category Form -->
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title">Add Store Category</h2>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--admin-text-sub); margin-bottom: 1.5rem; line-height: 1.5;">
+              Create custom product categories such as <strong>Shoes &amp; Designer Heels</strong>, <strong>Luxury Wigs</strong>, <strong>Perfumes</strong>, or <strong>Apparel</strong>. Newly added categories automatically sync across the entire website catalog and filter navigation.
+            </p>
+
+            <form onsubmit="handleAdminAddCategory(event)">
+              <div style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="new-cat-name">Category Name *</label>
+                <input type="text" id="new-cat-name" class="admin-input" placeholder="e.g. Designer Heels, Luxury Wigs, Perfumes" required />
+              </div>
+
+              <button type="submit" class="btn-secondary-luxury" style="width: 100%; justify-content: center; padding: 0.9rem 0;">
+                <span>Create &amp; Activate Category</span>
+              </button>
+            </form>
+          </section>
+
+          <!-- Active Categories List -->
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title">Active Categories (<span id="cat-list-count">0</span>)</h2>
+            </div>
+
+            <div id="admin-categories-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <!-- Rendered dynamically via admin.js -->
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- SESSION LOCK CONFIRMATION MODAL -->
+  <div class="admin-modal-backdrop" id="modal-lock-session" onclick="if(event.target === this) closeExitLockModal()">
+    <div class="admin-modal-box">
+      <div class="modal-lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:30px;height:30px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h3 style="font-size: 1.35rem; font-weight: 800; margin: 0 0 0.5rem 0;">Lock Session &amp; Exit?</h3>
+      <p style="font-size: 0.88rem; color: var(--admin-text-sub); line-height: 1.6; margin-bottom: 1.75rem;">
+        To protect your store settings and catalog, your admin session will be securely locked before taking you to the customer storefront.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button type="button" class="btn-secondary-luxury" onclick="lockSessionAndExit()" style="width: 100%; justify-content: center; padding: 0.9rem 0;">
+          <span>Lock Session &amp; View Store</span>
+        </button>
+
+        <button type="button" class="btn-admin-nav" onclick="closeExitLockModal()" style="width: 100%; justify-content: center; padding: 0.75rem 0;">
+          <span>Stay in Dashboard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript State Engine & Admin Logic -->
+  <script src="app.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

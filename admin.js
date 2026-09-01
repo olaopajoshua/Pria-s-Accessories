@@ -1,0 +1,723 @@
+/**
+ * PRIA'S ACCESSORIES — STORE OWNER ADMIN JAVASCRIPT (admin.html & admin.js)
+ * Modern Drag & Drop Image Uploader, Secure Session Lock, Inventory CRUD & Review Moderation
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAdminPage();
+  setupDropzoneEvents();
+});
+
+function initAdminPage() {
+  checkAdminSession();
+}
+
+function checkAdminSession() {
+  const isAuth = sessionStorage.getItem('prias_admin_auth');
+  const loginScreen = document.getElementById('admin-login-screen');
+  const dashScreen = document.getElementById('admin-dashboard-screen');
+
+  if (isAuth === 'true') {
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (dashScreen) dashScreen.style.display = 'block';
+    renderAdminDashboard();
+  } else {
+    if (loginScreen) loginScreen.style.display = 'flex';
+    if (dashScreen) dashScreen.style.display = 'none';
+    const input = document.getElementById('admin-page-pin-input');
+    if (input) input.focus();
+  }
+}
+
+function handleAdminLogin(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById('admin-page-pin-input');
+  const enteredPin = input ? input.value.trim() : '';
+  const correctPin = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+
+  if (enteredPin === correctPin) {
+    sessionStorage.setItem('prias_admin_auth', 'true');
+    if (typeof showToast === 'function') showToast('Welcome to Store Manager Dashboard', 'success');
+    checkAdminSession();
+  } else {
+    if (typeof showToast === 'function') showToast('Incorrect passcode. Default PIN is 1234');
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+  }
+}
+
+function handleAdminLogout() {
+  sessionStorage.removeItem('prias_admin_auth');
+  if (typeof showToast === 'function') showToast('Dashboard session locked');
+  checkAdminSession();
+}
+
+// Session Lock Exit Modal
+function promptExitLock() {
+  const modal = document.getElementById('modal-lock-session');
+  if (modal) modal.classList.add('active');
+}
+
+function closeExitLockModal() {
+  const modal = document.getElementById('modal-lock-session');
+  if (modal) modal.classList.remove('active');
+}
+
+function lockSessionAndExit() {
+  sessionStorage.removeItem('prias_admin_auth');
+  window.location.href = 'index.html';
+}
+
+function renderAdminDashboard() {
+  const products = (typeof state !== 'undefined' && state.products)
+    ? state.products
+    : JSON.parse(localStorage.getItem('prias_products_v1') || '[]');
+
+  const reviews = (typeof state !== 'undefined' && state.reviews)
+    ? state.reviews
+    : JSON.parse(localStorage.getItem('prias_reviews_v1') || '[]');
+
+  const settings = (typeof state !== 'undefined' && state.settings)
+    ? state.settings
+    : JSON.parse(localStorage.getItem('prias_settings_v1') || '{}');
+
+  const pendingCount = reviews.filter(r => r.status === 'pending').length;
+
+  const totalEl = document.getElementById('stat-total-products');
+  const dealsEl = document.getElementById('stat-active-deals');
+  const bestEl = document.getElementById('stat-bestsellers');
+  const outEl = document.getElementById('stat-out-of-stock');
+  const pendingEl = document.getElementById('stat-pending-reviews');
+  const pendingBadgeEl = document.getElementById('admin-pending-badge');
+
+  if (totalEl) totalEl.textContent = products.length;
+  if (dealsEl) dealsEl.textContent = products.filter(p => p.badges && p.badges.includes('flash-deal')).length;
+  if (bestEl) bestEl.textContent = products.filter(p => p.badges && p.badges.includes('bestseller')).length;
+  if (outEl) outEl.textContent = products.filter(p => !p.inStock).length;
+  if (pendingEl) pendingEl.textContent = pendingCount;
+  if (pendingBadgeEl) pendingBadgeEl.textContent = pendingCount;
+
+  const tbody = document.getElementById('admin-inventory-table-body');
+  if (tbody) {
+    tbody.innerHTML = products.map(product => `
+      <tr>
+        <td>
+          <img src="${product.image}" alt="${product.name}" class="table-prod-img" onerror="this.src='assets/necklace-1.jpg'" />
+        </td>
+        <td>
+          <strong style="font-size: 0.95rem; color: var(--admin-text-main);">${product.name}</strong><br />
+          <span style="font-size: 0.72rem; color: var(--admin-accent-gold-dark); text-transform: uppercase; font-weight: 700;">${product.category}</span>
+        </td>
+        <td><strong>${typeof formatNaira === 'function' ? formatNaira(product.price) : '₦' + product.price}</strong></td>
+        <td>
+          <span style="color: var(--admin-text-muted); font-size: 0.85rem;">
+            ${product.originalPrice ? (typeof formatNaira === 'function' ? formatNaira(product.originalPrice) : '₦' + product.originalPrice) : '—'}
+          </span>
+        </td>
+        <td>
+          <button 
+            type="button"
+            onclick="toggleProductStock('${product.id}')"
+            class="status-pill ${product.inStock ? 'approved' : 'pending'}"
+            style="cursor: pointer; border: none;"
+            title="Click to toggle stock status"
+          >
+            ${product.inStock ? 'In Stock' : 'Out of Stock'}
+          </button>
+        </td>
+        <td>
+          ${(product.badges || []).map(b => `<span style="background:var(--admin-surface-subtle); color:#14110F; border:1px solid var(--admin-border); padding: 0.2rem 0.5rem; border-radius:4px; margin-right:4px; font-size:0.68rem; font-weight:700;">${b}</span>`).join('')}
+        </td>
+        <td>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="action-btn edit" onclick="editProduct('${product.id}')">Edit</button>
+            <button class="action-btn delete" onclick="deleteProduct('${product.id}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  renderAdminReviews();
+  renderAdminCategories();
+
+  const storeNameInput = document.getElementById('admin-setting-store-name');
+  const waNumberInput = document.getElementById('admin-setting-wa-number');
+  const pinInput = document.getElementById('admin-setting-new-pin');
+
+  if (storeNameInput) storeNameInput.value = settings.storeName || "Pria's Accessories";
+  if (waNumberInput) waNumberInput.value = settings.whatsappNumber || "2348123456789";
+  if (pinInput) pinInput.value = settings.adminPin || "1234";
+
+  if (typeof initAllCustomDropdowns === 'function') {
+    initAllCustomDropdowns();
+  }
+}
+
+function switchAdminTab(tabName) {
+  const catalogSection = document.getElementById('admin-section-catalog');
+  const reviewsSection = document.getElementById('admin-section-reviews');
+  const categoriesSection = document.getElementById('admin-section-categories');
+  const catalogBtn = document.getElementById('tab-btn-catalog');
+  const reviewsBtn = document.getElementById('tab-btn-reviews');
+  const categoriesBtn = document.getElementById('tab-btn-categories');
+
+  if (catalogSection) catalogSection.style.display = 'none';
+  if (reviewsSection) reviewsSection.style.display = 'none';
+  if (categoriesSection) categoriesSection.style.display = 'none';
+
+  if (catalogBtn) catalogBtn.classList.remove('active');
+  if (reviewsBtn) reviewsBtn.classList.remove('active');
+  if (categoriesBtn) categoriesBtn.classList.remove('active');
+
+  if (tabName === 'catalog') {
+    if (catalogSection) catalogSection.style.display = 'block';
+    if (catalogBtn) catalogBtn.classList.add('active');
+  } else if (tabName === 'categories') {
+    if (categoriesSection) categoriesSection.style.display = 'block';
+    if (categoriesBtn) categoriesBtn.classList.add('active');
+    renderAdminCategories();
+    setTimeout(() => {
+      const input = document.getElementById('new-cat-name');
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  } else {
+    if (reviewsSection) reviewsSection.style.display = 'block';
+    if (reviewsBtn) reviewsBtn.classList.add('active');
+    renderAdminReviews();
+  }
+}
+
+function renderAdminCategories() {
+  const categories = (typeof state !== 'undefined' && state.categories && state.categories.length)
+    ? state.categories
+    : (typeof DEFAULT_CATEGORIES !== 'undefined' ? DEFAULT_CATEGORIES : []);
+
+  const products = (typeof state !== 'undefined' && state.products)
+    ? state.products
+    : [];
+
+  const catSelect = document.getElementById('form-prod-category');
+  if (catSelect) {
+    const currentVal = catSelect.value || (categories[0] ? categories[0].id : 'necklaces');
+    catSelect.innerHTML = categories.map(c => `
+      <option value="${c.id}" ${currentVal === c.id ? 'selected' : ''}>${c.name}</option>
+    `).join('');
+    if (typeof catSelect._refreshCustomDropdown === 'function') {
+      catSelect._refreshCustomDropdown();
+    }
+  }
+
+  const catListContainer = document.getElementById('admin-categories-list');
+  const catBadge = document.getElementById('admin-cat-badge');
+  const catCount = document.getElementById('cat-list-count');
+
+  if (catBadge) catBadge.textContent = categories.length;
+  if (catCount) catCount.textContent = categories.length;
+
+  if (catListContainer) {
+    catListContainer.innerHTML = categories.map(cat => {
+      const pieceCount = products.filter(p => p.category === cat.id).length;
+
+      return `
+        <div style="background: var(--admin-surface-subtle); border: 1px solid var(--admin-border); border-radius: var(--admin-radius-sm); padding: 0.9rem 1.15rem; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <strong style="font-size: 0.95rem; color: var(--admin-text-main);">${cat.name}</strong>
+            <div style="font-size: 0.75rem; color: var(--admin-text-muted); margin-top: 0.15rem;">
+              Slug: <code>${cat.id}</code> &bull; <strong>${pieceCount} piece${pieceCount === 1 ? '' : 's'} in catalog</strong>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="action-btn delete" onclick="handleDeleteCategory('${cat.id}')" title="Delete category">
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+function handleAdminAddCategory(e) {
+  if (e) e.preventDefault();
+  const nameInput = document.getElementById('new-cat-name');
+  const name = nameInput ? nameInput.value.trim() : '';
+
+  if (!name) {
+    if (typeof showToast === 'function') showToast('Please enter category name');
+    return;
+  }
+
+  if (typeof addCategory === 'function') {
+    const created = addCategory(name);
+    if (nameInput) nameInput.value = '';
+    renderAdminDashboard();
+    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & live!`, 'success');
+  }
+}
+
+function promptAddCategoryInline() {
+  const name = prompt('Enter new category name (e.g. Designer Heels, Luxury Wigs, Perfumes):');
+  if (name && name.trim()) {
+    const created = addCategory(name.trim());
+    renderAdminDashboard();
+    const catSelect = document.getElementById('form-prod-category');
+    if (catSelect) {
+      catSelect.value = created.id;
+      if (typeof catSelect._refreshCustomDropdown === 'function') catSelect._refreshCustomDropdown();
+    }
+    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & selected!`, 'success');
+  }
+}
+
+function handleDeleteCategory(catId) {
+  const categories = (typeof state !== 'undefined' && state.categories) ? state.categories : [];
+  const cat = categories.find(c => c.id === catId);
+  const catName = cat ? cat.name : catId;
+
+  if (confirm(`Are you sure you want to delete the category "${catName}"?`)) {
+    if (typeof deleteCategory === 'function') {
+      deleteCategory(catId);
+      renderAdminDashboard();
+      if (typeof showToast === 'function') showToast(`Category "${catName}" deleted`);
+    }
+  }
+}
+
+function renderAdminReviews() {
+  const tbody = document.getElementById('admin-reviews-table-body');
+  if (!tbody) return;
+
+  const reviews = (typeof state !== 'undefined' && state.reviews)
+    ? state.reviews
+    : JSON.parse(localStorage.getItem('prias_reviews_v1') || '[]');
+
+  const filterSelect = document.getElementById('admin-review-status-filter');
+  const filterVal = filterSelect ? filterSelect.value : 'all';
+
+  let list = reviews;
+  if (filterVal === 'pending') {
+    list = reviews.filter(r => r.status === 'pending');
+  } else if (filterVal === 'approved') {
+    list = reviews.filter(r => r.status === 'approved' || typeof r.status === 'undefined');
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding: 2.5rem; color: var(--admin-text-muted);">
+          No reviews found in this category.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = list.map(r => {
+    const isApproved = r.status === 'approved' || typeof r.status === 'undefined';
+    const starCount = Math.min(5, Math.max(1, parseInt(r.rating, 10) || 5));
+    const stars = '★'.repeat(starCount) + '☆'.repeat(5 - starCount);
+
+    return `
+      <tr>
+        <td>
+          <strong>${r.name}</strong><br />
+          <span style="font-size: 0.78rem; color: var(--admin-text-muted);">${r.location || 'Lagos, Nigeria'}</span>
+        </td>
+        <td>
+          <span style="color: #D4AF37; font-size: 0.95rem; letter-spacing: 1px;">${stars}</span>
+        </td>
+        <td>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--admin-accent-gold-dark);">${r.product || 'General Purchase'}</span>
+        </td>
+        <td style="max-width: 320px;">
+          <p style="font-size: 0.82rem; line-height: 1.5; color: var(--admin-text-sub); margin: 0 0 0.25rem 0;">${r.text}</p>
+          <span style="font-size: 0.72rem; color: var(--admin-text-muted);">${r.date || 'Recent'}</span>
+        </td>
+        <td>
+          <span class="status-pill ${isApproved ? 'approved' : 'pending'}">
+            ${isApproved ? 'Live on Store' : 'Pending Approval'}
+          </span>
+        </td>
+        <td>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            ${!isApproved ? `
+              <button class="action-btn approve" onclick="handleApproveReview('${r.id}')" title="Publish to storefront">
+                Approve &amp; Publish
+              </button>
+            ` : `
+              <button class="action-btn edit" onclick="handleRejectReview('${r.id}')" title="Move to pending">
+                Unpublish
+              </button>
+            `}
+            <button class="action-btn delete" onclick="handleDeleteReview('${r.id}')" title="Delete permanently">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function handleApproveReview(reviewId) {
+  if (typeof approveReview === 'function') {
+    approveReview(reviewId);
+    renderAdminDashboard();
+    if (typeof showToast === 'function') showToast('Review approved & published to live storefront', 'success');
+  }
+}
+
+function handleRejectReview(reviewId) {
+  if (typeof rejectReview === 'function') {
+    rejectReview(reviewId);
+    renderAdminDashboard();
+    if (typeof showToast === 'function') showToast('Review moved to pending status');
+  }
+}
+
+function handleDeleteReview(reviewId) {
+  if (confirm('Permanently delete this customer review?')) {
+    if (typeof deleteReview === 'function') {
+      deleteReview(reviewId);
+      renderAdminDashboard();
+      if (typeof showToast === 'function') showToast('Review deleted successfully');
+    }
+  }
+}
+
+function filterAdminReviewsTable(query) {
+  const rows = document.querySelectorAll('#admin-reviews-table-body tr');
+  const q = query.toLowerCase().trim();
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+function toggleProductStock(productId) {
+  if (typeof state === 'undefined') return;
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+  p.inStock = !p.inStock;
+  saveProducts();
+  renderAdminDashboard();
+  if (typeof showToast === 'function') showToast(`"${p.name}" marked as ${p.inStock ? 'In Stock' : 'Out of Stock'}`, 'success');
+}
+
+// ==========================================================================
+// DRAG & DROP PHOTO DROPZONE ENGINE
+// ==========================================================================
+function setupDropzoneEvents() {
+  const dropzone = document.getElementById('admin-dropzone');
+  if (!dropzone) return;
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add('drag-over');
+    }, false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove('drag-over');
+    }, false);
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    if (files && files.length > 0) {
+      processImageFile(files[0]);
+    }
+  }, false);
+}
+
+function triggerFileSelect() {
+  const fileInput = document.getElementById('admin-file-input');
+  if (fileInput) fileInput.click();
+}
+
+function handleAdminFileSelect(event) {
+  const file = event.target.files[0];
+  if (file) {
+    processImageFile(file);
+  }
+}
+
+function processImageFile(file) {
+  if (!file.type.startsWith('image/')) {
+    if (typeof showToast === 'function') showToast('Please drop a valid image file (JPG, PNG, WebP)');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      const maxDim = 900;
+
+      if (width > height && width > maxDim) {
+        height = Math.round((height * maxDim) / width);
+        width = maxDim;
+      } else if (height > maxDim) {
+        width = Math.round((width * maxDim) / height);
+        height = maxDim;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const optimizedData = canvas.toDataURL('image/jpeg', 0.85);
+      
+      const hiddenInput = document.getElementById('form-prod-image-data');
+      if (hiddenInput) hiddenInput.value = optimizedData;
+
+      displayDropzonePreview(optimizedData, file.name || 'Product Photo', `${Math.round(file.size / 1024)} KB`);
+      if (typeof showToast === 'function') showToast('Photo uploaded & optimized', 'success');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function displayDropzonePreview(dataUrl, name, size) {
+  const emptyState = document.getElementById('dropzone-empty-state');
+  const filledState = document.getElementById('dropzone-filled-state');
+  const thumb = document.getElementById('dropzone-thumb');
+  const filenameEl = document.getElementById('dropzone-filename');
+  const filesizeEl = document.getElementById('dropzone-filesize');
+
+  if (emptyState) emptyState.style.display = 'none';
+  if (filledState) filledState.style.display = 'flex';
+  if (thumb) thumb.src = dataUrl;
+  if (filenameEl) filenameEl.textContent = name || 'Uploaded Photography';
+  if (filesizeEl) filesizeEl.textContent = size || 'Ready for storefront';
+}
+
+function removeUploadedPhoto() {
+  const hiddenInput = document.getElementById('form-prod-image-data');
+  const fileInput = document.getElementById('admin-file-input');
+  const emptyState = document.getElementById('dropzone-empty-state');
+  const filledState = document.getElementById('dropzone-filled-state');
+
+  if (hiddenInput) hiddenInput.value = '';
+  if (fileInput) fileInput.value = '';
+  if (emptyState) emptyState.style.display = 'block';
+  if (filledState) filledState.style.display = 'none';
+}
+
+// ==========================================================================
+// PRODUCT FORM SUBMIT / EDIT / DELETE
+// ==========================================================================
+function handleProductFormSubmit(e) {
+  e.preventDefault();
+
+  const name = document.getElementById('form-prod-name').value.trim();
+  const category = document.getElementById('form-prod-category').value;
+  const price = Number(document.getElementById('form-prod-price').value);
+  const origPriceVal = document.getElementById('form-prod-orig-price').value;
+  const originalPrice = origPriceVal ? Number(origPriceVal) : null;
+  const inStock = document.getElementById('form-prod-instock').checked;
+  const imageData = document.getElementById('form-prod-image-data').value.trim();
+  const desc = document.getElementById('form-prod-desc').value.trim();
+
+  const badges = [];
+  if (document.getElementById('badge-bestseller') && document.getElementById('badge-bestseller').checked) badges.push('bestseller');
+  if (document.getElementById('badge-tarnish-free') && document.getElementById('badge-tarnish-free').checked) badges.push('tarnish-free');
+  if (document.getElementById('badge-flash-deal') && document.getElementById('badge-flash-deal').checked) badges.push('flash-deal');
+  if (document.getElementById('badge-new-in') && document.getElementById('badge-new-in').checked) badges.push('new-in');
+
+  const defaultCategoryImg = category === 'earrings' ? 'assets/earrings-1.jpg' : category === 'rings' ? 'assets/ring-1.jpg' : 'assets/necklace-1.jpg';
+  const finalImage = imageData || defaultCategoryImg;
+
+  if (typeof state !== 'undefined') {
+    if (state.editingProductId) {
+      const p = state.products.find(item => item.id === state.editingProductId);
+      if (p) {
+        p.name = name;
+        p.category = category;
+        p.price = price;
+        p.originalPrice = originalPrice;
+        p.inStock = inStock;
+        p.image = finalImage;
+        p.description = desc;
+        p.badges = badges;
+        if (typeof showToast === 'function') showToast(`Updated "${name}"`, 'success');
+      }
+    } else {
+      const newProduct = {
+        id: 'prod_' + Date.now(),
+        name,
+        category,
+        price,
+        originalPrice,
+        image: finalImage,
+        description: desc || 'Premium 18k PVD gold plated tarnish-free jewelry.',
+        badges,
+        inStock,
+        rating: 5.0,
+        reviewsCount: 1,
+        specs: ['18k PVD Real Gold Plating', '316L Stainless Steel', 'Waterproof & Sweatproof']
+      };
+      state.products.unshift(newProduct);
+      if (typeof showToast === 'function') showToast(`Published "${name}" to store`, 'success');
+    }
+
+    saveProducts();
+  }
+
+  renderAdminDashboard();
+  cancelEditProduct();
+}
+
+function editProduct(productId) {
+  if (typeof state === 'undefined') return;
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+
+  state.editingProductId = productId;
+  document.getElementById('form-mode-title').textContent = `Editing: ${p.name}`;
+  document.getElementById('btn-cancel-edit').style.display = 'inline-block';
+  document.getElementById('btn-save-prod').innerHTML = '<span>Save Changes</span>';
+
+  document.getElementById('form-prod-name').value = p.name;
+  document.getElementById('form-prod-category').value = p.category;
+  document.getElementById('form-prod-price').value = p.price;
+  document.getElementById('form-prod-orig-price').value = p.originalPrice || '';
+  document.getElementById('form-prod-instock').checked = p.inStock;
+  document.getElementById('form-prod-image-data').value = p.image;
+  document.getElementById('form-prod-desc').value = p.description || '';
+
+  if (document.getElementById('badge-bestseller')) document.getElementById('badge-bestseller').checked = p.badges && p.badges.includes('bestseller');
+  if (document.getElementById('badge-tarnish-free')) document.getElementById('badge-tarnish-free').checked = p.badges && p.badges.includes('tarnish-free');
+  if (document.getElementById('badge-flash-deal')) document.getElementById('badge-flash-deal').checked = p.badges && p.badges.includes('flash-deal');
+  if (document.getElementById('badge-new-in')) document.getElementById('badge-new-in').checked = p.badges && p.badges.includes('new-in');
+
+  const catSelect = document.getElementById('form-prod-category');
+  if (catSelect && typeof catSelect._refreshCustomDropdown === 'function') {
+    catSelect._refreshCustomDropdown();
+  }
+
+  if (p.image) {
+    displayDropzonePreview(p.image, p.name, 'Current Photo');
+  }
+
+  document.getElementById('admin-form-box').scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEditProduct() {
+  if (typeof state !== 'undefined') state.editingProductId = null;
+  document.getElementById('form-mode-title').textContent = 'Add New Piece';
+  document.getElementById('btn-cancel-edit').style.display = 'none';
+  document.getElementById('btn-save-prod').innerHTML = '<span>Publish Piece to Storefront</span>';
+  document.getElementById('admin-product-form').reset();
+  document.getElementById('form-prod-instock').checked = true;
+  if (document.getElementById('badge-tarnish-free')) document.getElementById('badge-tarnish-free').checked = true;
+  
+  const catSelect = document.getElementById('form-prod-category');
+  if (catSelect && typeof catSelect._refreshCustomDropdown === 'function') {
+    catSelect._refreshCustomDropdown();
+  }
+
+  removeUploadedPhoto();
+}
+
+function deleteProduct(productId) {
+  if (typeof state === 'undefined') return;
+  const p = state.products.find(item => item.id === productId);
+  if (!p) return;
+
+  if (confirm(`Are you sure you want to delete "${p.name}"?`)) {
+    state.products = state.products.filter(item => item.id !== productId);
+    saveProducts();
+    renderAdminDashboard();
+    if (typeof showToast === 'function') showToast('Piece deleted from inventory');
+  }
+}
+
+function saveStoreSettings(e) {
+  e.preventDefault();
+  if (typeof state === 'undefined') return;
+
+  const name = document.getElementById('admin-setting-store-name').value.trim();
+  const phone = document.getElementById('admin-setting-wa-number').value.trim().replace(/[^0-9]/g, '');
+  const pin = document.getElementById('admin-setting-new-pin').value.trim();
+
+  state.settings.storeName = name || "Pria's Accessories";
+  state.settings.whatsappNumber = phone || "2348123456789";
+  state.settings.adminPin = pin || "1234";
+
+  saveSettings();
+  if (typeof applyStoreSettings === 'function') applyStoreSettings();
+  if (typeof showToast === 'function') showToast('Store settings saved! WhatsApp number updated across all pages', 'success');
+}
+
+function filterAdminTable(query) {
+  const rows = document.querySelectorAll('#admin-inventory-table-body tr');
+  const q = query.toLowerCase().trim();
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+function exportCatalogJSON() {
+  if (typeof state === 'undefined') return;
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.products, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `prias_catalog_backup_${Date.now()}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+  if (typeof showToast === 'function') showToast('Catalog backup exported', 'success');
+}
+
+function importCatalogJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (Array.isArray(parsed) && typeof state !== 'undefined') {
+        state.products = parsed;
+        saveProducts();
+        renderAdminDashboard();
+        if (typeof showToast === 'function') showToast('Catalog imported successfully', 'success');
+      } else {
+        if (typeof showToast === 'function') showToast('Invalid catalog backup file format');
+      }
+    } catch (err) {
+      if (typeof showToast === 'function') showToast('Failed to parse JSON file');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetCatalogToDefault() {
+  if (confirm('Reset catalog to default pieces? Custom pieces will be replaced.')) {
+    if (typeof state !== 'undefined' && typeof DEFAULT_PRODUCTS !== 'undefined') {
+      state.products = [...DEFAULT_PRODUCTS];
+      saveProducts();
+      renderAdminDashboard();
+      if (typeof showToast === 'function') showToast('Catalog reset to defaults');
+    }
+  }
+}

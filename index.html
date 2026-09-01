@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pria's Accessories — Tarnish-Free Fine Jewelry &amp; Everyday Luxury</title>
+  <meta name="description"
+    content="Shop waterproof, tarnish-free 18k PVD gold plated jewelry in Nigeria. Same-day Lagos dispatch, nationwide waybill, and seamless direct WhatsApp ordering." />
+  <meta name="keywords"
+    content="jewelry nigeria, tarnish free jewelry lagos, 18k gold plated necklace, waterproof earrings, prias accessories" />
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Pria's Accessories — Tarnish-Free Fine Jewelry" />
+  <meta property="og:description"
+    content="Waterproof & tarnish-free 18k PVD gold jewelry crafted for daily living in Nigeria." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/logo.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <!-- Google Fonts (Clean, visible, modern sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
+</head>
+
+<body>
+
+
+  <!-- Site Header -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="nav-wrapper">
+        <div class="mobile-header-left">
+          <button class="btn-hamburger" id="btn-open-mobile-nav" onclick="openMobileNav()"
+            aria-label="Open Navigation Menu">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <a href="index.html" class="brand-logo" title="Pria's Accessories Home">
+            <img src="assets/logo.png" alt="Pria's Accessories" class="brand-logo-img" />
+            <div class="brand-logo-text">
+              <span class="brand-name">PRIA'S ACCESSORIES</span>
+              <span class="brand-sub">JEWELRY &amp; FASHION</span>
+            </div>
+          </a>
+        </div>
+
+        <nav class="desktop-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="collections.html" class="nav-link">Collections</a></li>
+            <li><a href="about.html" class="nav-link">The Studio</a></li>
+            <li><a href="faq.html" class="nav-link">Care &amp; Delivery</a></li>
+            <li><a href="contact.html" class="nav-link">Contact &amp; Reviews</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn-inquiry-nav" onclick="openCartDrawer()" title="View Inquiry Bag" id="btn-open-bag"
+            aria-label="View Bag">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="desktop-only">Inquiry Bag</span>
+            <span class="badge-count cart-count-badge" style="display: none;">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Slide-over Drawer -->
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop">
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <a href="index.html" class="brand-logo" onclick="closeMobileNav()">
+          <img src="assets/logo.png" alt="Pria's Accessories" class="brand-logo-img" />
+          <div class="brand-logo-text">
+            <span class="brand-name">PRIA'S ACCESSORIES</span>
+            <span class="brand-sub">JEWELRY &amp; FASHION</span>
+          </div>
+        </a>
+        <button class="mobile-nav-close-btn" onclick="closeMobileNav()" aria-label="Close Navigation Menu">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="mobile-nav-body">
+        <nav class="mobile-nav-menu">
+          <a href="index.html" class="mobile-nav-link active" onclick="closeMobileNav()">
+            <span>Home</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="collections.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>All Collections</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <div class="mobile-sub-links">
+            <a href="collections.html?category=necklaces" class="mobile-sub-link" onclick="closeMobileNav()">Necklaces
+              &amp; Chains</a>
+            <a href="collections.html?category=earrings" class="mobile-sub-link" onclick="closeMobileNav()">Sculpted
+              Earrings</a>
+            <a href="collections.html?category=rings" class="mobile-sub-link" onclick="closeMobileNav()">Solitaire &amp;
+              Dome Rings</a>
+            <a href="collections.html?category=watches" class="mobile-sub-link" onclick="closeMobileNav()">Luxury Mesh
+              Watches</a>
+            <a href="collections.html?category=bags" class="mobile-sub-link" onclick="closeMobileNav()">Quilted Mini
+              Bags</a>
+          </div>
+          <a href="about.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>The Studio &amp; Science</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="faq.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>Care &amp; Delivery FAQ</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="contact.html" class="mobile-nav-link" onclick="closeMobileNav()">
+            <span>Contact &amp; Reviews</span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </nav>
+
+        <div class="mobile-nav-actions">
+          <button class="mobile-nav-bag-btn" onclick="closeMobileNav(); openCartDrawer();">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span>View Inquiry Bag</span>
+            </div>
+            <span class="badge-count cart-count-badge" style="display: none;">0</span>
+          </button>
+
+          <a href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20ordering."
+            target="_blank" class="btn-primary-wa" style="width: 100%; justify-content: center; padding: 0.85rem 0;">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            <span>WhatsApp Concierge</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile-nav-footer">
+        <p>18k PVD Vacuum Gold Plated &bull; Lagos, Nigeria</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <canvas id="hero-particles-canvas" class="hero-particles-canvas"></canvas>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <span class="hero-eyebrow">Pria's Accessories</span>
+
+          <h1 class="hero-title">
+            Fine Jewelry Crafted for <em>Everyday Living</em>
+          </h1>
+
+          <p class="hero-subtitle">
+            Beautifully crafted with premium materials and a refined gold finish.
+            Designed for effortless everyday wear, with the durability to keep up
+            with your lifestyle.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="collections.html" class="btn-secondary-luxury">
+              <span>Explore Collections</span>
+              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+
+            <button class="btn-primary-wa"
+              onclick="window.open('https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20your%20jewelry%20catalog.', '_blank')">
+              <svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              <span>Order via WhatsApp</span>
+            </button>
+          </div>
+
+          <div class="hero-credibility">
+            <div class="credibility-item">
+              <strong>Everyday Wear</strong>
+              <span>Designed to stay in your rotation</span>
+            </div>
+            <div class="credibility-sep"></div>
+            <div class="credibility-item">
+              <strong>Water & Sweat Resistant</strong>
+              <span>Made for real everyday life</span>
+            </div>
+            <div class="credibility-sep"></div>
+            <div class="credibility-item">
+              <strong>2-Year Promise</strong>
+              <span>Confidence in every piece</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual-wrapper">
+          <div class="hero-image-frame">
+            <img src="assets/hero-model.jpg" alt="Pria's Accessories Editorial" />
+            <div class="hero-frame-overlay"></div>
+
+            <div class="hero-caption-card">
+              <span class="caption-label">THE SIGNATURE STACK</span>
+              <h3 class="caption-title">Herringbone Chain &amp; Sculpted Hoops</h3>
+              <a href="collections.html?category=necklaces" class="caption-action">Explore Essentials &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quality Standards -->
+  <section class="trust-bar-section">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+          </div>
+          <div class="trust-info">
+            <h4>100% Waterproof</h4>
+            <p>Gym, shower, and perfume safe. Zero oxidation.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <div class="trust-info">
+            <h4>Same-Day Lagos Dispatch</h4>
+            <p>Island &amp; Mainland delivery, plus nationwide waybill.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="trust-info">
+            <h4>WhatsApp Concierge</h4>
+            <p>Direct styling advice, sizing help &amp; fast confirmations.</p>
+          </div>
+        </div>
+
+        <div class="trust-card">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline points="20 12 20 22 4 22 4 12"></polyline>
+              <rect x="2" y="7" width="20" height="5"></rect>
+              <line x1="12" y1="22" x2="12" y2="7"></line>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+            </svg>
+          </div>
+          <div class="trust-info">
+            <h4>Velvet Gift Packaging</h4>
+            <p>Presented ready-to-gift in our signature velvet pouch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Photo Cards -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">COLLECTIONS</span>
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Durable, hypoallergenic staples curated for modern effortless styling.</p>
+      </div>
+
+      <div class="categories-grid">
+        <a href="collections.html?category=all" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/hero-model.jpg" alt="All Pieces" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">All Pieces</span>
+            <span class="category-count">View All &rarr;</span>
+          </div>
+        </a>
+
+        <a href="collections.html?category=necklaces" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/necklace-1.jpg" alt="18k Necklaces" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">Necklaces</span>
+            <span class="category-count">18k Chains</span>
+          </div>
+        </a>
+
+        <a href="collections.html?category=earrings" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/earrings-1.jpg" alt="Sculpted Earrings" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">Earrings</span>
+            <span class="category-count">Sculpted Hoops</span>
+          </div>
+        </a>
+
+        <a href="collections.html?category=rings" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/ring-1.jpg" alt="Rings" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">Rings</span>
+            <span class="category-count">Solitaires &amp; Stacks</span>
+          </div>
+        </a>
+
+        <a href="collections.html?category=watches" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/watch-1.jpg" alt="Timepieces" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">Watches</span>
+            <span class="category-count">Mesh Timepieces</span>
+          </div>
+        </a>
+
+        <a href="collections.html?category=bags" class="category-photo-card">
+          <div class="category-img-box">
+            <img src="assets/bag-1.jpg" alt="Mini Bags" />
+            <div class="category-img-overlay"></div>
+          </div>
+          <div class="category-title-wrap">
+            <span class="category-name">Mini Bags</span>
+            <span class="category-count">Quilted Crossbody</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Spotlight: The Stacking Edit -->
+  <section class="container">
+    <div class="editorial-feature-banner">
+      <div class="editorial-feature-grid">
+        <div class="editorial-feature-text">
+          <span class="feature-tag">THE STACKING EDIT</span>
+          <h3 class="feature-title">Layer With Confidence</h3>
+          <p class="feature-desc">
+            Pair our bestselling flat herringbone snake chain with textured pendants or huggies. Designed with matching
+            18k PVD gold tones so your stack looks unified, seamless, and intentional.
+          </p>
+          <div class="feature-perks">
+            <div class="perk-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Non-snag seamless links</span>
+            </div>
+            <div class="perk-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Reinforced lobster clasps</span>
+            </div>
+            <div class="perk-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Complimentary gift box</span>
+            </div>
+          </div>
+          <div class="feature-actions">
+            <a href="collections.html?category=necklaces" class="btn-editorial-light">
+              <span>Explore Stacking Chains &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="editorial-feature-media">
+          <img src="assets/necklace-1.jpg" alt="Layered Jewelry Stack" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Bestsellers Preview -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">CURATED FAVORITES</span>
+        <h2 class="section-title">Most-Loved Bestsellers</h2>
+        <p class="section-subtitle">Our most requested tarnish-free staples. Click any piece for full details.</p>
+      </div>
+
+      <div class="products-grid" id="home-featured-grid">
+        <!-- Rendered via app.js -->
+      </div>
+
+      <div style="text-align: center; margin-top: 3.5rem;">
+        <a href="collections.html" class="btn-secondary-luxury" style="padding: 1rem 2.5rem; font-size: 1rem;">
+          <span>View Complete Catalog &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Notes 3D Rotating Motion Carousel -->
+  <section class="section-padding"
+    style="background: var(--bg-surface-elevated); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); overflow: hidden;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">VERIFIED TESTIMONIALS</span>
+        <h2 class="section-title">Client Notes</h2>
+        <p class="section-subtitle">Real experiences from clients wearing our 18k PVD pieces across Lagos, Abuja, and
+          nationwide.</p>
+      </div>
+
+      <div id="home-reviews-carousel">
+        <!-- Dynamically rendered 3D Rotating Carousel via app.js & home.js -->
+      </div>
+
+      <div style="text-align: center; margin-top: 2.5rem;">
+        <a href="contact.html" class="btn-secondary-luxury" style="padding: 0.95rem 2.25rem;">
+          <span>Leave a Verified Review &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo">
+            <img src="assets/logo.png" alt="Pria's Accessories" class="footer-logo-img" />
+            <div class="brand-logo-text">
+              <span class="brand-name">PRIA'S ACCESSORIES</span>
+              <span class="brand-sub" style="color:var(--accent-gold);">JEWELRY &amp; FASHION</span>
+            </div>
+          </a>
+          <p class="footer-desc">
+            Tarnish-free 18k PVD gold plated jewelry and everyday luxury accessories designed for lasting wear in
+            Nigeria.
+          </p>
+          <div class="footer-socials">
+            <a href="https://wa.me/2348123456789" target="_blank" class="social-btn" title="WhatsApp Concierge"
+              aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="https://tiktok.com/@priasaccessories" target="_blank" class="social-btn" title="TikTok"
+              aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;">
+                <path
+                  d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298 0 .59.043.87.127V9.4a6.33 6.33 0 0 0-.87-.06A6.34 6.34 0 0 0 3 15.68a6.34 6.34 0 0 0 10.79 4.49 6.27 6.27 0 0 0 1.99-4.5V8.69a8.18 8.18 0 0 0 4.79 1.54V6.78a4.85 4.85 0 0 1-.98-.09z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Collections</h4>
+          <ul class="footer-links">
+            <li><a href="collections.html?category=necklaces">18k Gold Necklaces</a></li>
+            <li><a href="collections.html?category=earrings">Sculpted Hoops</a></li>
+            <li><a href="collections.html?category=rings">Solitaires &amp; Stacks</a></li>
+            <li><a href="collections.html?category=watches">Timepieces</a></li>
+            <li><a href="collections.html?category=bags">Mini Bags</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="faq.html">Jewelry Care Guide</a></li>
+            <li><a href="faq.html#delivery">Lagos &amp; Interstate Delivery</a></li>
+            <li><a href="about.html">PVD Science &amp; Quality</a></li>
+            <li><a href="contact.html">Contact &amp; Drop a Review</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav">
+          <h4 class="footer-heading">Studio Desk</h4>
+          <div class="footer-contact-info">
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              <span>+234 812 345 6789</span>
+            </div>
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <span>concierge@priasaccessories.ng</span>
+            </div>
+            <div class="contact-row">
+              <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Lekki Phase 1 &bull; Lagos, Nigeria</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Pria's Accessories. All rights reserved. 18k PVD Vacuum Plated Jewelry.</p>
+        <a href="admin.html" class="footer-admin-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Store Manager Portal</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Multi-Item Inquiry Cart Drawer -->
+  <div class="cart-drawer-backdrop" id="cart-drawer-backdrop">
+    <div class="cart-drawer" id="cart-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-wrap">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <h3>Inquiry Bag (<span id="drawer-items-count">0</span>)</h3>
+        </div>
+        <button class="drawer-close-btn" onclick="closeCartDrawer()" aria-label="Close Bag Drawer">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body" id="drawer-cart-items-container">
+        <!-- Dynamically rendered items -->
+      </div>
+
+      <div class="drawer-footer" id="drawer-footer-actions">
+        <div class="delivery-section">
+          <label class="delivery-label" for="drawer-delivery-select">Choose Delivery Destination:</label>
+          <select class="delivery-select" id="drawer-delivery-select" onchange="updateDeliveryDestination(this.value)">
+            <option value="lagos-mainland">Lagos Mainland (₦1,500 • Same/Next Day)</option>
+            <option value="lagos-island">Lagos Island / Lekki / VI (₦2,000 • Same Day)</option>
+            <option value="abuja">Abuja Express Waybill (₦3,500 • 24-48 hrs)</option>
+            <option value="ph">Port Harcourt Express (₦3,500 • 48 hrs)</option>
+            <option value="nationwide">Nationwide Interstate (₦4,000 • 2-3 Days)</option>
+            <option value="pickup">Lagos Studio Pickup (Free • Ready in 2 hrs)</option>
+          </select>
+        </div>
+
+        <div class="drawer-summary-row"><span>Items Subtotal:</span><strong id="cart-subtotal-val">₦0</strong></div>
+        <div class="drawer-summary-row"><span>Delivery Fee:</span><strong id="cart-delivery-val">₦1,500</strong></div>
+        <div class="drawer-summary-row total"><span>Estimated Total:</span><span class="total-amount"
+            id="cart-total-val">₦0</span></div>
+        <button class="btn-send-whatsapp-order" onclick="checkoutWhatsApp()">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          <span>Send Order to WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky WhatsApp Floating Action Button -->
+  <a href="https://wa.me/2348123456789?text=Hello%20Pria%27s%20Accessories%2C%20I%20would%20like%20to%20inquire%20about%20ordering."
+    target="_blank" class="sticky-wa-float" title="Direct WhatsApp Concierge" aria-label="Chat on WhatsApp"
+    style="border-radius: 50%;">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  </a>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript State Engine & Page Logic -->
+  <script src="app.js"></script>
+  <script src="home.js"></script>
+</body>
+
+</html>

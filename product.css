@@ -1,0 +1,209 @@
+/* ==========================================================================
+   PRIA'S ACCESSORIES — PRODUCT DETAIL PAGE STYLES (product.html)
+   PDP Gallery, Specifications, Pricing, Actions & Related Products
+   ========================================================================== */
+
+.pdp-section {
+  padding: 3rem 0 5rem;
+}
+
+.pdp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 4.5rem;
+  align-items: flex-start;
+  margin-bottom: 5rem;
+}
+
+.pdp-gallery-col {
+  position: sticky;
+  top: 6rem;
+}
+
+.pdp-main-image-wrap {
+  aspect-ratio: 1 / 1;
+  background: #F4EFEB;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+}
+
+.pdp-main-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdp-info-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdp-badges-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.pdp-category-tag {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--accent-gold-dark);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.pdp-title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.pdp-price-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.pdp-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.pdp-old-price {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.pdp-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.pdp-specs-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+.pdp-specs-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.pdp-specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pdp-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.pdp-spec-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-gold-dark);
+}
+
+.pdp-actions-box {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.pdp-btn-wa {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: var(--accent-whatsapp);
+  color: #fff;
+  padding: 1.1rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(27, 158, 75, 0.28);
+}
+
+.pdp-btn-wa:hover {
+  background: #22B657;
+  transform: translateY(-2px);
+}
+
+.pdp-btn-bag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--bg-dark);
+  color: #fff;
+  padding: 1.1rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.pdp-btn-bag:hover {
+  background: #24201E;
+  color: var(--accent-gold-light);
+  transform: translateY(-2px);
+}
+
+.pdp-dispatch-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--accent-gold-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--accent-gold-dark);
+  font-weight: 600;
+}
+
+/* Product Responsive */
+@media (max-width: 1024px) {
+  .pdp-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .pdp-gallery-col {
+    position: static;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .pdp-title {
+    font-size: 1.85rem;
+  }
+  .pdp-actions-box {
+    flex-direction: column;
+  }
+}

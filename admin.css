@@ -1,0 +1,737 @@
+/* ==========================================================================
+   PRIA'S ACCESSORIES — STORE OWNER ADMIN PORTAL (admin.css)
+   Clean, modern, properly proportioned luxury management interface
+   ========================================================================== */
+
+:root {
+  --admin-bg: #FAF8F5;
+  --admin-surface: #FFFFFF;
+  --admin-surface-subtle: #F4EFEB;
+  --admin-dark-card: #14110F;
+  --admin-border: rgba(184, 145, 90, 0.25);
+  --admin-border-focus: #B8915A;
+  --admin-accent-gold: #B8915A;
+  --admin-accent-gold-dark: #8C662D;
+  --admin-accent-gold-bg: rgba(184, 145, 90, 0.1);
+  --admin-text-main: #14110F;
+  --admin-text-sub: #5C554E;
+  --admin-text-muted: #8F867D;
+  --admin-radius-lg: 16px;
+  --admin-radius-md: 12px;
+  --admin-radius-sm: 8px;
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --admin-shadow-hover: 0 10px 30px rgba(184, 145, 90, 0.12);
+}
+
+body.admin-body {
+  background-color: var(--admin-bg);
+  color: var(--admin-text-main);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   1. AUTHENTICATION & LOGIN SCREEN
+   ========================================================================== */
+.admin-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #24201E 0%, #110E0C 100%);
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.admin-login-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(184, 145, 90, 0.35);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.admin-login-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.25rem;
+  border: 2px solid var(--admin-accent-gold);
+  box-shadow: 0 4px 16px rgba(184, 145, 90, 0.3);
+  display: block;
+}
+
+.admin-login-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--admin-text-main);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-login-sub {
+  font-size: 0.88rem;
+  color: var(--admin-text-sub);
+  margin: 0 0 1.75rem;
+  line-height: 1.5;
+}
+
+.pin-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  text-align: center;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  background: var(--admin-surface-subtle);
+  color: var(--admin-text-main);
+  outline: none;
+  transition: all 0.2s ease;
+  margin-bottom: 0.6rem;
+}
+
+.pin-input:focus {
+  border-color: var(--admin-accent-gold);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(184, 145, 90, 0.18);
+}
+
+.pin-hint {
+  font-size: 0.8rem;
+  color: var(--admin-accent-gold-dark);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.admin-back-store-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--admin-accent-gold-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.admin-back-store-link:hover {
+  color: var(--admin-text-main);
+}
+
+/* ==========================================================================
+   2. TOP NAVIGATION APP BAR
+   ========================================================================== */
+.admin-navbar {
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.admin-nav-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.admin-brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--admin-border);
+  object-fit: cover;
+}
+
+.admin-brand-info h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--admin-text-main);
+}
+
+.admin-brand-info span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--admin-accent-gold-dark);
+  text-transform: uppercase;
+}
+
+.admin-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-admin-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface-subtle);
+  color: var(--admin-text-main);
+}
+
+.btn-admin-nav:hover {
+  background: #FFFFFF;
+  border-color: var(--admin-accent-gold);
+  transform: translateY(-1px);
+}
+
+.btn-admin-lock {
+  background: var(--admin-dark-card);
+  color: #FFFFFF;
+  border-color: var(--admin-dark-card);
+}
+
+.btn-admin-lock:hover {
+  background: #24201E;
+  color: #FFFFFF;
+  border-color: var(--admin-accent-gold);
+}
+
+/* ==========================================================================
+   3. MAIN DASHBOARD CONTENT WRAPPER
+   ========================================================================== */
+.admin-layout {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 2.25rem 2rem 5rem;
+}
+
+/* Top Stat Cards */
+.admin-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.metric-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  padding: 1.35rem 1.5rem;
+  box-shadow: var(--admin-shadow);
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--admin-shadow-hover);
+}
+
+.metric-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--admin-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-accent-gold-bg);
+  color: var(--admin-accent-gold-dark);
+  flex-shrink: 0;
+}
+
+.metric-data .metric-num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--admin-text-main);
+  margin-bottom: 0.25rem;
+}
+
+.metric-data .metric-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--admin-text-sub);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Tab Switcher */
+.admin-tabs {
+  display: flex;
+  gap: 0.75rem;
+  border-bottom: 1.5px solid var(--admin-border);
+  padding-bottom: 0.85rem;
+  margin-bottom: 2.25rem;
+}
+
+.admin-tab-item {
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--admin-radius-sm);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--admin-text-sub);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.admin-tab-item:hover {
+  background: var(--admin-surface-subtle);
+  color: var(--admin-text-main);
+}
+
+.admin-tab-item.active {
+  background: var(--admin-dark-card);
+  color: #FFFFFF;
+  border-color: var(--admin-dark-card);
+}
+
+.admin-tab-badge {
+  background: var(--admin-accent-gold);
+  color: #110E0C;
+  padding: 0.15rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   4. FORM & SETTINGS GRID
+   ========================================================================== */
+.admin-editor-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 2rem;
+  margin-bottom: 2.75rem;
+}
+
+.admin-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-lg);
+  padding: 2.25rem;
+  box-shadow: var(--admin-shadow);
+}
+
+.admin-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(184, 145, 90, 0.15);
+}
+
+.admin-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--admin-text-main);
+  margin: 0;
+}
+
+/* Form Controls */
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-text-main);
+  margin-bottom: 0.45rem;
+}
+
+.admin-input, .admin-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 1.15rem;
+  border: 1.5px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--admin-text-main);
+  background: #FFFFFF;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.admin-input:focus, .admin-textarea:focus {
+  border-color: var(--admin-accent-gold);
+  box-shadow: 0 0 0 3.5px rgba(184, 145, 90, 0.18);
+}
+
+/* ==========================================================================
+   5. DRAG & DROP PHOTO DROPZONE
+   ========================================================================== */
+.dropzone-container {
+  border: 2px dashed rgba(184, 145, 90, 0.4);
+  border-radius: var(--admin-radius-md);
+  background: var(--admin-accent-gold-bg);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropzone-container:hover, .dropzone-container.drag-over {
+  border-color: var(--admin-accent-gold);
+  background: rgba(184, 145, 90, 0.16);
+  transform: scale(1.006);
+}
+
+.dropzone-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 0.65rem;
+  color: var(--admin-accent-gold-dark);
+}
+
+.dropzone-text strong {
+  font-size: 0.95rem;
+  color: var(--admin-text-main);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.dropzone-text span {
+  font-size: 0.78rem;
+  color: var(--admin-text-muted);
+}
+
+.dropzone-preview {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.dropzone-preview-img {
+  width: 76px;
+  height: 76px;
+  border-radius: var(--admin-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dropzone-preview-details {
+  flex: 1;
+}
+
+.dropzone-preview-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--admin-text-main);
+  margin-bottom: 0.2rem;
+}
+
+.dropzone-preview-size {
+  font-size: 0.75rem;
+  color: var(--admin-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.btn-remove-photo {
+  background: #FCE8E6;
+  color: #D34B30;
+  border: 1px solid rgba(211, 75, 48, 0.3);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-photo:hover {
+  background: #D34B30;
+  color: #FFFFFF;
+}
+
+/* Badges Chip Group */
+.badges-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  background: var(--admin-surface-subtle);
+  border: 1.5px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.badge-chip input {
+  cursor: pointer;
+  accent-color: var(--admin-accent-gold);
+}
+
+.badge-chip:has(input:checked) {
+  border-color: var(--admin-accent-gold);
+  background: var(--admin-accent-gold-bg);
+  color: var(--admin-accent-gold-dark);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   6. DATA TABLES (INVENTORY & REVIEWS)
+   ========================================================================== */
+.admin-table-container {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-lg);
+  box-shadow: var(--admin-shadow);
+  overflow: hidden;
+}
+
+.table-toolbar {
+  padding: 1.35rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--admin-border);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.table-toolbar-title h3 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.table-toolbar-title span {
+  font-size: 0.78rem;
+  color: var(--admin-text-muted);
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.modern-table th {
+  background: var(--admin-surface-subtle);
+  padding: 0.9rem 1.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--admin-text-sub);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.modern-table td {
+  padding: 1.1rem 1.4rem;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(184, 145, 90, 0.1);
+  vertical-align: middle;
+}
+
+.modern-table tr:hover {
+  background: rgba(184, 145, 90, 0.03);
+}
+
+.table-prod-img {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--admin-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--admin-border);
+}
+
+/* Status Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-pill.approved {
+  background: rgba(27, 158, 75, 0.12);
+  color: #1B9E4B;
+  border: 1px solid rgba(27, 158, 75, 0.3);
+}
+
+.status-pill.pending {
+  background: rgba(184, 145, 90, 0.15);
+  color: #8C662D;
+  border: 1px solid rgba(184, 145, 90, 0.4);
+}
+
+/* Action Buttons */
+.action-btn {
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.action-btn.edit {
+  background: var(--admin-surface-subtle);
+  border-color: var(--admin-border);
+  color: var(--admin-text-main);
+}
+
+.action-btn.edit:hover {
+  background: var(--admin-accent-gold-bg);
+  border-color: var(--admin-accent-gold);
+  color: var(--admin-accent-gold-dark);
+}
+
+.action-btn.delete {
+  background: #FCE8E6;
+  border-color: rgba(211, 75, 48, 0.25);
+  color: #D34B30;
+}
+
+.action-btn.delete:hover {
+  background: #D34B30;
+  color: #FFFFFF;
+}
+
+.action-btn.approve {
+  background: #1B9E4B;
+  color: #FFFFFF;
+}
+
+.action-btn.approve:hover {
+  background: #14803C;
+}
+
+/* ==========================================================================
+   7. SESSION LOCK MODAL
+   ========================================================================== */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 17, 15, 0.65);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+.admin-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.admin-modal-box {
+  background: #FFFFFF;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-lg);
+  padding: 2.25rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  transform: scale(0.95);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-sizing: border-box;
+}
+
+.admin-modal-backdrop.active .admin-modal-box {
+  transform: scale(1);
+}
+
+.modal-lock-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--admin-accent-gold-bg);
+  color: var(--admin-accent-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-nav-container {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .admin-layout {
+    padding: 1.5rem 1rem 4rem;
+  }
+  .form-row-2, .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
