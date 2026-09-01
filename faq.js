@@ -442,7 +442,7 @@ function handleFAQLGAChange(tierKey) {
     const waNumber = (typeof getStoreWhatsAppNumber === 'function') 
       ? getStoreWhatsAppNumber() 
       : ((typeof state !== 'undefined' && state.settings && state.settings.whatsappNumber) ? state.settings.whatsappNumber : '2348123456789');
-    const message = encodeURIComponent(`Hello Pria's Accessories, I would like to inquire about delivery to ${currentSelectedState} (${currentSelectedLGA}) — Estimated Fee: ${tier.fee}.`);
+    const message = encodeURIComponent(`Hello Pria's Accessories, I'd like to confirm delivery to ${currentSelectedState} (${currentSelectedLGA}).`);
     waBtn.href = `https://wa.me/${waNumber}?text=${message}`;
   }
 }

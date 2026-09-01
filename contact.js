@@ -136,10 +136,13 @@ function handleQuickInquirySubmit(e) {
   const phone = (typeof getStoreWhatsAppNumber === 'function') 
     ? getStoreWhatsAppNumber() 
     : ((typeof state !== 'undefined' && state.settings && state.settings.whatsappNumber) ? state.settings.whatsappNumber : '2348123456789');
-  let waText = `*STUDIO INQUIRY — PRIA'S ACCESSORIES*\n`;
-  if (name) waText += `From: *${name}*\n`;
-  waText += `Message: ${msg}\n\n`;
-  waText += `Hello, I would like assistance with this inquiry.`;
+
+  let waText = `Hello Pria's Accessories`;
+  if (name) {
+    waText += `, my name is ${name}.\n\n${msg}`;
+  } else {
+    waText += `,\n\n${msg}`;
+  }
 
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(waText)}`, '_blank');
 }

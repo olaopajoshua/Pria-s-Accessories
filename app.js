@@ -940,18 +940,14 @@ function checkoutWhatsApp() {
   const grandTotal = subtotal + deliveryFee;
   const phone = getStoreWhatsAppNumber();
 
-  let msg = `*NEW ORDER INQUIRY — PRIA'S ACCESSORIES*\n`;
-  msg += `----------------------------------------\n`;
-  state.cart.forEach((item, index) => {
-    msg += `${index + 1}. *${item.name}*\n`;
-    msg += `   Qty: ${item.quantity} × ${formatNaira(item.price)} = ${formatNaira(item.price * item.quantity)}\n`;
+  let msg = `Hello Pria's Accessories, I would like to place an order for the following:\n\n`;
+  state.cart.forEach((item) => {
+    msg += `• ${item.name} (Qty: ${item.quantity}) - ${formatNaira(item.price * item.quantity)}\n`;
   });
-  msg += `----------------------------------------\n`;
-  msg += `*Subtotal:* ${formatNaira(subtotal)}\n`;
-  msg += `*Delivery Destination:* ${deliveryInfo.label} (${formatNaira(deliveryFee)})\n`;
-  msg += `*Estimated Timeline:* ${deliveryInfo.timeline}\n`;
-  msg += `*ESTIMATED TOTAL:* ${formatNaira(grandTotal)}\n\n`;
-  msg += `Hello, I would like to confirm availability and proceed with delivery details.`;
+  msg += `\nSubtotal: ${formatNaira(subtotal)}`;
+  msg += `\nDelivery: ${deliveryInfo.label} (${formatNaira(deliveryFee)})`;
+  msg += `\nTotal: ${formatNaira(grandTotal)}\n\n`;
+  msg += `Please confirm availability so I can share my delivery address. Thank you!`;
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
@@ -962,13 +958,7 @@ function orderSingleWhatsApp(productId) {
   if (!product) return;
 
   const phone = getStoreWhatsAppNumber();
-  let msg = `*PRODUCT INQUIRY — PRIA'S ACCESSORIES*\n`;
-  msg += `----------------------------------------\n`;
-  msg += `Piece: *${product.name}*\n`;
-  msg += `Price: *${formatNaira(product.price)}*\n`;
-  msg += `Category: ${product.category}\n`;
-  msg += `----------------------------------------\n`;
-  msg += `Hello, I'd like to check availability and place an order for this piece with delivery to Lagos/Interstate.`;
+  const msg = `Hello Pria's Accessories, I'm interested in ordering "${product.name}" (${formatNaira(product.price)}). Is this available for delivery?`;
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
