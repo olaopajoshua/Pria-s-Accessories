@@ -42,15 +42,100 @@ module.exports = async (req, res) => {
   if (req.method === 'POST') {
     try {
       const body = req.body || {};
-      const { passcode, products, githubToken, jsonbinKey, jsonbinId } = body;
+      const { passcode, action, product, productId, products, githubToken, jsonbinKey, jsonbinId } = body;
 
       const adminPasscode = process.env.ADMIN_PASSCODE || '1234';
       if (!passcode || passcode !== adminPasscode) {
         return res.status(401).json({ error: 'Unauthorized: Invalid store admin passcode' });
       }
 
-      if (!products || !Array.isArray(products)) {
-        return res.status(400).json({ error: 'Invalid products payload: expected an array' });
+      // Supabase Master Service Role Server-Side Sync
+      const supabaseUrl = process.env.SUPABASE_URL || 'https://katghrsrmmarezqmpjym.supabase.co';
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdGdocnNybW1hcmV6cW1wanltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODM0NTM1MiwiZXhwIjoyMTAzOTIxMzUyfQ.TLEMLFNPLfGoxwfUx-nE12OYo584NI1myTsMwL77JAE';
+
+      // 1. Single product save (insert or update)
+      if (action === 'save_product' && product) {
+        const row = {
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: Number(product.price),
+          original_price: product.originalPrice ? Number(product.originalPrice) : null,
+          image: product.image,
+          description: product.description || '',
+          badges: product.badges || [],
+          in_stock: product.inStock !== false,
+          rating: product.rating ? Number(product.rating) : 5.0,
+          reviews_count: product.reviewsCount ? Number(product.reviewsCount) : 1,
+          specs: product.specs || []
+        };
+
+        const upRes = await fetch(`${supabaseUrl}/rest/v1/products`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(row)
+        });
+
+        if (!upRes.ok) {
+          const errTxt = await upRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase update failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'save_product', id: product.id });
+      }
+
+      // 2. Single product delete
+      if (action === 'delete_product' && productId) {
+        const delRes = await fetch(`${supabaseUrl}/rest/v1/products?id=eq.${encodeURIComponent(productId)}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
+          }
+        });
+
+        if (!delRes.ok) {
+          const errTxt = await delRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase delete failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_product', id: productId });
+      }
+
+      // 3. Bulk sync
+      if (products && Array.isArray(products)) {
+        const mapped = products.map(p => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          price: Number(p.price),
+          original_price: p.originalPrice ? Number(p.originalPrice) : null,
+          image: p.image,
+          description: p.description || '',
+          badges: p.badges || [],
+          in_stock: p.inStock !== false,
+          rating: p.rating ? Number(p.rating) : 5.0,
+          reviews_count: p.reviewsCount ? Number(p.reviewsCount) : 1,
+          specs: p.specs || []
+        }));
+
+        await fetch(`${supabaseUrl}/rest/v1/products`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(mapped)
+        });
+
+        return res.status(200).json({ success: true, provider: 'supabase', count: products.length });
       }
 
       // Provider 1: GitHub API Direct Git Commit

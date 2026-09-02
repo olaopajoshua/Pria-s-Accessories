@@ -622,44 +622,44 @@ function removeUploadedPhoto() {
 // PRODUCT FORM SUBMIT / EDIT / DELETE
 // ==========================================================================
 async function saveProductToSupabase(productData, isEdit = false) {
-  if (typeof mapProductToSupabase !== 'function' || typeof SUPABASE_CONFIG === 'undefined') return;
-  const row = mapProductToSupabase(productData);
-  const endpoint = isEdit
-    ? `${SUPABASE_CONFIG.url}/rest/v1/products?id=eq.${encodeURIComponent(productData.id)}`
-    : `${SUPABASE_CONFIG.url}/rest/v1/products`;
+  const currentPin = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
 
-  const method = isEdit ? 'PATCH' : 'POST';
-  const res = await fetch(endpoint, {
-    method,
+  const res = await fetch('/api/sync', {
+    method: 'POST',
     headers: {
-      'apikey': SUPABASE_CONFIG.anonKey,
-      'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(row)
+    body: JSON.stringify({
+      passcode: currentPin,
+      action: 'save_product',
+      product: productData
+    })
   });
 
   if (!res.ok) {
-    const errText = await res.text().catch(() => '');
-    throw new Error(`Database error: ${res.status} ${errText}`);
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.error || `Server error: ${res.status}`);
   }
 }
 
 async function deleteProductFromSupabase(productId) {
-  if (typeof SUPABASE_CONFIG === 'undefined') return;
-  const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/products?id=eq.${encodeURIComponent(productId)}`;
-  const res = await fetch(endpoint, {
-    method: 'DELETE',
+  const currentPin = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+
+  const res = await fetch('/api/sync', {
+    method: 'POST',
     headers: {
-      'apikey': SUPABASE_CONFIG.anonKey,
-      'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
-    }
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      passcode: currentPin,
+      action: 'delete_product',
+      productId: productId
+    })
   });
 
   if (!res.ok) {
-    const errText = await res.text().catch(() => '');
-    throw new Error(`Database error: ${res.status} ${errText}`);
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.error || `Server error: ${res.status}`);
   }
 }
 
