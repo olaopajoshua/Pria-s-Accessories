@@ -438,10 +438,10 @@ async function syncLiveCatalog() {
         localStorage.setItem('prias_supabase_cache', JSON.stringify(mapped));
 
         // Re-render UI components on whichever page is currently loaded
-        if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
-        if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
-        if (typeof renderProductDetail === 'function') renderProductDetail();
-        if (typeof renderAdminTable === 'function') renderAdminTable();
+        if (typeof initHomePage === 'function') initHomePage();
+        if (typeof renderCollectionsGrid === 'function') renderCollectionsGrid();
+        if (typeof initProductDetailPage === 'function') initProductDetailPage();
+        if (typeof renderAdminDashboard === 'function') renderAdminDashboard();
       }
     }
   } catch (err) {
