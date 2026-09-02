@@ -464,8 +464,8 @@ function handleAdminFileSelect(event) {
 
 async function uploadToCloudinary(file) {
   const settings = (typeof state !== 'undefined' && state.settings) ? state.settings : {};
-  const cloudName = settings.cloudinaryCloudName;
-  const uploadPreset = settings.cloudinaryUploadPreset;
+  const cloudName = settings.cloudinaryCloudName || 'ndtz6uub';
+  const uploadPreset = settings.cloudinaryUploadPreset || 'prias_store';
 
   if (!cloudName || !uploadPreset) {
     return null;
@@ -825,11 +825,14 @@ function renderCloudSyncSettings() {
   const presetInput = document.getElementById('setting-upload-preset');
   const cloudBadge = document.getElementById('cloudinary-status-badge');
 
-  if (cloudNameInput) cloudNameInput.value = settings.cloudinaryCloudName || '';
-  if (presetInput) presetInput.value = settings.cloudinaryUploadPreset || '';
+  const currentCloudName = settings.cloudinaryCloudName || 'ndtz6uub';
+  const currentPreset = settings.cloudinaryUploadPreset || 'prias_store';
+
+  if (cloudNameInput) cloudNameInput.value = currentCloudName;
+  if (presetInput) presetInput.value = currentPreset;
 
   if (cloudBadge) {
-    if (settings.cloudinaryCloudName && settings.cloudinaryUploadPreset) {
+    if (currentCloudName && currentPreset) {
       cloudBadge.className = 'status-pill approved';
       cloudBadge.textContent = 'Active (Connected)';
     } else {

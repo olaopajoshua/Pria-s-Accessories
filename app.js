@@ -321,7 +321,10 @@ const state = {
     whatsappNumber: '2348123456789',
     storeName: "Pria's Accessories",
     announcement: "FLASH DEAL: 20% OFF WATERPROOF ESSENTIALS • SAME-DAY LAGOS DISPATCH",
-    adminPin: '1234'
+    adminPin: '1234',
+    cloudinaryCloudName: 'ndtz6uub',
+    cloudinaryUploadPreset: 'prias_store',
+    cloudSyncProvider: 'local'
   },
   currentFilter: 'all',
   searchQuery: '',
