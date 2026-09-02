@@ -1,0 +1,213 @@
+[
+  {
+    "id": "prod_1",
+    "name": "Golden Grace Herringbone Necklace",
+    "category": "necklaces",
+    "price": 8500,
+    "originalPrice": 11000,
+    "image": "assets/necklace-1.jpg",
+    "description": "Ultra-sleek 18k PVD gold plated flat snake chain. Engineered with surgical-grade 316L stainless steel for an unyielding shine that survives sweat, showers, and perfumes.",
+    "badges": ["bestseller", "tarnish-free"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 48,
+    "specs": [
+      "18k PVD Real Gold Vacuum Plating",
+      "316L Surgical Stainless Steel Core",
+      "100% Waterproof & Sweat-Resistant",
+      "Length: 40cm + 5cm Adjustable Extender",
+      "Reinforced Luxury Lobster Clasp"
+    ]
+  },
+  {
+    "id": "prod_2",
+    "name": "Classic Sculpted Gold Hoops",
+    "category": "earrings",
+    "price": 4500,
+    "originalPrice": 6000,
+    "image": "assets/earrings-1.jpg",
+    "description": "Organic sculpted hollow hoops that deliver a bold, high-fashion statement with all-day featherlight comfort. Completely hypoallergenic and nickel-free.",
+    "badges": ["bestseller", "tarnish-free"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 36,
+    "specs": [
+      "Hypoallergenic & Lead-Free Titanium Posts",
+      "18k PVD Vacuum Gold Plated",
+      "Secure Click-Top Closure",
+      "Weight: Ultra-Light 6g per pair",
+      "Waterproof & Non-Fading"
+    ]
+  },
+  {
+    "id": "prod_3",
+    "name": "Luxe Solitaire Crystal Ring",
+    "category": "rings",
+    "price": 6000,
+    "originalPrice": 8000,
+    "image": "assets/ring-1.jpg",
+    "description": "A brilliant round-cut 2-carat cubic zirconia solitaire prong-set on a polished 18k gold band. Captures the light with exquisite brilliance from every angle.",
+    "badges": ["tarnish-free", "bestseller"],
+    "inStock": true,
+    "rating": 4.9,
+    "reviewsCount": 29,
+    "specs": [
+      "AAA+ Flawless Cubic Zirconia",
+      "18k PVD Gold Filled Band",
+      "Zero Green Skin Guarantee",
+      "Available Sizes: 6, 7, 8 & Adjustable"
+    ]
+  },
+  {
+    "id": "prod_4",
+    "name": "Chic Quilted Mini Crossbody Bag",
+    "category": "bags",
+    "price": 18500,
+    "originalPrice": 24000,
+    "image": "assets/bag-1.jpg",
+    "description": "Structured quilted vegan leather mini bag accented with heavy champagne gold chain hardware and a precision turn-lock closure in warm blush terracotta.",
+    "badges": ["new-in"],
+    "inStock": true,
+    "rating": 4.9,
+    "reviewsCount": 19,
+    "specs": [
+      "Premium Quilted Vegan Leather",
+      "Polished Champagne Gold Chain Hardware",
+      "Comfortably fits iPhone Pro Max & Essentials",
+      "Dimensions: 19cm x 13cm x 7cm"
+    ]
+  },
+  {
+    "id": "prod_5",
+    "name": "Elegance Chrono Gold Mesh Watch",
+    "category": "watches",
+    "price": 22000,
+    "originalPrice": 28000,
+    "image": "assets/watch-1.jpg",
+    "description": "A refined women’s timepiece featuring an emerald green sunray dial, gold baton indices, and a comfortable Milanese stainless steel mesh strap.",
+    "badges": ["bestseller"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 42,
+    "specs": [
+      "Precision Japanese Quartz Movement",
+      "Emerald Green Sunray Dial",
+      "3ATM Splash & Rain Resistant",
+      "Adjustable Stainless Steel Milanese Mesh"
+    ]
+  },
+  {
+    "id": "prod_6",
+    "name": "Butterfly Charm Layered Necklace",
+    "category": "necklaces",
+    "price": 7500,
+    "originalPrice": 9500,
+    "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+    "description": "Two-tier gold chain necklace featuring delicate pave crystal-studded butterfly pendants. Designed to sit effortlessly across collarbones.",
+    "badges": ["flash-deal", "tarnish-free"],
+    "inStock": true,
+    "rating": 4.8,
+    "reviewsCount": 22,
+    "specs": [
+      "18k PVD Vacuum Gold Plating",
+      "Double Strand Micro Curb Chain",
+      "Lobster Clasp with 5cm Extension",
+      "Sweatproof & Anti-Tarnish"
+    ]
+  },
+  {
+    "id": "prod_7",
+    "name": "Textured Croissant Dome Ring",
+    "category": "rings",
+    "price": 5000,
+    "originalPrice": 6500,
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80",
+    "description": "French minimalist ribbed croissant dome ring. Hollow interior ensures substantial luxury presence without heavy finger drag.",
+    "badges": ["bestseller", "tarnish-free"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 31,
+    "specs": [
+      "18k PVD Real Gold Finish",
+      "Hollow Stainless Steel Core",
+      "Smooth Ergonomic Comfort Fit",
+      "Waterproof Daily Wear"
+    ]
+  },
+  {
+    "id": "prod_8",
+    "name": "Pearl Drop Baroque Earrings",
+    "category": "earrings",
+    "price": 5500,
+    "originalPrice": 7000,
+    "image": "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=600&q=80",
+    "description": "Freshwater baroque cultured pearls suspended from sculpted organic gold nuggets. Each pair exhibits subtle natural individuality.",
+    "badges": ["new-in"],
+    "inStock": true,
+    "rating": 4.9,
+    "reviewsCount": 15,
+    "specs": [
+      "Genuine Freshwater Baroque Pearl",
+      "18k Gold Plated Hypoallergenic Studs",
+      "Lightweight and Elegant Drop (2.8cm)",
+      "Comfort Butterfly Backings"
+    ]
+  },
+  {
+    "id": "prod_9",
+    "name": "Hexagon Oversized UV Shades",
+    "category": "accessories",
+    "price": 9000,
+    "originalPrice": 12000,
+    "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80",
+    "description": "Geometric oversized designer sunglasses with gradient tea lenses and bevelled champagne gold metal temples.",
+    "badges": ["new-in"],
+    "inStock": true,
+    "rating": 4.9,
+    "reviewsCount": 18,
+    "specs": [
+      "UV400 Category 3 Eye Protection",
+      "Reinforced Gold Metal Frame",
+      "Gradient Warm Tea Lenses",
+      "Includes Hard Case & Microfiber Cloth"
+    ]
+  },
+  {
+    "id": "prod_10",
+    "name": "Bellagio Crystal Ankle-Strap Stiletto Heels",
+    "category": "shoes",
+    "price": 34500,
+    "originalPrice": 42000,
+    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80",
+    "description": "Bespoke champagne metallic stiletto heels with precision crystal-embellished ankle wrap and padded memory cushion insole.",
+    "badges": ["new-in", "bestseller"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 14,
+    "specs": [
+      "Genuine Metallic Foil & Satin Finish",
+      "Memory Foam Cushioned Insole (9.5cm Heel)",
+      "Crystal-Embellished Reinforced Straps",
+      "Includes Signature Dustbag & Extra Heel Tips"
+    ]
+  },
+  {
+    "id": "prod_11",
+    "name": "Raw Virgin Vietnamese Bone Straight HD Lace Wig",
+    "category": "wigs",
+    "price": 88000,
+    "originalPrice": 110000,
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+    "description": "100% single-donor Vietnamese raw virgin hair. 13x4 invisible HD melted lace with pre-plucked hairline and natural density.",
+    "badges": ["bestseller"],
+    "inStock": true,
+    "rating": 5.0,
+    "reviewsCount": 31,
+    "specs": [
+      "100% Unprocessed Single-Donor Raw Hair",
+      "Ultra-Thin Invisible HD Swiss Lace 13x4",
+      "Pre-Plucked Natural Hairline with Baby Hairs",
+      "Full 250% Density • Tangle & Shed-Free"
+    ]
+  }
+]

@@ -343,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateWishlistCounters();
   applyStoreSettings();
   setTimeout(() => init3DCardTilt(), 150);
+  syncLiveCatalog();
 });
 
 function initAppState() {
@@ -367,8 +368,53 @@ function initAppState() {
   }
 }
 
+async function syncLiveCatalog() {
+  try {
+    // Check if cloud JSON storage (JSONbin, GitHub API, or /api/sync) is configured
+    const settings = state.settings || {};
+    let endpoint = 'data/products.json';
+    let headers = { 'Accept': 'application/json' };
+
+    if (settings.cloudSyncProvider === 'jsonbin' && settings.jsonbinId) {
+      endpoint = `https://api.jsonbin.io/v3/b/${settings.jsonbinId}/latest`;
+      if (settings.jsonbinKey) headers['X-Master-Key'] = settings.jsonbinKey;
+    } else {
+      // Try local Vercel serverless /api/sync or static data/products.json
+      endpoint = window.location.origin && window.location.origin.startsWith('http') ? '/api/sync' : 'data/products.json';
+    }
+
+    const res = await fetch(endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now(), { headers });
+    if (res.ok) {
+      const data = await res.json();
+      const liveProducts = Array.isArray(data) ? data : (data.record || data.products);
+
+      if (Array.isArray(liveProducts) && liveProducts.length > 0) {
+        const currentStr = JSON.stringify(state.products);
+        const liveStr = JSON.stringify(liveProducts);
+
+        if (currentStr !== liveStr) {
+          state.products = liveProducts;
+          localStorage.setItem('prias_products_v1', liveStr);
+
+          // Re-render UI components on whichever page is currently loaded
+          if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
+          if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
+          if (typeof renderProductDetail === 'function') renderProductDetail();
+          if (typeof renderAdminTable === 'function') renderAdminTable();
+        }
+      }
+    }
+  } catch (err) {
+    // Offline / local cache fallback: continues running with cached catalog
+    console.debug('Background live catalog sync check:', err);
+  }
+}
+
 function saveProducts() {
   localStorage.setItem('prias_products_v1', JSON.stringify(state.products));
+  if (typeof syncCatalogToCloud === 'function') {
+    syncCatalogToCloud();
+  }
 }
 
 function saveCategories() {

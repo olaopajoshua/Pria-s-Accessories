@@ -163,6 +163,12 @@
           <span>Customer Reviews</span>
           <span class="admin-tab-badge" id="admin-pending-badge">0</span>
         </button>
+
+        <button class="admin-tab-item" id="tab-btn-sync" onclick="switchAdminTab('sync')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+          <span>Cloud &amp; Sync Settings</span>
+          <span class="admin-tab-badge" id="admin-sync-badge" style="background: rgba(27, 158, 75, 0.15); color: #1B9E4B;">Ready</span>
+        </button>
       </nav>
 
       <!-- TAB 1: CATALOG & INVENTORY VIEW -->
@@ -442,6 +448,111 @@
 
             <div id="admin-categories-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
               <!-- Rendered dynamically via admin.js -->
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- TAB 4: CLOUD SYNC & IMAGE HOSTING SETTINGS -->
+      <div id="admin-section-sync" style="display: none;">
+        <div class="admin-editor-grid">
+          <!-- Cloudinary Image Hosting Card -->
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title">Cloudinary Image Hosting</h2>
+              <span id="cloudinary-status-badge" class="status-pill pending">Pending Setup</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--admin-text-sub); margin-bottom: 1.5rem; line-height: 1.5;">
+              Connect your free <strong>Cloudinary</strong> account so every product photography upload is hosted on a fast, global CDN with automatic WebP optimization.
+            </p>
+
+            <form onsubmit="handleSaveCloudinarySettings(event)">
+              <div style="margin-bottom: 1.25rem;">
+                <label class="form-label" for="setting-cloud-name">Cloudinary Cloud Name *</label>
+                <input type="text" id="setting-cloud-name" class="admin-input" placeholder="e.g. dxy8abcde" />
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="setting-upload-preset">Upload Preset (Unsigned) *</label>
+                <input type="text" id="setting-upload-preset" class="admin-input" placeholder="e.g. prias_store or ml_default" />
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button type="submit" class="btn-secondary-luxury" style="flex: 1; justify-content: center; padding: 0.85rem 0;">
+                  <span>Save Cloudinary Credentials</span>
+                </button>
+                <button type="button" class="btn-admin-nav" onclick="testCloudinaryConnection()" style="padding: 0.85rem 1.25rem;">
+                  <span>Test Connection</span>
+                </button>
+              </div>
+            </form>
+
+            <div style="margin-top: 1.75rem; padding: 1.15rem; background: var(--admin-surface-subtle); border-radius: var(--admin-radius-sm); font-size: 0.82rem; line-height: 1.6; color: var(--admin-text-sub);">
+              <strong style="color: var(--admin-text-main); display: block; margin-bottom: 0.35rem;">Quick 60-Second Setup Guide:</strong>
+              1. Log in to <a href="https://cloudinary.com" target="_blank" style="color: var(--admin-accent-gold-dark); text-decoration: underline; font-weight: 700;">cloudinary.com</a><br>
+              2. Copy your <strong>Cloud Name</strong> from the dashboard header.<br>
+              3. Go to <strong>Settings (⚙️) &rarr; Upload &rarr; Add upload preset</strong>. Set <em>Signing Mode</em> to <strong>Unsigned</strong>, name it (e.g. <code>prias_store</code>), and click <strong>Save</strong>.<br>
+              4. Paste both above and click Save!
+            </div>
+          </section>
+
+          <!-- Shared Catalog Persistence Card -->
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <h2 class="admin-card-title">Live Multi-Device Catalog Sync</h2>
+              <span id="cloud-sync-status-badge" class="status-pill approved">Local Ready</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--admin-text-sub); margin-bottom: 1.5rem; line-height: 1.5;">
+              Synchronize your product catalog so price and inventory changes immediately reflect for all shoppers on phones, tablets, and computers across Nigeria.
+            </p>
+
+            <form onsubmit="handleSaveCloudSyncSettings(event)">
+              <div style="margin-bottom: 1.25rem;">
+                <label class="form-label" for="setting-sync-provider">Storage &amp; Sync Method</label>
+                <select id="setting-sync-provider" class="luxury-select" onchange="toggleSyncProviderFields()" style="width: 100%; padding: 0.75rem 1rem;">
+                  <option value="github">GitHub Repository Commit (data/products.json)</option>
+                  <option value="jsonbin">JSONbin.io Real-Time Document Store</option>
+                  <option value="local">Local Browser Storage Only (Single Device)</option>
+                </select>
+              </div>
+
+              <div id="sync-fields-github">
+                <div style="margin-bottom: 1.25rem;">
+                  <label class="form-label" for="setting-github-token">GitHub Personal Access Token</label>
+                  <input type="password" id="setting-github-token" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+                  <span style="font-size: 0.75rem; color: var(--admin-text-muted); display: block; margin-top: 0.35rem;">Fine-grained token with Contents: Read &amp; Write permissions on <code>olaopajoshua/Pria-s-Accessories</code>.</span>
+                </div>
+              </div>
+
+              <div id="sync-fields-jsonbin" style="display: none;">
+                <div style="margin-bottom: 1.25rem;">
+                  <label class="form-label" for="setting-jsonbin-id">JSONbin Bin ID</label>
+                  <input type="text" id="setting-jsonbin-id" class="admin-input" placeholder="e.g. 64a123456789..." />
+                </div>
+                <div style="margin-bottom: 1.25rem;">
+                  <label class="form-label" for="setting-jsonbin-key">JSONbin Master Key (X-Master-Key)</label>
+                  <input type="password" id="setting-jsonbin-key" class="admin-input" placeholder="$2a$10$xxxxxxxx..." />
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button type="submit" class="btn-secondary-luxury" style="flex: 1; justify-content: center; padding: 0.85rem 0;">
+                  <span>Save Sync Settings</span>
+                </button>
+                <button type="button" class="btn-admin-nav" onclick="pushCatalogToCloudNow()" style="padding: 0.85rem 1.25rem;">
+                  <span>Sync Now</span>
+                </button>
+              </div>
+            </form>
+
+            <div style="margin-top: 1.5rem; padding: 0.85rem 1rem; border-radius: var(--admin-radius-sm); background: var(--admin-surface-subtle); border: 1px solid var(--admin-border); font-size: 0.78rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700;">Sync Status:</span>
+                <span id="sync-last-timestamp" style="color: var(--admin-text-muted);">Never synced</span>
+              </div>
+              <div id="sync-log-message" style="margin-top: 0.4rem; color: var(--admin-accent-gold-dark); font-weight: 600;">
+                All products currently stored in local database.
+              </div>
             </div>
           </section>
         </div>
