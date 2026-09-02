@@ -538,7 +538,7 @@ function saveReviews() {
 }
 
 function addReview(reviewData) {
-  reviewData.status = reviewData.status || 'approved';
+  reviewData.status = reviewData.status || 'pending';
   reviewData.id = reviewData.id || `rev_${Date.now()}`;
   state.reviews.unshift(reviewData);
   saveReviews();

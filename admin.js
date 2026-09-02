@@ -394,16 +394,22 @@ function renderAdminReviews() {
     list = reviews.filter(r => r.status === 'pending');
   } else if (filterVal === 'approved') {
     list = reviews.filter(r => r.status === 'approved' || typeof r.status === 'undefined');
+  } else {
+    // Put pending reviews at the very top so store owner sees them immediately
+    list = [...reviews].sort((a, b) => {
+      const aPending = a.status === 'pending';
+      const bPending = b.status === 'pending';
+      if (aPending && !bPending) return -1;
+      if (!aPending && bPending) return 1;
+      return 0;
+    });
   }
 
   if (list.length === 0) {
     tbody.innerHTML = `
       <tr>
         <td colspan="6" style="text-align:center; padding: 3rem 1rem; color: var(--admin-text-muted);">
-          <p style="margin-bottom: 1rem; font-size: 0.92rem;">No reviews found in this filter view.</p>
-          <button type="button" class="btn-primary-luxury" onclick="openAdminAddReviewModal()" style="font-size: 0.82rem; padding: 0.55rem 1.1rem;">
-            + Add Client Review
-          </button>
+          <p style="margin: 0; font-size: 0.92rem;">No reviews found in this filter view.</p>
         </td>
       </tr>
     `;
@@ -583,67 +589,6 @@ async function fetchAdminCloudReviews(showNotice = false) {
   }
 }
 
-// Admin Add Review Modal Controls
-function openAdminAddReviewModal() {
-  const modal = document.getElementById('modal-admin-add-review');
-  if (modal) modal.classList.add('active');
-  const nameInput = document.getElementById('admin-rev-name');
-  if (nameInput) setTimeout(() => nameInput.focus(), 100);
-}
-
-function closeAdminAddReviewModal() {
-  const modal = document.getElementById('modal-admin-add-review');
-  if (modal) modal.classList.remove('active');
-  const form = document.getElementById('admin-add-review-form');
-  if (form) form.reset();
-}
-
-async function handleAdminCreateReviewSubmit(e) {
-  if (e) e.preventDefault();
-  const name = document.getElementById('admin-rev-name')?.value.trim();
-  const location = document.getElementById('admin-rev-location')?.value.trim() || 'Nigeria';
-  const product = document.getElementById('admin-rev-product')?.value.trim() || '';
-  const rating = parseInt(document.getElementById('admin-rev-rating')?.value, 10) || 5;
-  const text = document.getElementById('admin-rev-text')?.value.trim();
-  const autoApprove = document.getElementById('admin-rev-auto-approve')?.checked;
-
-  if (!name || !text) {
-    if (typeof showToast === 'function') showToast('Please enter client name and testimonial text');
-    return;
-  }
-
-  const reviewId = `rev_${Date.now()}`;
-  const newRev = {
-    id: reviewId,
-    name: name,
-    location: location,
-    product: product,
-    rating: rating,
-    text: text,
-    verified: true,
-    status: autoApprove ? 'approved' : 'pending',
-    date: 'Just now'
-  };
-
-  if (typeof state !== 'undefined' && state.reviews) {
-    state.reviews.unshift(newRev);
-    if (typeof saveReviews === 'function') saveReviews();
-  }
-
-  closeAdminAddReviewModal();
-  renderAdminDashboard();
-  renderAdminReviews();
-
-  // Sync to Supabase cloud immediately
-  const synced = await syncReviewToSupabase(newRev);
-  if (synced) {
-    if (typeof showToast === 'function') {
-      showToast(autoApprove ? 'Review published live to cloud storefront!' : 'Review saved as pending in cloud database', 'success');
-    }
-  } else {
-    if (typeof showToast === 'function') showToast('Review saved locally');
-  }
-}
 
 async function toggleProductStock(productId) {
   if (typeof state === 'undefined') return;

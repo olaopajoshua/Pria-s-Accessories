@@ -44,14 +44,53 @@ module.exports = async (req, res) => {
       const body = req.body || {};
       const { passcode, action, product, productId, products, githubToken, jsonbinKey, jsonbinId } = body;
 
+      // Supabase Master Service Role Server-Side Sync
+      const supabaseUrl = process.env.SUPABASE_URL || 'https://katghrsrmmarezqmpjym.supabase.co';
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdGdocnNybW1hcmV6cW1wanltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODM0NTM1MiwiZXhwIjoyMTAzOTIxMzUyfQ.TLEMLFNPLfGoxwfUx-nE12OYo584NI1myTsMwL77JAE';
+
+      // 0. Public Customer Review Submission from contact.html (No admin passcode needed)
+      if (action === 'submit_customer_review' && body.review) {
+        const r = body.review;
+        if (!r.name || !r.text) {
+          return res.status(400).json({ error: 'Name and testimonial text are required' });
+        }
+
+        const row = {
+          id: r.id || `rev_${Date.now()}`,
+          name: String(r.name).trim().slice(0, 100),
+          location: String(r.location || 'Nigeria').trim().slice(0, 100),
+          product: String(r.product || 'Verified Purchase').trim().slice(0, 100),
+          rating: Math.min(5, Math.max(1, parseInt(r.rating, 10) || 5)),
+          text: String(r.text).trim().slice(0, 1000),
+          verified: true,
+          status: 'pending', // Public submissions are ALWAYS pending until approved in admin!
+          date: r.date || 'Just now'
+        };
+
+        const insRes = await fetch(`${supabaseUrl}/rest/v1/reviews`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(row)
+        });
+
+        if (!insRes.ok) {
+          const errTxt = await insRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Failed to save review to Supabase', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, message: 'Review submitted to Supabase for moderation', id: row.id });
+      }
+
+      // All management actions below require the store admin passcode
       const adminPasscode = process.env.ADMIN_PASSCODE || '1234';
       if (!passcode || passcode !== adminPasscode) {
         return res.status(401).json({ error: 'Unauthorized: Invalid store admin passcode' });
       }
-
-      // Supabase Master Service Role Server-Side Sync
-      const supabaseUrl = process.env.SUPABASE_URL || 'https://katghrsrmmarezqmpjym.supabase.co';
-      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdGdocnNybW1hcmV6cW1wanltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODM0NTM1MiwiZXhwIjoyMTAzOTIxMzUyfQ.TLEMLFNPLfGoxwfUx-nE12OYo584NI1myTsMwL77JAE';
 
       // 1. Single product save (insert or update)
       if (action === 'save_product' && product) {
