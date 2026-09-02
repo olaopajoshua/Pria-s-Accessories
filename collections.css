@@ -8,10 +8,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.25rem;
   flex-wrap: wrap;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-subtle);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .filter-tabs {
@@ -19,6 +23,10 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .filter-btn {
@@ -30,6 +38,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 
 .filter-btn:hover, .filter-btn.active {
@@ -42,6 +51,9 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .search-box {
@@ -49,9 +61,15 @@
   align-items: center;
   gap: 0.5rem;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  padding: 0.45rem 1rem;
+  padding: 0.55rem 1.15rem;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast);
+}
+
+.search-box:focus-within {
+  border-color: var(--accent-gold);
 }
 
 .search-box input {
@@ -59,7 +77,7 @@
   border: none;
   outline: none;
   color: var(--text-primary);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   width: 160px;
 }
 
@@ -67,49 +85,122 @@
   width: 16px;
   height: 16px;
   color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .sort-select {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-full);
   color: var(--text-secondary);
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.88rem;
   outline: none;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .sort-select:focus {
   border-color: var(--accent-gold);
 }
 
-/* Collections Responsive */
-@media (max-width: 768px) {
+.catalog-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   COLLECTIONS MOBILE RESPONSIVENESS (Fixes overflow and alignment)
+   ========================================================================== */
+@media (max-width: 900px) {
   .catalog-controls {
     flex-direction: column;
     align-items: stretch;
-    gap: 1rem;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
   }
-  
+
+  /* Order: Search & Sort first, followed by category scroll pills */
+  .catalog-search-sort {
+    order: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-search-sort .search-box {
+    width: 100%;
+  }
+
+  .catalog-search-sort .search-box input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-search-sort .custom-dropdown-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-search-sort .custom-dropdown-trigger {
+    width: 100%;
+    border-radius: var(--radius-full);
+    padding: 0.55rem 1.15rem;
+    font-size: 0.88rem;
+  }
+
   .filter-tabs {
+    order: 2;
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 0.45rem;
+    padding-bottom: 0.6rem;
+    padding-top: 0.2rem;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
   }
-  
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
   .filter-btn {
     white-space: nowrap;
     flex-shrink: 0;
+    padding: 0.5rem 1.05rem;
+    font-size: 0.82rem;
   }
-  
+}
+
+@media (max-width: 600px) {
   .catalog-search-sort {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
-  
-  .search-box input {
-    width: 100%;
+
+  .catalog-status-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    font-size: 0.8rem;
   }
 }
