@@ -107,7 +107,59 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_product', id: productId });
       }
 
-      // 3. Bulk sync
+      // 3. Save Review (Insert or Update in Supabase)
+      if (action === 'save_review' && body.review) {
+        const r = body.review;
+        const row = {
+          id: r.id,
+          name: r.name,
+          location: r.location || '',
+          product: r.product || '',
+          rating: parseInt(r.rating, 10) || 5,
+          text: r.text,
+          verified: r.verified !== false,
+          status: r.status || 'approved',
+          date: r.date || 'Recent'
+        };
+
+        const upRes = await fetch(`${supabaseUrl}/rest/v1/reviews`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(row)
+        });
+
+        if (!upRes.ok) {
+          const errTxt = await upRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase review save failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'save_review', id: r.id });
+      }
+
+      // 4. Delete Review from Supabase
+      if (action === 'delete_review' && body.reviewId) {
+        const delRes = await fetch(`${supabaseUrl}/rest/v1/reviews?id=eq.${encodeURIComponent(body.reviewId)}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
+          }
+        });
+
+        if (!delRes.ok) {
+          const errTxt = await delRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase review delete failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_review', id: body.reviewId });
+      }
+
+      // 5. Bulk products sync
       if (products && Array.isArray(products)) {
         const mapped = products.map(p => ({
           id: p.id,

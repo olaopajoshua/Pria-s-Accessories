@@ -386,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyStoreSettings();
   setTimeout(() => init3DCardTilt(), 150);
   syncLiveCatalog();
+  syncLiveReviews();
 });
 
 function initAppState() {
@@ -449,6 +450,38 @@ async function syncLiveCatalog() {
   }
 }
 
+async function syncLiveReviews() {
+  try {
+    const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/reviews?select=*&status=eq.approved&order=created_at.desc`, {
+      headers: {
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    if (res.ok) {
+      const liveReviews = await res.json();
+      if (Array.isArray(liveReviews) && liveReviews.length > 0) {
+        state.reviews = liveReviews;
+        localStorage.setItem('prias_reviews_v1', JSON.stringify(liveReviews));
+
+        if (typeof init3DReviewsCarousel === 'function') {
+          init3DReviewsCarousel('home-reviews-carousel');
+        }
+        if (typeof renderReviewsGrid === 'function') {
+          renderReviewsGrid('contact-reviews-grid');
+        }
+        if (typeof renderAdminReviews === 'function') {
+          renderAdminReviews();
+        }
+      }
+    }
+  } catch (err) {
+    console.debug('Supabase live reviews sync notice:', err);
+  }
+}
+
 function saveProducts() {
   localStorage.setItem('prias_supabase_cache', JSON.stringify(state.products));
 }
@@ -505,11 +538,23 @@ function saveReviews() {
 }
 
 function addReview(reviewData) {
-  // Reviews dropped by clients default to 'pending' for store admin approval
-  reviewData.status = reviewData.status || 'pending';
+  reviewData.status = reviewData.status || 'approved';
   reviewData.id = reviewData.id || `rev_${Date.now()}`;
   state.reviews.unshift(reviewData);
   saveReviews();
+
+  // Send to serverless cloud API so review persists to Supabase for all devices
+  try {
+    fetch('/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'submit_customer_review',
+        review: reviewData
+      })
+    }).catch(e => console.debug('Review cloud sync notice:', e));
+  } catch (e) {}
+
   return reviewData;
 }
 
@@ -711,6 +756,210 @@ function stopCarouselTimer() {
     clearInterval(carouselTimer);
     carouselTimer = null;
   }
+}
+
+// ==========================================================================
+// 3D ROTATING CATEGORY MOTION CAROUSEL (HOMEPAGE)
+// ==========================================================================
+let categoryCarouselTimer = null;
+let currentCategoryCarouselIndex = 0;
+
+const HOME_CATEGORY_CAROUSEL_DATA = [
+  {
+    id: 'all',
+    name: 'All Pieces',
+    subtitle: '18k real PVD gold-plated jewelry, timepieces & accessories.',
+    badge: 'COMPLETE COLLECTION',
+    image: 'assets/hero-model.jpg',
+    actionText: 'View All Pieces'
+  },
+  {
+    id: 'necklaces',
+    name: 'Necklaces',
+    subtitle: 'Waterproof flat herringbone snake chains & textured pendants.',
+    badge: '18K GOLD CHAINS',
+    image: 'assets/necklace-1.jpg',
+    actionText: 'Explore Necklaces'
+  },
+  {
+    id: 'earrings',
+    name: 'Earrings',
+    subtitle: 'Lightweight everyday golden croissant hoops & huggies.',
+    badge: 'SCULPTED HOOPS',
+    image: 'assets/earrings-1.jpg',
+    actionText: 'Explore Earrings'
+  },
+  {
+    id: 'rings',
+    name: 'Rings',
+    subtitle: 'Durable dome rings & solitaire bands crafted for effortless stacking.',
+    badge: 'SOLITAIRES & STACKS',
+    image: 'assets/ring-1.jpg',
+    actionText: 'Explore Rings'
+  },
+  {
+    id: 'watches',
+    name: 'Watches',
+    subtitle: 'Milanese gold mesh bracelets with emerald green quartz dials.',
+    badge: 'MESH TIMEPIECES',
+    image: 'assets/watch-1.jpg',
+    actionText: 'Explore Watches'
+  },
+  {
+    id: 'bags',
+    name: 'Mini Bags',
+    subtitle: 'Quilted crossbody bags with woven luxury gold hardware straps.',
+    badge: 'QUILTED CROSSBODY',
+    image: 'assets/bag-1.jpg',
+    actionText: 'Explore Mini Bags'
+  }
+];
+
+function init3DCategoriesCarousel(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const items = HOME_CATEGORY_CAROUSEL_DATA;
+  currentCategoryCarouselIndex = 0;
+
+  container.innerHTML = `
+    <div class="categories-3d-stage" id="cat-carousel-3d-stage">
+      <div class="categories-3d-carousel" id="cat-carousel-3d-track">
+        ${items.map((item, i) => `
+          <div class="category-3d-card" data-index="${i}" onclick="handleCategoryCardClick(${i}, '${item.id}')">
+            <div class="category-3d-img-box">
+              <img src="${item.image}" alt="${item.name}" loading="lazy" />
+              <div class="category-3d-img-overlay"></div>
+              <span class="category-3d-badge">${item.badge}</span>
+            </div>
+            <div class="category-3d-info">
+              <h3 class="category-3d-title">${item.name}</h3>
+              <p class="category-3d-subtitle">${item.subtitle}</p>
+              <div class="category-3d-action">
+                <a href="collections.html?category=${item.id}" class="category-3d-btn" onclick="event.stopPropagation()">
+                  <span>${item.actionText}</span>
+                  <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="carousel-controls" style="margin-top: 2rem;">
+        <button class="carousel-nav-btn" onclick="prevCategorySlide()" aria-label="Previous Category">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:18px;height:18px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="carousel-dots" id="cat-carousel-dots-wrap">
+          ${items.map((_, i) => `<span class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="jumpToCategoryIndex(${i})"></span>`).join('')}
+        </div>
+
+        <button class="carousel-nav-btn" onclick="nextCategorySlide()" aria-label="Next Category">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:18px;height:18px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  updateCategoryCards(items.length);
+  startCategoryCarouselTimer(items.length);
+  setupCategorySwipeListeners(containerId, items.length);
+}
+
+function handleCategoryCardClick(index, categoryId) {
+  if (currentCategoryCarouselIndex === index) {
+    window.location.href = `collections.html?category=${categoryId}`;
+  } else {
+    jumpToCategoryIndex(index);
+  }
+}
+
+function updateCategoryCards(totalCount) {
+  const cards = document.querySelectorAll('.category-3d-card');
+  const dots = document.querySelectorAll('#cat-carousel-dots-wrap .carousel-dot');
+  if (!cards.length) return;
+
+  cards.forEach((card, i) => {
+    card.classList.remove('active', 'prev', 'next', 'hidden-left', 'hidden-right');
+    const diff = (i - currentCategoryCarouselIndex + totalCount) % totalCount;
+
+    if (diff === 0) {
+      card.classList.add('active');
+    } else if (diff === 1) {
+      card.classList.add('next');
+    } else if (diff === totalCount - 1) {
+      card.classList.add('prev');
+    } else if (diff > 1 && diff <= totalCount / 2) {
+      card.classList.add('hidden-right');
+    } else {
+      card.classList.add('hidden-left');
+    }
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentCategoryCarouselIndex);
+  });
+}
+
+function nextCategorySlide() {
+  const total = HOME_CATEGORY_CAROUSEL_DATA.length;
+  currentCategoryCarouselIndex = (currentCategoryCarouselIndex + 1) % total;
+  updateCategoryCards(total);
+  resetCategoryTimer();
+}
+
+function prevCategorySlide() {
+  const total = HOME_CATEGORY_CAROUSEL_DATA.length;
+  currentCategoryCarouselIndex = (currentCategoryCarouselIndex - 1 + total) % total;
+  updateCategoryCards(total);
+  resetCategoryTimer();
+}
+
+function jumpToCategoryIndex(index) {
+  const total = HOME_CATEGORY_CAROUSEL_DATA.length;
+  currentCategoryCarouselIndex = index;
+  updateCategoryCards(total);
+  resetCategoryTimer();
+}
+
+function startCategoryCarouselTimer(total) {
+  clearInterval(categoryCarouselTimer);
+  categoryCarouselTimer = setInterval(() => {
+    currentCategoryCarouselIndex = (currentCategoryCarouselIndex + 1) % total;
+    updateCategoryCards(total);
+  }, 3500);
+}
+
+function resetCategoryTimer() {
+  const total = HOME_CATEGORY_CAROUSEL_DATA.length;
+  startCategoryCarouselTimer(total);
+}
+
+function setupCategorySwipeListeners(containerId, total) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  let startX = 0;
+  let endX = 0;
+
+  el.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  el.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) nextCategorySlide();
+      else prevCategorySlide();
+    }
+  }, { passive: true });
+
+  el.addEventListener('mouseenter', () => clearInterval(categoryCarouselTimer));
+  el.addEventListener('mouseleave', () => startCategoryCarouselTimer(total));
 }
 
 // Interactive 3D Card Parallax Tilt & Light Specular Sheen (Desktop Only)

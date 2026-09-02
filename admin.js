@@ -452,11 +452,59 @@ function renderAdminReviews() {
   }).join('');
 }
 
+async function syncReviewToSupabase(review) {
+  try {
+    const enteredPasscode = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+    const res = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-passcode': enteredPasscode
+      },
+      body: JSON.stringify({
+        action: 'save_review',
+        review: review,
+        passcode: enteredPasscode
+      })
+    });
+    const result = await res.json().catch(() => ({}));
+    return result.success;
+  } catch (err) {
+    console.warn('Supabase review sync notice:', err);
+    return false;
+  }
+}
+
+async function deleteReviewFromSupabase(reviewId) {
+  try {
+    const enteredPasscode = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+    const res = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-passcode': enteredPasscode
+      },
+      body: JSON.stringify({
+        action: 'delete_review',
+        reviewId: reviewId,
+        passcode: enteredPasscode
+      })
+    });
+    const result = await res.json().catch(() => ({}));
+    return result.success;
+  } catch (err) {
+    console.warn('Supabase review delete notice:', err);
+    return false;
+  }
+}
+
 function handleApproveReview(reviewId) {
   if (typeof approveReview === 'function') {
     approveReview(reviewId);
     renderAdminDashboard();
-    if (typeof showToast === 'function') showToast('Review approved & published to live storefront', 'success');
+    const r = (state.reviews || []).find(item => item.id === reviewId);
+    if (r) syncReviewToSupabase(r);
+    if (typeof showToast === 'function') showToast('Review approved & synced to cloud storefront', 'success');
   }
 }
 
@@ -464,7 +512,9 @@ function handleRejectReview(reviewId) {
   if (typeof rejectReview === 'function') {
     rejectReview(reviewId);
     renderAdminDashboard();
-    if (typeof showToast === 'function') showToast('Review moved to pending status');
+    const r = (state.reviews || []).find(item => item.id === reviewId);
+    if (r) syncReviewToSupabase(r);
+    if (typeof showToast === 'function') showToast('Review moved to pending status & synced');
   }
 }
 
@@ -473,6 +523,7 @@ function handleDeleteReview(reviewId) {
     if (typeof deleteReview === 'function') {
       deleteReview(reviewId);
       renderAdminDashboard();
+      deleteReviewFromSupabase(reviewId);
       if (typeof showToast === 'function') showToast('Review deleted successfully');
     }
   }

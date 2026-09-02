@@ -5,6 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initHomePage();
+  if (typeof init3DCategoriesCarousel === 'function') {
+    init3DCategoriesCarousel('home-categories-carousel');
+  }
   if (typeof init3DReviewsCarousel === 'function') {
     init3DReviewsCarousel('home-reviews-carousel');
   }
