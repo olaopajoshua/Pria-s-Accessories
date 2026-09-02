@@ -40,10 +40,40 @@ function handleAdminLogin(e) {
     if (typeof showToast === 'function') showToast('Welcome to Store Manager Dashboard', 'success');
     checkAdminSession();
   } else {
+    // Interactive haptic shake on incorrect passcode
+    const card = document.getElementById('admin-login-card');
+    if (card) {
+      card.classList.remove('shake-error');
+      void card.offsetWidth; // Trigger reflow for re-animation
+      card.classList.add('shake-error');
+    }
     if (typeof showToast === 'function') showToast('Incorrect security passcode. Please try again.');
     if (input) {
       input.value = '';
       input.focus();
+    }
+  }
+}
+
+function togglePinVisibility() {
+  const input = document.getElementById('admin-page-pin-input');
+  const eyeIcon = document.getElementById('eye-icon');
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    if (eyeIcon) {
+      eyeIcon.innerHTML = `
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+      `;
+    }
+  } else {
+    input.type = 'password';
+    if (eyeIcon) {
+      eyeIcon.innerHTML = `
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      `;
     }
   }
 }
