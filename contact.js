@@ -9,7 +9,6 @@ let currentSelectedRating = 5;
 document.addEventListener('DOMContentLoaded', () => {
   initRatingSelector();
   populateProductSelect();
-  renderReviewsGrid('contact-reviews-grid');
 });
 
 // Initialize Star Rating Interaction
@@ -117,9 +116,6 @@ function handleReviewSubmit(e) {
   if (textInput) textInput.value = '';
   currentSelectedRating = 5;
   updateStarUI(5);
-
-  // Re-render Reviews Wall
-  renderReviewsGrid('contact-reviews-grid');
 }
 
 // Handle Quick WhatsApp Inquiry Form

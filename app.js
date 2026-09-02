@@ -785,7 +785,7 @@ function jumpToCarouselIndex(index) {
 function startCarouselTimer(totalCount) {
   stopCarouselTimer();
   if (totalCount > 1) {
-    carouselTimer = setInterval(nextCarouselSlide, 2000);
+    carouselTimer = setInterval(nextCarouselSlide, 3500);
   }
 }
 
