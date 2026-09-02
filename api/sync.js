@@ -214,6 +214,51 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, reviews });
       }
 
+      // 6. Save Category (Insert or Update in Supabase)
+      if (action === 'save_category' && body.category) {
+        const cat = body.category;
+        const row = {
+          id: cat.id,
+          name: cat.name
+        };
+
+        const catRes = await fetch(`${supabaseUrl}/rest/v1/categories`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(row)
+        });
+
+        if (!catRes.ok) {
+          const errTxt = await catRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase category save failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'save_category', id: cat.id });
+      }
+
+      // 7. Delete Category from Supabase
+      if (action === 'delete_category' && body.categoryId) {
+        const delCatRes = await fetch(`${supabaseUrl}/rest/v1/categories?id=eq.${encodeURIComponent(body.categoryId)}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
+          }
+        });
+
+        if (!delCatRes.ok) {
+          const errTxt = await delCatRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Supabase category delete failed', details: errTxt });
+        }
+
+        return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_category', id: body.categoryId });
+      }
+
       // 6. Bulk products sync
       if (products && Array.isArray(products)) {
         const mapped = products.map(p => ({

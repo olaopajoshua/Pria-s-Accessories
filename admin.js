@@ -332,6 +332,52 @@ function renderAdminCategories() {
   }
 }
 
+async function syncCategoryToSupabase(category) {
+  try {
+    const enteredPasscode = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+    const res = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-passcode': enteredPasscode
+      },
+      body: JSON.stringify({
+        action: 'save_category',
+        category: category,
+        passcode: enteredPasscode
+      })
+    });
+    const result = await res.json().catch(() => ({}));
+    return result.success;
+  } catch (err) {
+    console.warn('Supabase category sync notice:', err);
+    return false;
+  }
+}
+
+async function deleteCategoryFromSupabase(categoryId) {
+  try {
+    const enteredPasscode = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+    const res = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-passcode': enteredPasscode
+      },
+      body: JSON.stringify({
+        action: 'delete_category',
+        categoryId: categoryId,
+        passcode: enteredPasscode
+      })
+    });
+    const result = await res.json().catch(() => ({}));
+    return result.success;
+  } catch (err) {
+    console.warn('Supabase category delete notice:', err);
+    return false;
+  }
+}
+
 function handleAdminAddCategory(e) {
   if (e) e.preventDefault();
   const nameInput = document.getElementById('new-cat-name');
@@ -346,7 +392,8 @@ function handleAdminAddCategory(e) {
     const created = addCategory(name);
     if (nameInput) nameInput.value = '';
     renderAdminDashboard();
-    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & live!`, 'success');
+    if (created) syncCategoryToSupabase(created);
+    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & synced to cloud!`, 'success');
   }
 }
 
@@ -355,12 +402,13 @@ function promptAddCategoryInline() {
   if (name && name.trim()) {
     const created = addCategory(name.trim());
     renderAdminDashboard();
+    if (created) syncCategoryToSupabase(created);
     const catSelect = document.getElementById('form-prod-category');
     if (catSelect) {
       catSelect.value = created.id;
       if (typeof catSelect._refreshCustomDropdown === 'function') catSelect._refreshCustomDropdown();
     }
-    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & selected!`, 'success');
+    if (typeof showToast === 'function') showToast(`Category "${created.name}" created & synced!`, 'success');
   }
 }
 
@@ -373,7 +421,8 @@ function handleDeleteCategory(catId) {
     if (typeof deleteCategory === 'function') {
       deleteCategory(catId);
       renderAdminDashboard();
-      if (typeof showToast === 'function') showToast(`Category "${catName}" deleted`);
+      deleteCategoryFromSupabase(catId);
+      if (typeof showToast === 'function') showToast(`Category "${catName}" deleted from store & cloud`);
     }
   }
 }

@@ -387,6 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => init3DCardTilt(), 150);
   syncLiveCatalog();
   syncLiveReviews();
+  syncLiveCategories();
 });
 
 function initAppState() {
@@ -479,6 +480,35 @@ async function syncLiveReviews() {
     }
   } catch (err) {
     console.debug('Supabase live reviews sync notice:', err);
+  }
+}
+
+async function syncLiveCategories() {
+  try {
+    const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/categories?select=*&order=created_at.asc`, {
+      headers: {
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'Accept': 'application/json'
+      }
+    });
+
+    if (res.ok) {
+      const liveCategories = await res.json();
+      if (Array.isArray(liveCategories) && liveCategories.length > 0) {
+        state.categories = liveCategories;
+        localStorage.setItem('prias_categories_v1', JSON.stringify(liveCategories));
+
+        if (typeof renderCategoryFilterButtons === 'function') {
+          renderCategoryFilterButtons();
+        }
+        if (typeof renderAdminCategories === 'function') {
+          renderAdminCategories();
+        }
+      }
+    }
+  } catch (err) {
+    console.debug('Supabase live categories sync notice:', err);
   }
 }
 
