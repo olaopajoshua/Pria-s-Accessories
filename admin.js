@@ -40,7 +40,7 @@ function handleAdminLogin(e) {
     if (typeof showToast === 'function') showToast('Welcome to Store Manager Dashboard', 'success');
     checkAdminSession();
   } else {
-    if (typeof showToast === 'function') showToast('Incorrect passcode. Default PIN is 1234');
+    if (typeof showToast === 'function') showToast('Incorrect security passcode. Please try again.');
     if (input) {
       input.value = '';
       input.focus();
