@@ -373,48 +373,66 @@ function initAppState() {
 
 async function syncLiveCatalog() {
   try {
-    // Check if cloud JSON storage (JSONbin, GitHub API, or /api/sync) is configured
     const settings = state.settings || {};
-    let endpoint = 'data/products.json';
+    const hasLocalEdits = localStorage.getItem('prias_has_local_edits') === 'true';
+
+    let endpoint = '';
     let headers = { 'Accept': 'application/json' };
 
+    // 1. If JSONbin is configured as cloud provider
     if (settings.cloudSyncProvider === 'jsonbin' && settings.jsonbinId) {
       endpoint = `https://api.jsonbin.io/v3/b/${settings.jsonbinId}/latest`;
       if (settings.jsonbinKey) headers['X-Master-Key'] = settings.jsonbinKey;
-    } else {
-      // Try local Vercel serverless /api/sync or static data/products.json
-      endpoint = window.location.origin && window.location.origin.startsWith('http') ? '/api/sync' : 'data/products.json';
+    } 
+    // 2. If GitHub Sync is configured as cloud provider
+    else if (settings.cloudSyncProvider === 'github' && settings.githubToken) {
+      endpoint = '/api/sync';
+    } 
+    // 3. Default fallback: only fetch if local storage has never been modified
+    else {
+      const savedProducts = localStorage.getItem('prias_products_v1');
+      if (!savedProducts || !hasLocalEdits) {
+        endpoint = window.location.origin && window.location.origin.startsWith('http') ? '/api/sync' : 'data/products.json';
+      } else {
+        // User has customized products locally; preserve them and prevent reverting!
+        return;
+      }
     }
 
-    const res = await fetch(endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now(), { headers });
-    if (res.ok) {
-      const data = await res.json();
-      const liveProducts = Array.isArray(data) ? data : (data.record || data.products);
+    if (endpoint) {
+      const res = await fetch(endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now(), { headers });
+      if (res.ok) {
+        const data = await res.json();
+        const liveProducts = Array.isArray(data) ? data : (data.record || data.products);
 
-      if (Array.isArray(liveProducts) && liveProducts.length > 0) {
-        const currentStr = JSON.stringify(state.products);
-        const liveStr = JSON.stringify(liveProducts);
+        if (Array.isArray(liveProducts) && liveProducts.length > 0) {
+          const currentStr = JSON.stringify(state.products);
+          const liveStr = JSON.stringify(liveProducts);
 
-        if (currentStr !== liveStr) {
-          state.products = liveProducts;
-          localStorage.setItem('prias_products_v1', liveStr);
+          if (currentStr !== liveStr) {
+            state.products = liveProducts;
+            localStorage.setItem('prias_products_v1', liveStr);
 
-          // Re-render UI components on whichever page is currently loaded
-          if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
-          if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
-          if (typeof renderProductDetail === 'function') renderProductDetail();
-          if (typeof renderAdminTable === 'function') renderAdminTable();
+            // Re-render UI components on whichever page is currently loaded
+            if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
+            if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
+            if (typeof renderProductDetail === 'function') renderProductDetail();
+            if (typeof renderAdminTable === 'function') renderAdminTable();
+          }
         }
       }
     }
   } catch (err) {
-    // Offline / local cache fallback: continues running with cached catalog
-    console.debug('Background live catalog sync check:', err);
+    console.debug('Live catalog sync:', err);
   }
 }
 
 function saveProducts() {
-  localStorage.setItem('prias_products_v1', JSON.stringify(state.products));
+  const payload = JSON.stringify(state.products);
+  localStorage.setItem('prias_products_v1', payload);
+  localStorage.setItem('prias_has_local_edits', 'true');
+  localStorage.setItem('prias_local_edit_time', Date.now().toString());
+
   if (typeof syncCatalogToCloud === 'function') {
     syncCatalogToCloud();
   }
