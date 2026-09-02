@@ -589,7 +589,15 @@ function deleteReview(reviewId) {
 }
 
 function getApprovedReviews() {
-  return state.reviews.filter(r => r.status === 'approved' || typeof r.status === 'undefined');
+  const allReviews = (state && Array.isArray(state.reviews) && state.reviews.length > 0) 
+    ? state.reviews 
+    : (typeof DEFAULT_REVIEWS !== 'undefined' ? DEFAULT_REVIEWS : []);
+  
+  const approved = allReviews.filter(r => r.status === 'approved' || typeof r.status === 'undefined');
+  if (approved.length === 0 && typeof DEFAULT_REVIEWS !== 'undefined' && DEFAULT_REVIEWS.length > 0) {
+    return DEFAULT_REVIEWS;
+  }
+  return approved;
 }
 
 function renderReviewsGrid(containerId, limit = null) {
@@ -682,7 +690,7 @@ function init3DReviewsCarousel(containerId) {
         </button>
 
         <div class="carousel-dots" id="carousel-dots-wrap">
-          ${approved.map((_, i) => `<span class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="jumpToCarouselIndex(${i})"></span>`).join('')}
+          ${approved.map((_, i) => `<span class="review-carousel-dot ${i === 0 ? 'active' : ''}" onclick="jumpToCarouselIndex(${i})"></span>`).join('')}
         </div>
 
         <button class="carousel-nav-btn" onclick="nextCarouselSlide()" aria-label="Next Testimonial">
@@ -697,8 +705,8 @@ function init3DReviewsCarousel(containerId) {
 }
 
 function updateCarouselCards(totalCount) {
-  const cards = document.querySelectorAll('.review-3d-card');
-  const dots = document.querySelectorAll('.carousel-dot');
+  const cards = document.querySelectorAll('#carousel-3d-stage .review-3d-card');
+  const dots = document.querySelectorAll('#carousel-dots-wrap .review-carousel-dot');
   if (!cards.length) return;
 
   cards.forEach((card, i) => {
@@ -855,7 +863,7 @@ function init3DCategoriesCarousel(containerId) {
         </button>
 
         <div class="carousel-dots" id="cat-carousel-dots-wrap">
-          ${items.map((_, i) => `<span class="carousel-dot ${i === 0 ? 'active' : ''}" onclick="jumpToCategoryIndex(${i})"></span>`).join('')}
+          ${items.map((_, i) => `<span class="cat-carousel-dot ${i === 0 ? 'active' : ''}" onclick="jumpToCategoryIndex(${i})"></span>`).join('')}
         </div>
 
         <button class="carousel-nav-btn" onclick="nextCategorySlide()" aria-label="Next Category">
@@ -879,8 +887,8 @@ function handleCategoryCardClick(index, categoryId) {
 }
 
 function updateCategoryCards(totalCount) {
-  const cards = document.querySelectorAll('.category-3d-card');
-  const dots = document.querySelectorAll('#cat-carousel-dots-wrap .carousel-dot');
+  const cards = document.querySelectorAll('#cat-carousel-3d-stage .category-3d-card');
+  const dots = document.querySelectorAll('#cat-carousel-dots-wrap .cat-carousel-dot');
   if (!cards.length) return;
 
   cards.forEach((card, i) => {

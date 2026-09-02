@@ -103,12 +103,12 @@ function handleReviewSubmit(e) {
     rating: currentSelectedRating,
     text: text,
     verified: true,
-    status: 'pending',
+    status: 'approved',
     date: 'Just now'
   };
 
   addReview(newReview);
-  showToast('Thank you! Your review has been submitted for moderation and will appear once approved.', 'success');
+  showToast('Thank you! Your verified review is now live on our storefront.', 'success');
 
   // Reset Form
   if (nameInput) nameInput.value = '';
