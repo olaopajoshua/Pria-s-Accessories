@@ -631,8 +631,21 @@ function stopCarouselTimer() {
   }
 }
 
-// Interactive 3D Card Parallax Tilt & Light Specular Sheen
+// Interactive 3D Card Parallax Tilt & Light Specular Sheen (Desktop Only)
 function init3DCardTilt() {
+  const isTouchOrMobile = window.innerWidth <= 768 || 
+                          'ontouchstart' in window || 
+                          (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || 
+                          (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  
+  if (isTouchOrMobile) {
+    // Ensure clean flat positioning without stuck tilts on touch devices
+    document.querySelectorAll('.product-card, .review-card, .guarantee-card').forEach(card => {
+      card.style.transform = '';
+    });
+    return;
+  }
+
   const cards = document.querySelectorAll('.product-card, .review-card, .guarantee-card');
   cards.forEach(card => {
     if (card.dataset.tiltInit === 'true') return;

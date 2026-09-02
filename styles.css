@@ -419,6 +419,45 @@ input, select, textarea {
   flex-shrink: 0;
 }
 
+/* ==========================================================================
+   MOTION GRAPHICS: LUXURY ARROW BACK-AND-FORTH LOOPING ANIMATION
+   Smooth, breathing front-and-back floating loop for all arrow buttons
+   ========================================================================== */
+@keyframes arrowMotionLoop {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+.btn-arrow,
+.btn-secondary-luxury svg:not(.brand-logo-img),
+.btn-editorial-light svg,
+.btn-submit-review svg,
+.caption-action svg,
+.category-count svg,
+.btn-motion-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  will-change: transform;
+  animation: arrowMotionLoop 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pause loop and extend forward gracefully on hover */
+.btn-secondary-luxury:hover svg:not(.brand-logo-img),
+.btn-editorial-light:hover svg,
+.btn-submit-review:hover svg,
+.caption-action:hover svg,
+.category-photo-card:hover .btn-arrow,
+a:hover > .btn-arrow,
+button:hover > .btn-arrow {
+  animation-play-state: paused;
+  transform: translateX(9px);
+}
+
 .btn-editorial-light {
   display: inline-flex;
   align-items: center;
@@ -1892,6 +1931,20 @@ select option {
   }
   .products-grid {
     grid-template-columns: 1fr;
+  }
+  .product-card,
+  .review-card,
+  .guarantee-card {
+    transform: none !important;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+  }
+  .product-card:hover,
+  .review-card:hover,
+  .guarantee-card:hover {
+    transform: none !important;
+  }
+  .product-card:active {
+    transform: scale(0.985) !important;
   }
   .reviews-grid {
     grid-template-columns: 1fr;
