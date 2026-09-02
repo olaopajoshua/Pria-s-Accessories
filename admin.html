@@ -402,6 +402,16 @@
             </div>
 
             <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-primary-luxury" onclick="openAdminAddReviewModal()" style="padding: 0.55rem 1rem; font-size: 0.85rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>+ Add Client Review</span>
+              </button>
+
+              <button type="button" class="btn-admin-nav" onclick="fetchAdminCloudReviews(true)" title="Sync latest reviews from Supabase" style="padding: 0.55rem 0.85rem; font-size: 0.85rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;margin-right:4px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                <span>Refresh Cloud</span>
+              </button>
+
               <select id="admin-review-status-filter" class="luxury-select" onchange="renderAdminReviews()" style="font-size: 0.85rem; padding: 0.55rem 2.2rem 0.55rem 1rem;">
                 <option value="all">All Reviews</option>
                 <option value="pending">Pending Approval</option>
@@ -414,7 +424,7 @@
                 class="admin-input" 
                 placeholder="Search reviews..." 
                 oninput="filterAdminReviewsTable(this.value)" 
-                style="width: 100%; max-width: 220px; padding: 0.55rem 1rem; font-size: 0.85rem;" 
+                style="width: 100%; max-width: 200px; padding: 0.55rem 1rem; font-size: 0.85rem;" 
               />
             </div>
           </div>
@@ -617,6 +627,62 @@
           <span>Stay in Dashboard</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Create Review Directly from Admin -->
+  <div class="modal-overlay" id="modal-admin-add-review" onclick="if(event.target === this) closeAdminAddReviewModal()">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Verified Client Review</h3>
+        <button type="button" class="modal-close" onclick="closeAdminAddReviewModal()">&times;</button>
+      </div>
+      <form id="admin-add-review-form" onsubmit="handleAdminCreateReviewSubmit(event)" style="margin-top: 1.25rem;">
+        <div class="form-row-2">
+          <div>
+            <label class="form-label" for="admin-rev-name">Client Name *</label>
+            <input type="text" id="admin-rev-name" class="admin-input" placeholder="e.g. Chioma N." required />
+          </div>
+          <div>
+            <label class="form-label" for="admin-rev-location">Location</label>
+            <input type="text" id="admin-rev-location" class="admin-input" placeholder="e.g. Lekki, Lagos" />
+          </div>
+        </div>
+
+        <div class="form-row-2" style="margin-top: 1rem;">
+          <div>
+            <label class="form-label" for="admin-rev-product">Purchased Piece</label>
+            <input type="text" id="admin-rev-product" class="admin-input" placeholder="e.g. Golden Grace Herringbone" />
+          </div>
+          <div>
+            <label class="form-label" for="admin-rev-rating">Star Rating (1 to 5)</label>
+            <select id="admin-rev-rating" class="luxury-select" style="width: 100%;">
+              <option value="5" selected>★★★★★ (5 Stars)</option>
+              <option value="4">★★★★☆ (4 Stars)</option>
+              <option value="3">★★★☆☆ (3 Stars)</option>
+              <option value="2">★★☆☆☆ (2 Stars)</option>
+              <option value="1">★☆☆☆☆ (1 Star)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+          <label class="form-label" for="admin-rev-text">Review Testimonial *</label>
+          <textarea id="admin-rev-text" class="admin-input" rows="4" placeholder="Client feedback regarding jewelry shine, delivery, packaging, etc." required style="resize: vertical;"></textarea>
+        </div>
+
+        <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.65rem;">
+          <input type="checkbox" id="admin-rev-auto-approve" checked style="accent-color: var(--admin-accent-gold); width: 18px; height: 18px;" />
+          <label for="admin-rev-auto-approve" style="font-size: 0.88rem; color: var(--admin-text-main); font-weight: 600; cursor: pointer;">
+            Approve &amp; Publish to storefront immediately
+          </label>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.75rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn-admin-nav" onclick="closeAdminAddReviewModal()">Cancel</button>
+          <button type="submit" class="btn-primary-luxury" id="btn-submit-admin-rev">Save &amp; Sync to Cloud</button>
+        </div>
+      </form>
     </div>
   </div>
 

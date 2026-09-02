@@ -22,6 +22,7 @@ function checkAdminSession() {
     if (loginScreen) loginScreen.style.display = 'none';
     if (dashScreen) dashScreen.style.display = 'block';
     renderAdminDashboard();
+    fetchAdminCloudReviews();
   } else {
     if (loginScreen) loginScreen.style.display = 'flex';
     if (dashScreen) dashScreen.style.display = 'none';
@@ -277,6 +278,7 @@ function switchAdminTab(tabName) {
     if (reviewsSection) reviewsSection.style.display = 'block';
     if (reviewsBtn) reviewsBtn.classList.add('active');
     renderAdminReviews();
+    fetchAdminCloudReviews();
   }
 }
 
@@ -397,8 +399,11 @@ function renderAdminReviews() {
   if (list.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align:center; padding: 2.5rem; color: var(--admin-text-muted);">
-          No reviews found in this category.
+        <td colspan="6" style="text-align:center; padding: 3rem 1rem; color: var(--admin-text-muted);">
+          <p style="margin-bottom: 1rem; font-size: 0.92rem;">No reviews found in this filter view.</p>
+          <button type="button" class="btn-primary-luxury" onclick="openAdminAddReviewModal()" style="font-size: 0.82rem; padding: 0.55rem 1.1rem;">
+            + Add Client Review
+          </button>
         </td>
       </tr>
     `;
@@ -406,36 +411,37 @@ function renderAdminReviews() {
   }
 
   tbody.innerHTML = list.map(r => {
-    const isApproved = r.status === 'approved' || typeof r.status === 'undefined';
+    const isApproved = r.status === 'approved';
+    const isPending = r.status === 'pending';
     const starCount = Math.min(5, Math.max(1, parseInt(r.rating, 10) || 5));
     const stars = '★'.repeat(starCount) + '☆'.repeat(5 - starCount);
 
     return `
-      <tr>
+      <tr style="${isPending ? 'background: rgba(197, 155, 39, 0.05);' : ''}">
         <td>
           <strong>${r.name}</strong><br />
-          <span style="font-size: 0.78rem; color: var(--admin-text-muted);">${r.location || 'Lagos, Nigeria'}</span>
+          <span style="font-size: 0.78rem; color: var(--admin-text-muted);">${r.location || 'Nigeria'}</span>
         </td>
         <td>
           <span style="color: #D4AF37; font-size: 0.95rem; letter-spacing: 1px;">${stars}</span>
         </td>
         <td>
-          <span style="font-size: 0.85rem; font-weight: 600; color: var(--admin-accent-gold-dark);">${r.product || 'General Purchase'}</span>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--admin-accent-gold-dark);">${r.product || 'Verified Purchase'}</span>
         </td>
         <td style="max-width: 320px;">
-          <p style="font-size: 0.82rem; line-height: 1.5; color: var(--admin-text-sub); margin: 0 0 0.25rem 0;">${r.text}</p>
+          <p style="font-size: 0.85rem; line-height: 1.5; color: var(--admin-text-main); margin: 0 0 0.25rem 0;">${r.text}</p>
           <span style="font-size: 0.72rem; color: var(--admin-text-muted);">${r.date || 'Recent'}</span>
         </td>
         <td>
-          <span class="status-pill ${isApproved ? 'approved' : 'pending'}">
+          <span class="status-pill ${isApproved ? 'approved' : 'pending'}" style="${isPending ? 'background: rgba(224, 150, 20, 0.15); color: #B26B00; font-weight: 700; border: 1px solid rgba(224, 150, 20, 0.35);' : ''}">
             ${isApproved ? 'Live on Store' : 'Pending Approval'}
           </span>
         </td>
         <td>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
             ${!isApproved ? `
-              <button class="action-btn approve" onclick="handleApproveReview('${r.id}')" title="Publish to storefront">
-                Approve &amp; Publish
+              <button class="action-btn approve" onclick="handleApproveReview('${r.id}')" title="Publish to storefront" style="background: #1B9E4B; color: #FFFFFF; font-weight: 700;">
+                ✓ Approve &amp; Publish
               </button>
             ` : `
               <button class="action-btn edit" onclick="handleRejectReview('${r.id}')" title="Move to pending">
@@ -536,6 +542,107 @@ function filterAdminReviewsTable(query) {
     const text = row.textContent.toLowerCase();
     row.style.display = text.includes(q) ? '' : 'none';
   });
+}
+
+// Fetch all reviews (including pending) directly from Supabase via service role API
+async function fetchAdminCloudReviews(showNotice = false) {
+  try {
+    const enteredPasscode = (typeof state !== 'undefined' && state.settings && state.settings.adminPin) ? state.settings.adminPin : '1234';
+    const res = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-passcode': enteredPasscode
+      },
+      body: JSON.stringify({
+        action: 'get_all_reviews_admin',
+        passcode: enteredPasscode
+      })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.reviews)) {
+        state.reviews = data.reviews;
+        localStorage.setItem('prias_reviews_v1', JSON.stringify(data.reviews));
+        renderAdminReviews();
+
+        const pendingCount = data.reviews.filter(r => r.status === 'pending').length;
+        const pendingEl = document.getElementById('stat-pending-reviews');
+        const pendingBadgeEl = document.getElementById('admin-pending-badge');
+        if (pendingEl) pendingEl.textContent = pendingCount;
+        if (pendingBadgeEl) pendingBadgeEl.textContent = pendingCount;
+
+        if (showNotice && typeof showToast === 'function') {
+          showToast(`Synced ${data.reviews.length} reviews from cloud database!`, 'success');
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Admin cloud reviews fetch notice:', err);
+  }
+}
+
+// Admin Add Review Modal Controls
+function openAdminAddReviewModal() {
+  const modal = document.getElementById('modal-admin-add-review');
+  if (modal) modal.classList.add('active');
+  const nameInput = document.getElementById('admin-rev-name');
+  if (nameInput) setTimeout(() => nameInput.focus(), 100);
+}
+
+function closeAdminAddReviewModal() {
+  const modal = document.getElementById('modal-admin-add-review');
+  if (modal) modal.classList.remove('active');
+  const form = document.getElementById('admin-add-review-form');
+  if (form) form.reset();
+}
+
+async function handleAdminCreateReviewSubmit(e) {
+  if (e) e.preventDefault();
+  const name = document.getElementById('admin-rev-name')?.value.trim();
+  const location = document.getElementById('admin-rev-location')?.value.trim() || 'Nigeria';
+  const product = document.getElementById('admin-rev-product')?.value.trim() || '';
+  const rating = parseInt(document.getElementById('admin-rev-rating')?.value, 10) || 5;
+  const text = document.getElementById('admin-rev-text')?.value.trim();
+  const autoApprove = document.getElementById('admin-rev-auto-approve')?.checked;
+
+  if (!name || !text) {
+    if (typeof showToast === 'function') showToast('Please enter client name and testimonial text');
+    return;
+  }
+
+  const reviewId = `rev_${Date.now()}`;
+  const newRev = {
+    id: reviewId,
+    name: name,
+    location: location,
+    product: product,
+    rating: rating,
+    text: text,
+    verified: true,
+    status: autoApprove ? 'approved' : 'pending',
+    date: 'Just now'
+  };
+
+  if (typeof state !== 'undefined' && state.reviews) {
+    state.reviews.unshift(newRev);
+    if (typeof saveReviews === 'function') saveReviews();
+  }
+
+  closeAdminAddReviewModal();
+  renderAdminDashboard();
+  renderAdminReviews();
+
+  // Sync to Supabase cloud immediately
+  const synced = await syncReviewToSupabase(newRev);
+  if (synced) {
+    if (typeof showToast === 'function') {
+      showToast(autoApprove ? 'Review published live to cloud storefront!' : 'Review saved as pending in cloud database', 'success');
+    }
+  } else {
+    if (typeof showToast === 'function') showToast('Review saved locally');
+  }
 }
 
 async function toggleProductStock(productId) {

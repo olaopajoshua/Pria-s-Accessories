@@ -159,7 +159,23 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_review', id: body.reviewId });
       }
 
-      // 5. Bulk products sync
+      // 5. Admin: Fetch all reviews (both pending & approved)
+      if (action === 'get_all_reviews_admin') {
+        const getRes = await fetch(`${supabaseUrl}/rest/v1/reviews?select=*&order=created_at.desc`, {
+          headers: {
+            'apikey': supabaseServiceKey,
+            'Authorization': `Bearer ${supabaseServiceKey}`
+          }
+        });
+        if (!getRes.ok) {
+          const errTxt = await getRes.text().catch(() => '');
+          return res.status(502).json({ error: 'Failed to fetch reviews', details: errTxt });
+        }
+        const reviews = await getRes.json();
+        return res.status(200).json({ success: true, reviews });
+      }
+
+      // 6. Bulk products sync
       if (products && Array.isArray(products)) {
         const mapped = products.map(p => ({
           id: p.id,
