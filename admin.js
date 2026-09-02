@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initAdminPage() {
   checkAdminSession();
+  initLogin3DCard();
 }
 
 function checkAdminSession() {
@@ -76,6 +77,54 @@ function togglePinVisibility() {
       `;
     }
   }
+}
+
+function initLogin3DCard() {
+  const wrapper = document.getElementById('login-3d-wrapper');
+  const card = document.getElementById('admin-login-card');
+  const glare = document.getElementById('card-glare');
+  if (!wrapper || !card) return;
+
+  // Disable 3D tilt on touchscreens to ensure rock-solid stability
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    card.style.transform = 'none';
+    return;
+  }
+
+  wrapper.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -8;
+    const rotateY = ((x - centerX) / centerX) * 8;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+
+    if (glare) {
+      const glareX = (x / rect.width) * 100;
+      const glareY = (y / rect.height) * 100;
+      glare.style.opacity = '1';
+      glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 65%)`;
+    }
+  });
+
+  wrapper.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    if (glare) {
+      glare.style.opacity = '0';
+      glare.style.transition = 'opacity 0.5s ease';
+    }
+  });
+
+  wrapper.addEventListener('mouseenter', () => {
+    card.style.transition = 'transform 0.1s ease-out';
+    if (glare) glare.style.transition = 'none';
+  });
 }
 
 function handleAdminLogout() {

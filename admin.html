@@ -20,77 +20,57 @@
 </head>
 <body class="admin-body">
 
-  <!-- ADMIN AUTHENTICATION SCREEN -->
+  <!-- ADMIN AUTHENTICATION SCREEN (WARM CASHMERE & 3D JEWELRY CARD) -->
   <div id="admin-login-screen" class="admin-login-container">
-    <!-- Ambient golden ambient lighting orbs -->
-    <div class="login-ambient-orb login-orb-1"></div>
-    <div class="login-ambient-orb login-orb-2"></div>
-    <div class="login-ambient-grid"></div>
+    <div class="login-warm-glow"></div>
 
-    <div class="admin-login-card" id="admin-login-card">
-      <!-- Luxury Crest with Pulsing Halo -->
-      <div class="login-logo-wrapper">
-        <div class="login-logo-halo"></div>
-        <div class="login-logo-ring"></div>
-        <img src="assets/logo.png" alt="Pria's Accessories" class="admin-login-logo" />
-        <div class="login-badge-lock" title="Encrypted Connection">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
+    <div class="admin-login-card-3d-wrap" id="login-3d-wrapper">
+      <div class="admin-login-card" id="admin-login-card">
+        <!-- 3D Specular Light Sheen -->
+        <div class="card-3d-glare" id="card-glare"></div>
+
+        <!-- Brand Emblem with 3D Gold Bezel -->
+        <div class="login-logo-frame">
+          <img src="assets/logo.png" alt="Pria's Accessories" class="admin-login-logo" />
         </div>
-      </div>
 
-      <div class="login-security-pill">
-        <span class="security-pulse-dot"></span>
-        <span>Secure Store Manager</span>
-      </div>
+        <h1 class="admin-login-title">Store Owner Portal</h1>
+        <p class="admin-login-sub">Enter your security passcode to access inventory &amp; settings.</p>
 
-      <h1 class="admin-login-title">Store Owner Portal</h1>
-      <p class="admin-login-sub">Enter your private security passcode to access inventory &amp; cloud settings.</p>
+        <form onsubmit="handleAdminLogin(event)" style="margin-top: 1.5rem;" id="admin-login-form">
+          <div class="pin-input-wrapper">
+            <input 
+              type="password" 
+              id="admin-page-pin-input" 
+              class="pin-input" 
+              placeholder="••••" 
+              maxlength="8" 
+              autofocus 
+              required 
+              autocomplete="current-password"
+            />
+            <button type="button" class="btn-toggle-pin" onclick="togglePinVisibility()" title="Show/Hide Passcode" tabindex="-1">
+              <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
 
-      <form onsubmit="handleAdminLogin(event)" style="margin-top: 1.5rem;" id="admin-login-form">
-        <div class="pin-input-wrapper">
-          <input 
-            type="password" 
-            id="admin-page-pin-input" 
-            class="pin-input" 
-            placeholder="••••" 
-            maxlength="8" 
-            autofocus 
-            required 
-            autocomplete="current-password"
-          />
-          <button type="button" class="btn-toggle-pin" onclick="togglePinVisibility()" title="Show/Hide Passcode" tabindex="-1">
-            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
+          <button type="submit" class="btn-login-unlock" id="btn-login-submit">
+            <span>Unlock Dashboard</span>
+            <svg class="btn-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
+        </form>
+
+        <div class="login-footer">
+          <a href="index.html" class="admin-back-store-link">
+            &larr; Back to store
+          </a>
         </div>
-
-        <button type="submit" class="btn-login-unlock" id="btn-login-submit">
-          <span class="btn-shimmer-sweep"></span>
-          <svg class="btn-lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span class="btn-text">Unlock Dashboard</span>
-          <svg class="btn-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
-      </form>
-
-      <div class="login-footer">
-        <a href="index.html" class="admin-back-store-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          <span>Return to Customer Storefront</span>
-        </a>
       </div>
     </div>
   </div>

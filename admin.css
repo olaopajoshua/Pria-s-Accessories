@@ -36,7 +36,7 @@ body.admin-body {
    1. AUTHENTICATION & LOGIN SCREEN
    ========================================================================== */
 /* ==========================================================================
-   1. AUTHENTICATION & LOGIN SCREEN (HIGH-LUXURY OBSIDIAN & GOLD)
+   1. AUTHENTICATION & LOGIN SCREEN (WARM CASHMERE & 3D JEWELRY CARD)
    ========================================================================== */
 .admin-login-container {
   min-height: 100vh;
@@ -44,95 +44,80 @@ body.admin-body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0D0B0A;
+  background: #FAF7F2;
   background-image: 
-    radial-gradient(circle at 50% 25%, rgba(184, 145, 90, 0.14) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 10% 90%, rgba(140, 102, 45, 0.1) 0%, transparent 50%);
-  padding: 2.5rem 1.5rem;
+    radial-gradient(ellipse at 50% 15%, #FFFFFF 0%, #F5EFEB 55%, #EBE3DB 100%);
+  padding: 2.5rem 1.25rem;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* Ambient Floating Glow Orbs */
-.login-ambient-orb {
+/* Soft Diffused Warm Glow */
+.login-warm-glow {
   position: absolute;
+  width: 550px;
+  height: 550px;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(100px);
   pointer-events: none;
-  z-index: 1;
-}
-
-.login-orb-1 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(184, 145, 90, 0.04) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, rgba(197, 155, 39, 0.04) 65%, transparent 100%);
   top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: orbFloatPulse 8s ease-in-out infinite alternate;
 }
 
-.login-orb-2 {
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(184, 145, 90, 0.16) 0%, transparent 70%);
-  bottom: 10%;
-  right: 15%;
-  animation: orbFloatPulse 10s ease-in-out infinite alternate-reverse;
+/* 3D Perspective Wrapper */
+.admin-login-card-3d-wrap {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  justify-content: center;
 }
 
-@keyframes orbFloatPulse {
-  0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
-  50% { transform: translate(-48%, -54%) scale(1.1); opacity: 1; }
-  100% { transform: translate(-52%, -48%) scale(0.96); opacity: 0.75; }
-}
-
-/* Luxury Card Entrance & Glassmorphism */
+/* 3D Elevated Jewelry Plaque Card */
 .admin-login-card {
   position: relative;
-  z-index: 10;
-  background: rgba(22, 19, 17, 0.88);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(212, 175, 55, 0.32);
-  border-radius: 28px;
-  padding: 3.25rem 2.75rem 2.5rem;
-  max-width: 440px;
   width: 100%;
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 3.25rem 2.5rem 2.25rem;
   text-align: center;
+  border: 1px solid rgba(197, 155, 39, 0.28);
   box-shadow: 
-    0 30px 80px -10px rgba(0, 0, 0, 0.85),
-    0 0 50px rgba(184, 145, 90, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    0 25px 55px -15px rgba(55, 40, 25, 0.13),
+    0 8px 20px -5px rgba(197, 155, 39, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
   box-sizing: border-box;
-  animation: loginCardEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
 .admin-login-card:hover {
   box-shadow: 
-    0 35px 90px -10px rgba(0, 0, 0, 0.9),
-    0 0 60px rgba(212, 175, 55, 0.18),
-    inset 0 1px 1px rgba(255, 255, 255, 0.16);
+    0 32px 65px -15px rgba(55, 40, 25, 0.16),
+    0 12px 28px -5px rgba(197, 155, 39, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.95) inset;
 }
 
-@keyframes loginCardEntrance {
-  0% {
-    opacity: 0;
-    transform: translateY(28px) scale(0.94);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* Specular Dynamic Sheen */
+.card-3d-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 8;
+  mix-blend-mode: soft-light;
+  transition: opacity 0.4s ease;
 }
 
 /* Card Shake on Error */
 .admin-login-card.shake-error {
   animation: cardShakeHaptic 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  border-color: rgba(220, 53, 69, 0.6) !important;
-  box-shadow: 0 0 35px rgba(220, 53, 69, 0.3) !important;
+  border-color: rgba(214, 69, 69, 0.6) !important;
+  box-shadow: 0 0 30px rgba(214, 69, 69, 0.25) !important;
 }
 
 @keyframes cardShakeHaptic {
@@ -142,127 +127,50 @@ body.admin-body {
   40%, 60% { transform: translate3d(8px, 0, 0); }
 }
 
-/* Logo with Halo Breathing Ring */
-.login-logo-wrapper {
-  position: relative;
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 1.5rem;
+/* 3D Beveled Logo Bezel */
+.login-logo-frame {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 1.35rem;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #E2C082 0%, #C59B27 100%);
+  box-shadow: 
+    0 10px 24px -4px rgba(197, 155, 39, 0.35),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.login-logo-halo {
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.45) 0%, rgba(184, 145, 90, 0.05) 70%, transparent 100%);
-  animation: haloBreath 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.login-logo-ring {
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(212, 175, 55, 0.55);
-  animation: rotateRing 24s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes haloBreath {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.18); opacity: 0.9; }
-}
-
-@keyframes rotateRing {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.login-logo-frame:hover {
+  transform: scale(1.05);
 }
 
 .admin-login-logo {
-  position: relative;
-  z-index: 2;
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #D4AF37;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   display: block;
 }
 
-.login-badge-lock {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: 3;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #E2C082 0%, #B8915A 100%);
-  color: #110E0C;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  border: 2px solid #161311;
-}
-
-.login-badge-lock svg {
-  width: 13px;
-  height: 13px;
-}
-
-/* Security Pill */
-.login-security-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 9999px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #E2C082;
-  margin-bottom: 1.1rem;
-}
-
-.security-pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #27C96F;
-  box-shadow: 0 0 8px #27C96F;
-  animation: pulseGreen 2s infinite ease-in-out;
-}
-
-@keyframes pulseGreen {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-/* Title & Subtitle */
+/* Title & Subtitle (Clean Human Luxury) */
 .admin-login-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.85rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #FFFFFF 0%, #F5E8D2 40%, #E2C082 80%, #C99E58 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0 0 0.5rem;
+  color: #1C1714;
+  margin: 0 0 0.45rem;
   letter-spacing: -0.01em;
 }
 
 .admin-login-sub {
   font-size: 0.86rem;
-  color: #9C958E;
+  color: #6E635B;
   margin: 0 0 1.6rem;
-  line-height: 1.55;
+  line-height: 1.5;
   font-weight: 400;
 }
 
@@ -276,32 +184,31 @@ body.admin-body {
 .pin-input {
   width: 100%;
   box-sizing: border-box;
-  font-size: 1.85rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.35em;
   text-align: center;
-  padding: 0.95rem 3rem 0.95rem 1.5rem;
-  border: 1.5px solid rgba(212, 175, 55, 0.32);
+  padding: 0.92rem 3rem 0.92rem 1.5rem;
+  border: 1.5px solid #E5DDD3;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
-  color: #FFF9F0;
+  background: #FAF8F5;
+  color: #1C1714;
   outline: none;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(40, 30, 20, 0.04);
 }
 
 .pin-input::placeholder {
-  color: rgba(212, 175, 55, 0.3);
-  letter-spacing: 0.3em;
+  color: #C7BCB1;
+  letter-spacing: 0.25em;
 }
 
 .pin-input:focus {
-  border-color: #E2C082;
-  background: rgba(255, 255, 255, 0.07);
+  border-color: #C59B27;
+  background: #FFFFFF;
   box-shadow: 
-    0 0 0 3px rgba(212, 175, 55, 0.2),
-    0 0 28px rgba(212, 175, 55, 0.22),
-    inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    0 0 0 3.5px rgba(197, 155, 39, 0.18),
+    0 6px 20px rgba(197, 155, 39, 0.12);
   transform: translateY(-1px);
 }
 
@@ -312,7 +219,7 @@ body.admin-body {
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: #A39E98;
+  color: #9E938A;
   cursor: pointer;
   padding: 6px;
   display: flex;
@@ -323,8 +230,8 @@ body.admin-body {
 }
 
 .btn-toggle-pin:hover {
-  color: #E2C082;
-  transform: translateY(-50%) scale(1.1);
+  color: #C59B27;
+  transform: translateY(-50%) scale(1.08);
 }
 
 .btn-toggle-pin svg {
@@ -332,102 +239,73 @@ body.admin-body {
   height: 19px;
 }
 
-/* Luxury Unlock Button with Shimmer Sweep */
+/* Polished Jewelry Gold Unlock Button */
 .btn-login-unlock {
   position: relative;
   width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
-  padding: 1.05rem 1.5rem;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem;
   border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, #B8915A 0%, #E2C082 40%, #C99E58 80%, #9E773D 100%);
-  background-size: 200% auto;
-  color: #0F0D0B;
-  font-size: 0.95rem;
-  font-weight: 800;
+  background: linear-gradient(135deg, #C59B27 0%, #D8B24E 50%, #B2881E 100%);
+  color: #FFFFFF;
+  font-size: 0.92rem;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  overflow: hidden;
   box-shadow: 
-    0 12px 28px -6px rgba(184, 145, 90, 0.45),
-    0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.btn-shimmer-sweep {
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 80%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  transform: skewX(-25deg);
-  transition: left 0.75s ease;
-  pointer-events: none;
-}
-
-.btn-login-unlock:hover .btn-shimmer-sweep {
-  left: 140%;
+    0 10px 24px -4px rgba(197, 155, 39, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-login-unlock:hover {
   transform: translateY(-2px);
-  background-position: right center;
   box-shadow: 
-    0 18px 36px -6px rgba(212, 175, 55, 0.6),
-    0 6px 16px rgba(0, 0, 0, 0.4);
+    0 14px 30px -4px rgba(197, 155, 39, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .btn-login-unlock:active {
   transform: translateY(1px);
 }
 
-.btn-lock-svg {
-  width: 17px;
-  height: 17px;
-  transition: transform 0.25s ease;
-}
-
-.btn-login-unlock:hover .btn-lock-svg {
-  transform: rotate(-10deg) scale(1.1);
-}
-
 .btn-arrow-svg {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   animation: arrowBounceLoop 2s infinite ease-in-out;
 }
 
 @keyframes arrowBounceLoop {
   0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(5px); }
+  50% { transform: translateX(4px); }
 }
 
-/* Footer Link */
+/* Discreet & Understated Back Link */
 .login-footer {
-  margin-top: 1.85rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 1.35rem;
+  margin-top: 1.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #F0EAE2;
 }
 
 .admin-back-store-link {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #948A82;
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #A39E98;
-  font-size: 0.84rem;
-  font-weight: 600;
-  text-decoration: none;
+  gap: 0.3rem;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .admin-back-store-link:hover {
-  color: #E2C082;
-  transform: translateX(-3px);
+  color: #C59B27;
+  transform: translateX(-2px);
 }
 
 /* ==========================================================================
