@@ -510,10 +510,24 @@
               <div style="margin-bottom: 1.25rem;">
                 <label class="form-label" for="setting-sync-provider">Storage &amp; Sync Method</label>
                 <select id="setting-sync-provider" class="luxury-select" onchange="toggleSyncProviderFields()" style="width: 100%; padding: 0.75rem 1rem;">
+                  <option value="supabase" selected>Supabase Live PostgreSQL Database (Active &amp; Recommended)</option>
                   <option value="github">GitHub Repository Commit (data/products.json)</option>
                   <option value="jsonbin">JSONbin.io Real-Time Document Store</option>
                   <option value="local">Local Browser Storage Only (Single Device)</option>
                 </select>
+              </div>
+
+              <div id="sync-fields-supabase">
+                <div style="margin-bottom: 1.25rem; padding: 0.85rem 1rem; background: rgba(27, 158, 75, 0.08); border: 1px solid rgba(27, 158, 75, 0.25); border-radius: var(--admin-radius-sm);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; color: #1B9E4B; font-weight: 700; margin-bottom: 0.35rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <span>Supabase Live Database Active</span>
+                  </div>
+                  <span style="font-size: 0.78rem; color: var(--admin-text-sub); display: block; line-height: 1.5;">
+                    Project URL: <code>https://katghrsrmmarezqmpjym.supabase.co</code><br>
+                    Every price change, new piece, and Cloudinary photo syncs live to all customers in milliseconds.
+                  </span>
+                </div>
               </div>
 
               <div id="sync-fields-github">

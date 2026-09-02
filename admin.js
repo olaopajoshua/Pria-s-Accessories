@@ -408,14 +408,20 @@ function filterAdminReviewsTable(query) {
   });
 }
 
-function toggleProductStock(productId) {
+async function toggleProductStock(productId) {
   if (typeof state === 'undefined') return;
   const p = state.products.find(item => item.id === productId);
   if (!p) return;
   p.inStock = !p.inStock;
   saveProducts();
   renderAdminDashboard();
-  if (typeof showToast === 'function') showToast(`"${p.name}" marked as ${p.inStock ? 'In Stock' : 'Out of Stock'}`, 'success');
+
+  try {
+    await saveProductToSupabase(p, true);
+    if (typeof showToast === 'function') showToast(`"${p.name}" is now ${p.inStock ? 'In Stock' : 'Out of Stock'}`, 'success');
+  } catch (e) {
+    console.warn('Supabase stock toggle notice:', e);
+  }
 }
 
 // ==========================================================================
@@ -615,7 +621,49 @@ function removeUploadedPhoto() {
 // ==========================================================================
 // PRODUCT FORM SUBMIT / EDIT / DELETE
 // ==========================================================================
-function handleProductFormSubmit(e) {
+async function saveProductToSupabase(productData, isEdit = false) {
+  if (typeof mapProductToSupabase !== 'function' || typeof SUPABASE_CONFIG === 'undefined') return;
+  const row = mapProductToSupabase(productData);
+  const endpoint = isEdit
+    ? `${SUPABASE_CONFIG.url}/rest/v1/products?id=eq.${encodeURIComponent(productData.id)}`
+    : `${SUPABASE_CONFIG.url}/rest/v1/products`;
+
+  const method = isEdit ? 'PATCH' : 'POST';
+  const res = await fetch(endpoint, {
+    method,
+    headers: {
+      'apikey': SUPABASE_CONFIG.anonKey,
+      'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(row)
+  });
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Database error: ${res.status} ${errText}`);
+  }
+}
+
+async function deleteProductFromSupabase(productId) {
+  if (typeof SUPABASE_CONFIG === 'undefined') return;
+  const endpoint = `${SUPABASE_CONFIG.url}/rest/v1/products?id=eq.${encodeURIComponent(productId)}`;
+  const res = await fetch(endpoint, {
+    method: 'DELETE',
+    headers: {
+      'apikey': SUPABASE_CONFIG.anonKey,
+      'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`
+    }
+  });
+
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Database error: ${res.status} ${errText}`);
+  }
+}
+
+async function handleProductFormSubmit(e) {
   e.preventDefault();
 
   const name = document.getElementById('form-prod-name').value.trim();
@@ -636,22 +684,24 @@ function handleProductFormSubmit(e) {
   const defaultCategoryImg = category === 'earrings' ? 'assets/earrings-1.jpg' : category === 'rings' ? 'assets/ring-1.jpg' : 'assets/necklace-1.jpg';
   const finalImage = imageData || defaultCategoryImg;
 
+  const isEdit = Boolean(state.editingProductId);
+  let targetProduct = null;
+
   if (typeof state !== 'undefined') {
-    if (state.editingProductId) {
-      const p = state.products.find(item => item.id === state.editingProductId);
-      if (p) {
-        p.name = name;
-        p.category = category;
-        p.price = price;
-        p.originalPrice = originalPrice;
-        p.inStock = inStock;
-        p.image = finalImage;
-        p.description = desc;
-        p.badges = badges;
-        if (typeof showToast === 'function') showToast(`Updated "${name}"`, 'success');
+    if (isEdit) {
+      targetProduct = state.products.find(item => item.id === state.editingProductId);
+      if (targetProduct) {
+        targetProduct.name = name;
+        targetProduct.category = category;
+        targetProduct.price = price;
+        targetProduct.originalPrice = originalPrice;
+        targetProduct.inStock = inStock;
+        targetProduct.image = finalImage;
+        targetProduct.description = desc;
+        targetProduct.badges = badges;
       }
     } else {
-      const newProduct = {
+      targetProduct = {
         id: 'prod_' + Date.now(),
         name,
         category,
@@ -665,8 +715,7 @@ function handleProductFormSubmit(e) {
         reviewsCount: 1,
         specs: ['18k PVD Real Gold Plating', '316L Stainless Steel', 'Waterproof & Sweatproof']
       };
-      state.products.unshift(newProduct);
-      if (typeof showToast === 'function') showToast(`Published "${name}" to store`, 'success');
+      state.products.unshift(targetProduct);
     }
 
     saveProducts();
@@ -674,6 +723,21 @@ function handleProductFormSubmit(e) {
 
   renderAdminDashboard();
   cancelEditProduct();
+
+  // Push directly to live Supabase database
+  if (targetProduct) {
+    try {
+      await saveProductToSupabase(targetProduct, isEdit);
+      if (typeof showToast === 'function') {
+        showToast(isEdit ? `"${name}" updated live in database!` : `"${name}" published live to storefront!`, 'success');
+      }
+    } catch (err) {
+      console.error('Supabase live save error:', err);
+      if (typeof showToast === 'function') {
+        showToast('Saved to local storage (Supabase notice: ' + err.message + ')', 'warning');
+      }
+    }
+  }
 }
 
 function editProduct(productId) {
@@ -728,16 +792,23 @@ function cancelEditProduct() {
   removeUploadedPhoto();
 }
 
-function deleteProduct(productId) {
+async function deleteProduct(productId) {
   if (typeof state === 'undefined') return;
   const p = state.products.find(item => item.id === productId);
   if (!p) return;
 
-  if (confirm(`Are you sure you want to delete "${p.name}"?`)) {
+  if (confirm(`Are you sure you want to delete "${p.name}"? This will remove it from the live store for all visitors.`)) {
     state.products = state.products.filter(item => item.id !== productId);
     saveProducts();
     renderAdminDashboard();
-    if (typeof showToast === 'function') showToast('Piece deleted from inventory');
+
+    try {
+      await deleteProductFromSupabase(productId);
+      if (typeof showToast === 'function') showToast(`"${p.name}" deleted from live database`, 'success');
+    } catch (err) {
+      console.error('Supabase delete error:', err);
+      if (typeof showToast === 'function') showToast('Deleted locally (Database notice: ' + err.message + ')', 'warning');
+    }
   }
 }
 
@@ -849,32 +920,35 @@ function renderCloudSyncSettings() {
   const syncBadge = document.getElementById('cloud-sync-status-badge');
   const navSyncBadge = document.getElementById('admin-sync-badge');
 
-  if (providerSelect) providerSelect.value = settings.cloudSyncProvider || 'github';
+  if (providerSelect) providerSelect.value = settings.cloudSyncProvider || 'supabase';
   if (githubTokenInput) githubTokenInput.value = settings.githubToken || '';
   if (jsonbinIdInput) jsonbinIdInput.value = settings.jsonbinId || '';
   if (jsonbinKeyInput) jsonbinKeyInput.value = settings.jsonbinKey || '';
 
   toggleSyncProviderFields();
 
-  const isCloudActive = (settings.cloudSyncProvider === 'github' && settings.githubToken) ||
+  const isCloudActive = (settings.cloudSyncProvider === 'supabase') ||
+                        (settings.cloudSyncProvider === 'github' && settings.githubToken) ||
                         (settings.cloudSyncProvider === 'jsonbin' && settings.jsonbinId && settings.jsonbinKey);
 
   if (syncBadge) {
     syncBadge.className = isCloudActive ? 'status-pill approved' : 'status-pill pending';
-    syncBadge.textContent = isCloudActive ? 'Cloud Synced' : 'Local Storage Mode';
+    syncBadge.textContent = (settings.cloudSyncProvider === 'supabase') ? 'Supabase Live Connected' : (isCloudActive ? 'Cloud Synced' : 'Local Storage Mode');
   }
   if (navSyncBadge) {
-    navSyncBadge.textContent = isCloudActive ? 'Cloud Active' : 'Ready';
+    navSyncBadge.textContent = (settings.cloudSyncProvider === 'supabase') ? 'Supabase Active' : (isCloudActive ? 'Cloud Active' : 'Ready');
     navSyncBadge.style.background = isCloudActive ? 'rgba(27, 158, 75, 0.15)' : 'rgba(184, 145, 90, 0.15)';
     navSyncBadge.style.color = isCloudActive ? '#1B9E4B' : '#8C662D';
   }
 }
 
 function toggleSyncProviderFields() {
-  const provider = document.getElementById('setting-sync-provider')?.value || 'github';
+  const provider = document.getElementById('setting-sync-provider')?.value || 'supabase';
+  const supabaseBox = document.getElementById('sync-fields-supabase');
   const githubBox = document.getElementById('sync-fields-github');
   const jsonbinBox = document.getElementById('sync-fields-jsonbin');
 
+  if (supabaseBox) supabaseBox.style.display = provider === 'supabase' ? 'block' : 'none';
   if (githubBox) githubBox.style.display = provider === 'github' ? 'block' : 'none';
   if (jsonbinBox) jsonbinBox.style.display = provider === 'jsonbin' ? 'block' : 'none';
 }

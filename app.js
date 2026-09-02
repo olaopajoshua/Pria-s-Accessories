@@ -311,6 +311,45 @@ const DEFAULT_CATEGORIES = [
   { id: 'accessories', name: 'Accessories & Shades' }
 ];
 
+const SUPABASE_CONFIG = {
+  url: 'https://katghrsrmmarezqmpjym.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdGdocnNybW1hcmV6cW1wanltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzNDUzNTIsImV4cCI6MjEwMzkyMTM1Mn0.rUiALWa3YxZWMY0QMgaWiE5JizHoNvnrsEvkNclM7nU'
+};
+
+function mapSupabaseToProduct(item) {
+  return {
+    id: item.id,
+    name: item.name,
+    category: item.category,
+    price: Number(item.price),
+    originalPrice: item.original_price ? Number(item.original_price) : null,
+    image: item.image,
+    description: item.description || '',
+    badges: item.badges || [],
+    inStock: item.in_stock !== false,
+    rating: item.rating ? Number(item.rating) : 5.0,
+    reviewsCount: item.reviews_count ? Number(item.reviews_count) : 1,
+    specs: item.specs || []
+  };
+}
+
+function mapProductToSupabase(p) {
+  return {
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    price: Number(p.price),
+    original_price: p.originalPrice ? Number(p.originalPrice) : null,
+    image: p.image,
+    description: p.description || '',
+    badges: p.badges || [],
+    in_stock: p.inStock !== false,
+    rating: p.rating ? Number(p.rating) : 5.0,
+    reviews_count: p.reviewsCount ? Number(p.reviewsCount) : 1,
+    specs: p.specs || []
+  };
+}
+
 const state = {
   products: [],
   categories: [],
@@ -324,7 +363,7 @@ const state = {
     adminPin: '1234',
     cloudinaryCloudName: 'ndtz6uub',
     cloudinaryUploadPreset: 'prias_store',
-    cloudSyncProvider: 'local'
+    cloudSyncProvider: 'supabase'
   },
   currentFilter: 'all',
   searchQuery: '',
@@ -350,17 +389,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initAppState() {
-  const savedProducts = localStorage.getItem('prias_products_v1');
-  state.products = savedProducts ? JSON.parse(savedProducts) : [...DEFAULT_PRODUCTS];
-
-  const savedCategories = localStorage.getItem('prias_categories_v1');
-  state.categories = savedCategories ? JSON.parse(savedCategories) : [...DEFAULT_CATEGORIES];
-
+  // Inquiry Bag / Cart is strictly stored in device localStorage (private per shopper)
   const savedCart = localStorage.getItem('prias_cart_v1');
   state.cart = savedCart ? JSON.parse(savedCart) : [];
 
   const savedWishlist = localStorage.getItem('prias_wishlist_v1');
   state.wishlist = savedWishlist ? JSON.parse(savedWishlist) : [];
+
+  const savedCategories = localStorage.getItem('prias_categories_v1');
+  state.categories = savedCategories ? JSON.parse(savedCategories) : [...DEFAULT_CATEGORIES];
 
   const savedReviews = localStorage.getItem('prias_reviews_v1');
   state.reviews = savedReviews ? JSON.parse(savedReviews) : [...DEFAULT_REVIEWS];
@@ -369,73 +406,51 @@ function initAppState() {
   if (savedSettings) {
     state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
   }
+
+  // Instant level-1 product cache for 0ms initial render
+  const cachedProducts = localStorage.getItem('prias_supabase_cache');
+  if (cachedProducts) {
+    try {
+      state.products = JSON.parse(cachedProducts);
+    } catch (e) {
+      state.products = [...DEFAULT_PRODUCTS];
+    }
+  } else {
+    state.products = [...DEFAULT_PRODUCTS];
+  }
 }
 
 async function syncLiveCatalog() {
   try {
-    const settings = state.settings || {};
-    const hasLocalEdits = localStorage.getItem('prias_has_local_edits') === 'true';
-
-    let endpoint = '';
-    let headers = { 'Accept': 'application/json' };
-
-    // 1. If JSONbin is configured as cloud provider
-    if (settings.cloudSyncProvider === 'jsonbin' && settings.jsonbinId) {
-      endpoint = `https://api.jsonbin.io/v3/b/${settings.jsonbinId}/latest`;
-      if (settings.jsonbinKey) headers['X-Master-Key'] = settings.jsonbinKey;
-    } 
-    // 2. If GitHub Sync is configured as cloud provider
-    else if (settings.cloudSyncProvider === 'github' && settings.githubToken) {
-      endpoint = '/api/sync';
-    } 
-    // 3. Default fallback: only fetch if local storage has never been modified
-    else {
-      const savedProducts = localStorage.getItem('prias_products_v1');
-      if (!savedProducts || !hasLocalEdits) {
-        endpoint = window.location.origin && window.location.origin.startsWith('http') ? '/api/sync' : 'data/products.json';
-      } else {
-        // User has customized products locally; preserve them and prevent reverting!
-        return;
+    const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/products?select=*&order=created_at.asc`, {
+      headers: {
+        'apikey': SUPABASE_CONFIG.anonKey,
+        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+        'Accept': 'application/json'
       }
-    }
+    });
 
-    if (endpoint) {
-      const res = await fetch(endpoint + (endpoint.includes('?') ? '&' : '?') + 't=' + Date.now(), { headers });
-      if (res.ok) {
-        const data = await res.json();
-        const liveProducts = Array.isArray(data) ? data : (data.record || data.products);
+    if (res.ok) {
+      const liveData = await res.json();
+      if (Array.isArray(liveData) && liveData.length > 0) {
+        const mapped = liveData.map(mapSupabaseToProduct);
+        state.products = mapped;
+        localStorage.setItem('prias_supabase_cache', JSON.stringify(mapped));
 
-        if (Array.isArray(liveProducts) && liveProducts.length > 0) {
-          const currentStr = JSON.stringify(state.products);
-          const liveStr = JSON.stringify(liveProducts);
-
-          if (currentStr !== liveStr) {
-            state.products = liveProducts;
-            localStorage.setItem('prias_products_v1', liveStr);
-
-            // Re-render UI components on whichever page is currently loaded
-            if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
-            if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
-            if (typeof renderProductDetail === 'function') renderProductDetail();
-            if (typeof renderAdminTable === 'function') renderAdminTable();
-          }
-        }
+        // Re-render UI components on whichever page is currently loaded
+        if (typeof renderFeaturedProducts === 'function') renderFeaturedProducts();
+        if (typeof renderCollectionsCatalog === 'function') renderCollectionsCatalog();
+        if (typeof renderProductDetail === 'function') renderProductDetail();
+        if (typeof renderAdminTable === 'function') renderAdminTable();
       }
     }
   } catch (err) {
-    console.debug('Live catalog sync:', err);
+    console.debug('Supabase catalog live sync check:', err);
   }
 }
 
 function saveProducts() {
-  const payload = JSON.stringify(state.products);
-  localStorage.setItem('prias_products_v1', payload);
-  localStorage.setItem('prias_has_local_edits', 'true');
-  localStorage.setItem('prias_local_edit_time', Date.now().toString());
-
-  if (typeof syncCatalogToCloud === 'function') {
-    syncCatalogToCloud();
-  }
+  localStorage.setItem('prias_supabase_cache', JSON.stringify(state.products));
 }
 
 function saveCategories() {
