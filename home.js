@@ -34,4 +34,9 @@ function initHomePage() {
   if (typeof renderProductCardHTML === 'function') {
     grid.innerHTML = itemsToRender.map(product => renderProductCardHTML(product)).join('');
   }
+
+  // Ensure reviews carousel is rendered
+  if (typeof init3DReviewsCarousel === 'function') {
+    init3DReviewsCarousel('home-reviews-carousel');
+  }
 }
