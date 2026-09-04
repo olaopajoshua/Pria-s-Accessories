@@ -46,10 +46,21 @@ module.exports = async (req, res) => {
 
       // Supabase Master Service Role Server-Side Sync
       const supabaseUrl = process.env.SUPABASE_URL || 'https://katghrsrmmarezqmpjym.supabase.co';
-      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthdGdocnNybW1hcmV6cW1wanltIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODM0NTM1MiwiZXhwIjoyMTAzOTIxMzUyfQ.TLEMLFNPLfGoxwfUx-nE12OYo584NI1myTsMwL77JAE';
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      const requireSupabaseKey = () => {
+        if (!supabaseServiceKey) {
+          res.status(500).json({
+            error: 'Server configuration error: SUPABASE_SERVICE_ROLE_KEY environment variable is not configured on the host.'
+          });
+          return false;
+        }
+        return true;
+      };
 
       // 0. Public Customer Review Submission from contact.html (No admin passcode needed)
       if (action === 'submit_customer_review' && body.review) {
+        if (!requireSupabaseKey()) return;
         const r = body.review;
         if (!r.name || !r.text) {
           return res.status(400).json({ error: 'Name and testimonial text are required' });
@@ -94,6 +105,7 @@ module.exports = async (req, res) => {
 
       // 1. Single product save (insert or update)
       if (action === 'save_product' && product) {
+        if (!requireSupabaseKey()) return;
         const row = {
           id: product.id,
           name: product.name,
@@ -130,6 +142,7 @@ module.exports = async (req, res) => {
 
       // 2. Single product delete
       if (action === 'delete_product' && productId) {
+        if (!requireSupabaseKey()) return;
         const delRes = await fetch(`${supabaseUrl}/rest/v1/products?id=eq.${encodeURIComponent(productId)}`, {
           method: 'DELETE',
           headers: {
@@ -148,6 +161,7 @@ module.exports = async (req, res) => {
 
       // 3. Save Review (Insert or Update in Supabase)
       if (action === 'save_review' && body.review) {
+        if (!requireSupabaseKey()) return;
         const r = body.review;
         const row = {
           id: r.id,
@@ -182,6 +196,7 @@ module.exports = async (req, res) => {
 
       // 4. Delete Review from Supabase
       if (action === 'delete_review' && body.reviewId) {
+        if (!requireSupabaseKey()) return;
         const delRes = await fetch(`${supabaseUrl}/rest/v1/reviews?id=eq.${encodeURIComponent(body.reviewId)}`, {
           method: 'DELETE',
           headers: {
@@ -200,6 +215,7 @@ module.exports = async (req, res) => {
 
       // 5. Admin: Fetch all reviews (both pending & approved)
       if (action === 'get_all_reviews_admin') {
+        if (!requireSupabaseKey()) return;
         const getRes = await fetch(`${supabaseUrl}/rest/v1/reviews?select=*&order=created_at.desc`, {
           headers: {
             'apikey': supabaseServiceKey,
@@ -216,6 +232,7 @@ module.exports = async (req, res) => {
 
       // 6. Save Category (Insert or Update in Supabase)
       if (action === 'save_category' && body.category) {
+        if (!requireSupabaseKey()) return;
         const cat = body.category;
         const row = {
           id: cat.id,
@@ -243,6 +260,7 @@ module.exports = async (req, res) => {
 
       // 7. Delete Category from Supabase
       if (action === 'delete_category' && body.categoryId) {
+        if (!requireSupabaseKey()) return;
         const delCatRes = await fetch(`${supabaseUrl}/rest/v1/categories?id=eq.${encodeURIComponent(body.categoryId)}`, {
           method: 'DELETE',
           headers: {
@@ -259,8 +277,8 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, provider: 'supabase', action: 'delete_category', id: body.categoryId });
       }
 
-      // 6. Bulk products sync
-      if (products && Array.isArray(products)) {
+      // 8. Bulk products sync (if Supabase configured)
+      if (products && Array.isArray(products) && supabaseServiceKey) {
         const mapped = products.map(p => ({
           id: p.id,
           name: p.name,
