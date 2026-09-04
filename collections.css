@@ -59,17 +59,21 @@
 .search-box {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--bg-surface);
+  gap: 0.65rem;
+  background: #FFFFFF;
   border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  padding: 0.55rem 1.15rem;
+  padding: 0 1.25rem;
+  height: 46px;
+  width: 320px;
   box-sizing: border-box;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .search-box:focus-within {
   border-color: var(--accent-gold);
+  box-shadow: 0 4px 16px rgba(184, 145, 90, 0.15);
 }
 
 .search-box input {
@@ -77,27 +81,65 @@
   border: none;
   outline: none;
   color: var(--text-primary);
-  font-size: 0.88rem;
-  width: 160px;
+  font-size: 0.9rem;
+  width: 100%;
 }
 
 .search-icon {
-  width: 16px;
-  height: 16px;
-  color: var(--text-muted);
+  width: 17px;
+  height: 17px;
+  color: var(--accent-gold-dark);
   flex-shrink: 0;
 }
 
+.catalog-search-sort .custom-dropdown-container {
+  width: auto;
+  min-width: 185px;
+  position: relative;
+}
+
+.catalog-search-sort .custom-dropdown-trigger {
+  height: 46px;
+  border-radius: var(--radius-full) !important;
+  padding: 0 1.25rem !important;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-subtle);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-search-sort .custom-dropdown-trigger:hover,
+.catalog-search-sort .custom-dropdown-container.open .custom-dropdown-trigger {
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 16px rgba(184, 145, 90, 0.15);
+}
+
+.catalog-search-sort .custom-dropdown-menu {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1.5px solid rgba(184, 145, 90, 0.3);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
 .sort-select {
-  background: var(--bg-surface);
+  background: #FFFFFF;
   border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  color: var(--text-secondary);
-  padding: 0.55rem 1.15rem;
+  color: var(--text-primary);
+  padding: 0 1.25rem;
+  height: 46px;
   font-size: 0.88rem;
+  font-weight: 600;
   outline: none;
   cursor: pointer;
   box-sizing: border-box;
+  transition: all var(--transition-fast);
 }
 
 .sort-select:focus {
@@ -159,8 +201,9 @@
 
   .catalog-search-sort .custom-dropdown-trigger {
     width: 100%;
-    border-radius: var(--radius-full);
-    padding: 0.55rem 1.15rem;
+    height: 46px;
+    border-radius: var(--radius-full) !important;
+    padding: 0 1.15rem !important;
     font-size: 0.88rem;
   }
 

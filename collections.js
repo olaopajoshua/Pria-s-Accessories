@@ -130,5 +130,6 @@ function renderCollectionsGrid() {
 
   if (typeof renderProductCardHTML === 'function') {
     grid.innerHTML = filtered.map(p => renderProductCardHTML(p)).join('');
+    if (typeof init3DCardTilt === 'function') setTimeout(init3DCardTilt, 50);
   }
 }

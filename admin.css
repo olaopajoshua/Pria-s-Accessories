@@ -774,17 +774,21 @@ body.admin-body {
   border: 1px solid var(--admin-border);
 }
 
-/* Status Badges */
+/* Status Badges & Pills */
 .status-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  white-space: nowrap !important;
+  flex-shrink: 0;
   gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.8rem;
   border-radius: 20px;
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  line-height: 1;
 }
 
 .status-pill.approved {
@@ -797,6 +801,30 @@ body.admin-body {
   background: rgba(184, 145, 90, 0.15);
   color: #8C662D;
   border: 1px solid rgba(184, 145, 90, 0.4);
+}
+
+/* Badges Cell & Tags */
+.admin-badges-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 110px;
+}
+
+.admin-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap !important;
+  background: var(--admin-surface-subtle);
+  color: #14110F;
+  border: 1px solid var(--admin-border);
+  padding: 0.22rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.2;
+  flex-shrink: 0;
 }
 
 /* Action Buttons */

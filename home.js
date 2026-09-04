@@ -33,6 +33,7 @@ function initHomePage() {
 
   if (typeof renderProductCardHTML === 'function') {
     grid.innerHTML = itemsToRender.map(product => renderProductCardHTML(product)).join('');
+    if (typeof init3DCardTilt === 'function') setTimeout(init3DCardTilt, 50);
   }
 
   // Ensure reviews carousel is rendered

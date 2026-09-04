@@ -97,5 +97,6 @@ function initProductDetailPage() {
     const related = products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3);
     const fallback = related.length > 0 ? related : products.filter(p => p.id !== product.id).slice(0, 3);
     relatedGrid.innerHTML = fallback.map(p => renderProductCardHTML(p)).join('');
+    if (typeof init3DCardTilt === 'function') setTimeout(init3DCardTilt, 50);
   }
 }

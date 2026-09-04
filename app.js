@@ -639,7 +639,7 @@ function renderReviewsGrid(containerId, limit = null) {
   if (list.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted);">
-        <p>Verified reviews are currently being updated by our concierge team.</p>
+        <p>Verified reviews are currently being updated by our studio team.</p>
       </div>
     `;
     return;
@@ -806,7 +806,7 @@ const HOME_CATEGORY_CAROUSEL_DATA = [
   {
     id: 'all',
     name: 'All Pieces',
-    subtitle: '18k real PVD gold-plated jewelry, timepieces & accessories.',
+    subtitle: 'Waterproof & tarnish-free jewelry, timepieces & accessories.',
     badge: 'COMPLETE COLLECTION',
     image: 'assets/hero-model.jpg',
     actionText: 'View All Pieces'
@@ -1000,15 +1000,10 @@ function setupCategorySwipeListeners(containerId, total) {
   el.addEventListener('mouseleave', () => startCategoryCarouselTimer(total));
 }
 
-// Interactive 3D Card Parallax Tilt & Light Specular Sheen (Desktop Only)
+// Interactive 3D Card Parallax Tilt & Light Specular Sheen (Desktop & Laptops)
 function init3DCardTilt() {
-  const isTouchOrMobile = window.innerWidth <= 768 || 
-                          'ontouchstart' in window || 
-                          (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || 
-                          (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches);
-  
-  if (isTouchOrMobile) {
-    // Ensure clean flat positioning without stuck tilts on touch devices
+  if (window.innerWidth < 640) {
+    // Ensure clean flat positioning on small phones
     document.querySelectorAll('.product-card, .review-card, .guarantee-card').forEach(card => {
       card.style.transform = '';
     });
@@ -1026,10 +1021,10 @@ function init3DCardTilt() {
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -6;
-      const rotateY = ((x - centerX) / centerX) * 6;
+      const rotateX = ((y - centerY) / centerY) * -7;
+      const rotateY = ((x - centerX) / centerX) * 7;
       
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-8px) scale(1.02)`;
     });
 
     card.addEventListener('mouseleave', () => {

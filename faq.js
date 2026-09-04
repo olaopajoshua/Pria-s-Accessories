@@ -339,7 +339,7 @@ const NIGERIA_LOCATIONS = {
   'Studio Pickup': {
     zone: 'pickup',
     lgas: [
-      { name: 'Lagos Studio Concierge Desk (Self-Pickup)', tier: 'pickup' }
+      { name: 'Lagos Studio Pickup Desk (Self-Pickup)', tier: 'pickup' }
     ]
   }
 };
@@ -373,7 +373,7 @@ const DELIVERY_TIERS = {
   'pickup': {
     fee: 'FREE (₦0)',
     timeline: 'Ready in 2 Hours (Mon–Sat 9AM–6PM)',
-    courier: 'Lagos Studio Concierge Desk'
+    courier: 'Lagos Studio Pickup Desk'
   }
 };
 
@@ -426,6 +426,12 @@ function handleFAQLGAChange(tierKey) {
   const selectedOption = lgaSelect ? lgaSelect.options[lgaSelect.selectedIndex] : null;
   const lgaName = selectedOption ? (selectedOption.getAttribute('data-lga-name') || selectedOption.text) : '';
   currentSelectedLGA = lgaName;
+
+  const destPill = document.getElementById('faq-calc-dest-pill');
+  if (destPill) {
+    const cleanLga = lgaName.split('/')[0].split('(')[0].trim();
+    destPill.innerHTML = `${currentSelectedState} &bull; ${cleanLga || 'Hub'}`;
+  }
 
   const tier = DELIVERY_TIERS[tierKey] || DELIVERY_TIERS['lagos-mainland'];
 

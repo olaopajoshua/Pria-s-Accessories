@@ -196,19 +196,24 @@ function renderAdminDashboard() {
             ${product.originalPrice ? (typeof formatNaira === 'function' ? formatNaira(product.originalPrice) : '₦' + product.originalPrice) : '—'}
           </span>
         </td>
-        <td>
+        <td style="white-space: nowrap;">
           <button 
             type="button"
             onclick="toggleProductStock('${product.id}')"
             class="status-pill ${product.inStock ? 'approved' : 'pending'}"
-            style="cursor: pointer; border: none;"
+            style="cursor: pointer; border: none; white-space: nowrap;"
             title="Click to toggle stock status"
           >
             ${product.inStock ? 'In Stock' : 'Out of Stock'}
           </button>
         </td>
         <td>
-          ${(product.badges || []).map(b => `<span style="background:var(--admin-surface-subtle); color:#14110F; border:1px solid var(--admin-border); padding: 0.2rem 0.5rem; border-radius:4px; margin-right:4px; font-size:0.68rem; font-weight:700;">${b}</span>`).join('')}
+          <div class="admin-badges-cell">
+            ${(product.badges || []).map(b => {
+              const label = b === 'flash-deal' ? 'Flash Deal' : b === 'new-in' ? 'New Arrival' : b === 'tarnish-free' ? 'Tarnish Free' : b;
+              return `<span class="admin-badge-tag">${label}</span>`;
+            }).join('') || '<span style="color:var(--admin-text-muted);font-size:0.75rem;">—</span>'}
+          </div>
         </td>
         <td>
           <div style="display: flex; gap: 0.4rem;">
